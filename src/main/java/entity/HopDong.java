@@ -2,6 +2,7 @@ package entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 public class HopDong {
 	@Id
 	private String maHopDong;
+	@Column(name = "tenDoiTac", columnDefinition = "NVARCHAR(255)")
 	private String tenDoiTac;
 	private LocalDate ngayKy;
 	private LocalDate ngayThanhLyHopDong;

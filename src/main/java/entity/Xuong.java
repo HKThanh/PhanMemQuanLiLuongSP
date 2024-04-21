@@ -1,5 +1,6 @@
 package entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -9,7 +10,9 @@ import jakarta.persistence.Table;
 public class Xuong {
 	@Id
 	private String maXuong;
+	@Column(name = "tenXuong", columnDefinition = "NVARCHAR(255)")
 	private String tenXuong;
+	@Column(name = "diaChi", columnDefinition = "NVARCHAR(255)")
 	private String diaChi;
 
 	public Xuong() {

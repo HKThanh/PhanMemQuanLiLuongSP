@@ -65,9 +65,17 @@ public class TaiKhoan_Impl implements TaiKhoan_DAO {
 		} catch (NoSuchAlgorithmException e1) {
 			e1.printStackTrace();
 		}
+		
+		System.out.println(pwdHash);
 
-		String jpql = "SELECT tk FROM TaiKhoan tk WHERE tk.maTK = :tk AND tk.matKhau = :pwd";
-		temp = (TaiKhoan) em.createQuery(jpql).setParameter("tk", tk).setParameter("pwd", pwdHash).getSingleResult();
+		String jpql = "SELECT tk FROM TaiKhoan tk WHERE tk.taiKhoan = :tk AND tk.matKhau = :pwd";
+		temp = (TaiKhoan) em.createQuery(jpql)
+							.setParameter("tk", tk)
+							.setParameter("pwd", pwdHash)
+							.getResultList()
+							.stream()
+							.findFirst()
+							.orElse(null);
 
 		return temp;
 	}

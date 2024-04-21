@@ -199,13 +199,17 @@ create table TaiKhoan (
 )
 go
 
-insert into BoPhan values 
+insert into BoPhan (maBoPhan, tenBoPhan, sDTBoPhan) 
+values 
 	('BPNS', N'Bộ phận nhân sự', '0812808080'),
 	('BPKT', N'Bộ phận kế toán', '0812818181'),
 	('QLXU', N'Quản lý Xưởng', '0812828282')
 go
 
-insert into Xuong values
+select * from BoPhan
+
+insert into Xuong (maXuong, tenXuong, diaChi)
+values
 	('MA1', N'Xưởng may 1', ''),
 	('NH1', N'Xưởng nhuộm 1', ''),
 	('NH2', N'Xưởng nhuộm 2', ''),
@@ -403,23 +407,25 @@ VALUES
     (N'CN230100', N'Trần', N'Đức', 1, '02-10-1989', '606162636465', '0909090909', N'90 Đường GHI, Quận 12', '05-10-2023', 'MA1', 'May', 1, 500000, 2000000)
 go
 
-insert into BangLuongNhanVien (maLuongNV,maNV,thang,nam,soNgayDiLam,soNgayNghiKhongPhep,tienPhat,bhxh,luongTong)
+insert into BangLuongNV(maLuongNV,maNV,thang,nam,soNgayDiLam,soNgayNghiKhongPhep,tienPhat,bhxh,luongTong)
 values
 ('MT21236134','NV220003',6,2022,20,10,20000,10000,400000000),
 ('MT21989723','NV220003',4,2022,20,10,20000,10000,400000000),
 ('MT25632133','NV220010',7,2022,20,10,20000,10000,400000000);
 go
 
-insert into BangChamCongCongNhan 
-values ('121023230041', '10-12-2023', 'CN230041', 0, 0, 0, 556, '')
+use QuanLiLuongSP
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('121023230041', '10-12-2023', 0, 'CN230041', 0, 0, 0, 556, '')
 go
 
-insert into BangChamCongCongNhan(maCC,ngayCham,maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+insert into BangChamCongCN(maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
 values 
-		('21123CN230004','02-11-2023','CN230004',0,0,3,16,''),
-		('21123CN230065','02-11-2023','CN230065',0,0,3,16,''),
-		('21223CN230065','02-12-2023','CN230065',0,0,3,15,''),
-		('21323CN230065','02-13-2023','CN230065',0,0,3,19,''),
-		('21423CN230065','02-14-2023','CN230065',0,0,3,16,'');
+		('21123CN230004','02-11-2023', 0,'CN230004',0,0,3,16,''),
+		('21123CN230065','02-11-2023', 0,'CN230065',0,0,3,16,''),
+		('21223CN230065','02-12-2023', 1,'CN230065',0,0,3,15,''),
+		('21323CN230065','02-13-2023', 0,'CN230065',0,0,3,19,''),
+		('21423CN230065','02-14-2023', 1,'CN230065',0,0,3,16,'');
 go
 

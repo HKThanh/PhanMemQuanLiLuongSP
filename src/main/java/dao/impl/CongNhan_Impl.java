@@ -1,6 +1,5 @@
 package dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dao.CongNhan_DAO;
@@ -13,7 +12,7 @@ public class CongNhan_Impl implements CongNhan_DAO {
 	private EntityManager em;
 
 	public CongNhan_Impl() {
-		em = Persistence.createEntityManagerFactory("jpa").createEntityManager();
+		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
 	public List<CongNhan> getListCN() {
