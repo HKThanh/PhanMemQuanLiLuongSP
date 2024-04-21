@@ -43,6 +43,8 @@ import com.toedter.calendar.JDateChooser;
 
 import dao.HopDong_DAO;
 import dao.SanPham_DAO;
+import dao.impl.HopDong_Impl;
+import dao.impl.SanPham_Impl;
 import entity.HopDong;
 import entity.SanPham;
 
@@ -71,18 +73,18 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					HopDong_GUI frame = new HopDong_GUI();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+					HopDong_GUI frame = new HopDong_GUI();
+				try {
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -104,8 +106,8 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * @return
 	 */
 	public JPanel createGUI() {
-		hd_DAO = new HopDong_DAO();
-		sp_DAO = new SanPham_DAO();
+		hd_DAO = new HopDong_Impl();
+		sp_DAO = new SanPham_Impl();
 		
 		JPanel pnlHD = new JPanel();
 		pnlHD.setBackground(new Color(240, 248, 255));
@@ -295,7 +297,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức cập nhật combobox hiển thị năm kí hợp đồng
 	 */
 	private void capNhatCBONam() {
-		hd_DAO = new HopDong_DAO();
 		for (Integer year : hd_DAO.getDSNamKiHopDong()) {
 			modelCBONam.addElement(year.toString());
 		}
@@ -305,7 +306,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức cập nhật danh sách hợp đồng từ database vào table
 	 */
 	private void layDSHopDongTuDB() {
-		hd_DAO = new HopDong_DAO();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -319,7 +319,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức cập nhật danh sách hợp đồng theo trạng thái từ database vào table
 	 */
 	private void layDSHopDongTheoTrangThaiTuDB(boolean trangThai) {
-		hd_DAO = new HopDong_DAO();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -333,7 +332,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức cập nhật danh sách hợp đồng theo năm từ database vào table
 	 */
 	private void layDSHopDongTheoNamTuDB(int nam) {
-		hd_DAO = new HopDong_DAO();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -347,7 +345,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức cập nhật danh sách hợp đồng theo năm và trạng thái từ database vào table
 	 */
 	private void layDSHopDongTheoNamVaTTTuDB(int nam, boolean tinhTrang) {
-		hd_DAO = new HopDong_DAO();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -362,8 +359,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 		Object o = e.getSource();
 		
 		if (o.equals(btnThem)) {
-			hd_DAO = new HopDong_DAO();
-			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			String tenDoiTac = txtTenDoiTac.getText().trim();
 			LocalDate ngayKi = dcNgayKi.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -520,8 +515,6 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private String taoMaHopDong(LocalDate ngayKi) {
 		int numOfHopDong = 0;
-		
-		hd_DAO = new HopDong_DAO();
 		
 		int day = ngayKi.getDayOfMonth();
 		int month = ngayKi.getMonthValue();

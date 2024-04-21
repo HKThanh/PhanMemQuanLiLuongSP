@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputListener;
 
 import dao.TaiKhoan_DAO;
+import dao.impl.TaiKhoan_Impl;
 import entity.TaiKhoan;
 import javax.swing.ImageIcon;
 
@@ -131,7 +132,7 @@ public class DangNhap_GUI extends JFrame implements ActionListener, MouseListene
 		Object obj = e.getSource();
 		
 		if (obj.equals(btnDN)) {
-			TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_DAO();
+			TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
 			
 			String tk = txtTK.getText();
 			String mk = String.valueOf(pwdMK.getPassword());

@@ -30,6 +30,9 @@ import javax.swing.border.EmptyBorder;
 import dao.HopDong_DAO;
 import dao.NhanVien_DAO;
 import dao.TaiKhoan_DAO;
+import dao.impl.HopDong_Impl;
+import dao.impl.NhanVien_Impl;
+import dao.impl.TaiKhoan_Impl;
 import entity.TaiKhoan;
 /**
  * Lớp này dùng để tạo giao diện chính
@@ -62,7 +65,7 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 	private JMenuItem mntmLuongCN;
 	private JMenuItem mntmLuongNV;
 	
-	private TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_DAO();
+	private TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
 	private TaiKhoan tkMain = null;
 	private HopDong_DAO hd_DAO;
 	private NhanVien_DAO nv_DAO;
@@ -81,9 +84,9 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 	public GiaoDienChinh_GUI(TaiKhoan tk) {		
 		super("Màn hình chính");
 		
-		hd_DAO = new HopDong_DAO();
+		hd_DAO = new HopDong_Impl();
 		hd_DAO.getDSHopDong();
-		nv_DAO = new NhanVien_DAO();
+		nv_DAO = new NhanVien_Impl();
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(1280, 720);
@@ -390,7 +393,7 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 			int chon = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn đăng xuất", "Lưu Ý", JOptionPane.YES_NO_OPTION);
 			
 			if (chon == JOptionPane.YES_OPTION) {
-				taiKhoan_DAO.updateNgayCNCuoi(LocalDate.now(), tkMain);
+				taiKhoan_DAO.updateNgayDNCuoi(LocalDate.now(), tkMain);
 				DangNhap_GUI dangNhap = new DangNhap_GUI();
 				this.dispose();
 				dangNhap.setVisible(true);
