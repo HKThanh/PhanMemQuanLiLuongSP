@@ -213,7 +213,7 @@ insert into Xuong values
 	('DG1', N'Xưởng đóng gói 1', '')
 go
 
-INSERT INTO NhanVien (maNV, ho, ten, gioiTinh, cCCD, ngaySinh, diaChi, maBP, soDienThoai, ngayBatDauLamViec, thangBacLuong, caLamViec, luongCoBan, heSoLuong, phuCap, anhDaiDien)
+INSERT INTO NhanVien (maNV, ho, ten, gioiTinh, cCCD, ngaySinh, diaChi, maBoPhan, soDienThoai, ngayBatDauLamViec, thangBacLuong, caLamViec, luongCoBan, heSoLuong, phuCap, anhDaiDien)
 VALUES 
     (N'NV220001', N'Nguyễn Văn', N'An', 1, N'12323456789', '1996-01-15', N'1 Nguyễn Văn Bảo, Quận Gò Vấp', 'QLXU', N'0123456789', '2022-03-01', 3, 1, 3000000, 2.0, 500000, null),
     (N'NV220002', N'Trần Thị', N'Bình', 0, N'98762354321', '1995-05-20', N'2 Nguyễn Văn Bảo, Quận Gò Vấp', 'BPKT', N'0987654321', '2022-02-15', 2, 2, 3500000, 1.8, 400000, null),
@@ -244,19 +244,19 @@ values
 	(N'TK220001', '220001', CONVERT(varchar(16), HASHBYTES('MD5', '220001'), 2), N'NV220001', '03/11/2023')
 go
 
-insert into HopDong 
+insert into HopDong (maHopDong, tenDoiTac, ngayKy, ngayThanhLyHopDong, trangThai)
 values 
-	(N'14102301', N'Công ty Sản xuất áo sơ mi SMI', '10-14-2023', '11-13-2023', 1),
-	(N'07102301', N'Cửa hàng bán áo thun Z-shirt', '10-07-2023', '11-06-2023', 0),
-	(N'14082301', N'Shop bán quần jeans Jeanist', '08-14-2023', '09-13-2023', 0),
-	(N'30092301', N'Shop bán quần short Short-T', '09-30-2023', '10-29-2023', 1),
-	(N'15102301', N'Công ty sản xuất áo thun S-Z', '10-15-2023', '11-30-2023', 0),
-	(N'15112301', N'Shop bán quần áo gen-Z', '11-15-2023', '12-22-2023', 0),
-	(N'13102301', N'Công ty xuất khẩu quần kaki trắng Kaki-W', '11-13-2023', '12-11-2023', 0),
-	(N'15112302', N'Cửa hàng chuyên bán quần tây Limen', '11-15-2023', '12-30-2023', 0)
+	(N'14102301', N'Công ty Sản xuất áo sơ mi SMI', '10/14/2023', '11/13/2023', 1),
+	(N'07102301', N'Cửa hàng bán áo thun Z-shirt', '10/07/2023', '11/06/2023', 0),
+	(N'14082301', N'Shop bán quần jeans Jeanist', '08/14/2023', '09/13/2023', 0),
+	(N'30092301', N'Shop bán quần short Short-T', '09/30/2023', '10/29/2023', 1),
+	(N'15102301', N'Công ty sản xuất áo thun S-Z', '10/15/2023', '11/30/2023', 0),
+	(N'15112301', N'Shop bán quần áo gen-Z', '11/15/2023', '12/22/2023', 0),
+	(N'13102301', N'Công ty xuất khẩu quần kaki trắng Kaki-W', '11/13/2023', '12/11/2023', 0),
+	(N'15112302', N'Cửa hàng chuyên bán quần tây Limen', '11/15/2023', '12/30/2023', 0)
 go
 
-insert into SanPham
+insert into SanPham (maSP, tenSP, soLuong, soLuongCongDoan, trangThai, maHopDong)
 values
 	(N'1410230101', N'Áo sơ mi trắng', 10000, 2, 1, N'14102301'),
 	(N'0710230101', N'Áo thun đen thời thượng', 20000, 3, 1, N'07102301'),
@@ -402,14 +402,6 @@ VALUES
     (N'CN230099', N'Võ', N'Thịnh', 1, '01-25-1994', '545556575859', '0123456789', N'78 Đường DEF, Quận 11', '05-05-2023', 'MA1', 'May', 1, 500000, 2000000),
     (N'CN230100', N'Trần', N'Đức', 1, '02-10-1989', '606162636465', '0909090909', N'90 Đường GHI, Quận 12', '05-10-2023', 'MA1', 'May', 1, 500000, 2000000)
 go
-
---select bpccn.* from CongNhan cn join Xuong x
---on cn.maXuong = x.maXuong left join BangPhanCongCN bpccn
---on cn.maCN = bpccn.maCN
---where maPCCN is not null and maCD = '07102301013'
-
-
---select * from BangPhanCongCN where maCD = '30092301011'
 
 insert into BangLuongNhanVien (maLuongNV,maNV,thang,nam,soNgayDiLam,soNgayNghiKhongPhep,tienPhat,bhxh,luongTong)
 values

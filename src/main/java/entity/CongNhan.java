@@ -30,7 +30,6 @@ public class CongNhan {
 	
 	@ManyToOne
 	@JoinColumn(name = "maXuong")
-	
 	private Xuong xuong;
 
 	public CongNhan() {
@@ -104,13 +103,9 @@ public class CongNhan {
 	public boolean isGioiTinh() {
 		return gioiTinh;
 	}
-	boolean Nam = true;
-	boolean Nữ = false;
+	
 	public void setGioiTinh(boolean gioiTinh) {
-		if(gioiTinh)
-			this.gioiTinh = true;
-		else
-			this.gioiTinh = false;
+		this.gioiTinh = gioiTinh;
 	}
 
 	public String getcCCD() {
