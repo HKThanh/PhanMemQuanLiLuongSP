@@ -1,5 +1,6 @@
 package entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 public class SanPham {
 	@Id
 	private String maSP;
+	@Column(name = "tenSP", columnDefinition = "NVARCHAR(255)")
 	private String tenSP;
 	private int soLuong;
 	private int soLuongCongDoan;

@@ -1,8 +1,21 @@
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "BangLuongNV")
 public class BangLuongNV {
+	@Id
 	private String maLuongNV;
+	
+	@ManyToOne
+	@JoinColumn(name = "maNV")
 	private NhanVien nv;
+	
 	private int thang;
 	private int nam;
 	private int soNgayDiLam;

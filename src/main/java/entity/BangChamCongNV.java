@@ -2,15 +2,31 @@ package entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "BangChamCongNV")
 public class BangChamCongNV {
+	@Id
 	private String maChamCongNV;
+	
+	@ManyToOne
+	@JoinColumn(name = "maNV")
 	private NhanVien nv;
+	
 	private LocalDate ngayCham;
 	private int soGioTangCa;
 	private int caLam;
 	private boolean coMat;
 	private boolean coPhep;
 	private boolean vangMat;
+	
+	@Column(name = "ghiChu", columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
 
 	public BangChamCongNV() {

@@ -3,6 +3,7 @@ package entity;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -15,13 +16,17 @@ public class CongNhan {
 	@Id
 	private String maCN;
 	private byte[] anhDaiDien;
+	@Column(name = "ho", columnDefinition = "NVARCHAR(255)")
 	private String ho;
+	@Column(name = "ten", columnDefinition = "NVARCHAR(255)")
 	private String ten;
 	private boolean gioiTinh;
 	private LocalDate ngaySinh;
 	private String cCCD;
+	@Column(name = "diaChi", columnDefinition = "NVARCHAR(255)")
 	private String diaChi;
 	private String soDienThoai;
+	@Column(name = "chuyenMon", columnDefinition = "NVARCHAR(255)")
 	private String chuyenMon;
 	private int caLamViec;
 	private double phuCap;

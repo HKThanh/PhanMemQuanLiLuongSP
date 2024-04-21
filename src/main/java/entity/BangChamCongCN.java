@@ -2,6 +2,7 @@ package entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -24,6 +25,8 @@ public class BangChamCongCN {
 	private int sanLuong;
 	private boolean vangMat;
 	private boolean coPhep;
+	
+	@Column(name = "ghiChu", columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
 
 	public BangChamCongCN() {
