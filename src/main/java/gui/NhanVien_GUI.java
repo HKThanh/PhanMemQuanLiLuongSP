@@ -33,6 +33,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import dao.BoPhan_DAO;
 import dao.NhanVien_DAO;
+import dao.impl.BoPhan_Impl;
+import dao.impl.NhanVien_Impl;
 import entity.BoPhan;
 import entity.NhanVien;
 
@@ -96,7 +99,7 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 	private DefaultComboBoxModel<String> modelBoPhan;
 	private JComboBox<String> cboBoPhan;
 	private BoPhan_DAO boPhanDao;
-	private ArrayList<BoPhan> dsBP;
+	private List<BoPhan> dsBP;
 	private ArrayList<NhanVien> dsNVBP;
 	private String ma;
 	private ArrayList<String> dsTen;
@@ -131,10 +134,9 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 	}
 	
 	public JPanel createGUI() {
-		
-		nhanVienDao = new NhanVien_DAO();
+		nhanVienDao = new NhanVien_Impl();
 		dsNV = nhanVienDao.getListNV();
-		boPhanDao = new BoPhan_DAO();
+		boPhanDao = new BoPhan_Impl();
 		dsBP = boPhanDao.getdsBoPhan();
 		dsNVBP = new ArrayList<NhanVien>();
 		dsNV = nhanVienDao.getListNV();

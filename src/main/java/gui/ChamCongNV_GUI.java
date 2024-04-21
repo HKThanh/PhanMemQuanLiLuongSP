@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -14,12 +13,11 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -54,6 +52,9 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import dao.BangChamCongNV_DAO;
 import dao.BoPhan_DAO;
 import dao.NhanVien_DAO;
+import dao.impl.BangChamCongNV_Impl;
+import dao.impl.BoPhan_Impl;
+import dao.impl.NhanVien_Impl;
 import entity.BangChamCongNV;
 import entity.BoPhan;
 import entity.NhanVien;
@@ -72,10 +73,10 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
     private JButton btnTimKiemTen,btnCapNhat,btnHoanTat;
     private NhanVien_DAO nhanVienDao;
     private BoPhan_DAO boPhanDao;
-    private ArrayList<BoPhan> dsBP;
+    private List<BoPhan> dsBP;
     private ArrayList<NhanVien> dsNVBPCa;
     private BangChamCongNV_DAO chamCongNVDao;
-    private ArrayList<BangChamCongNV> dsCongLamViec;
+    private List<BangChamCongNV> dsCongLamViec;
     private ArrayList<String> dsTen;
    
     
@@ -117,13 +118,13 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 		pnlCCNV.setBackground(new Color(240, 248, 255));
 		pnlCCNV.setBounds(0, 50, 1268, 632);
 		 
-		BoPhan_DAO boPhanDao = new BoPhan_DAO();
-		chamCongNVDao = new BangChamCongNV_DAO();
+		BoPhan_DAO boPhanDao = new BoPhan_Impl();
+		chamCongNVDao = new BangChamCongNV_Impl();
 		
 		
 		dsBP = boPhanDao.getdsBoPhan();
 		dsNVBPCa = new ArrayList<NhanVien>();
-		nhanVienDao = new NhanVien_DAO();
+		nhanVienDao = new NhanVien_Impl();
 		dsCongLamViec = new ArrayList<BangChamCongNV>();
 		
 		lblNgayCC = new JLabel("Ngày chấm công");
@@ -629,7 +630,6 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 			// TODO Auto-generated method stub
 			super.fireEditingStopped();
 			
-			
 		}
 		
 	}
@@ -666,18 +666,11 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 		return dsCongLam;
 	}
 	
-	
-
-	
-	
-	
-	public Boolean kiemTraChamCong(ArrayList<BangChamCongNV> dsCongLam) {
-		if(dsCongLam.size()==0)
+	public Boolean kiemTraChamCong(List<BangChamCongNV> dsCongLamViec2) {
+		if(dsCongLamViec2.size()==0)
 			return false;
 		return true;
 	}
-	
-
 	
 	public void docDuLieuVaoTable() {
 		for(int i=0 ; i< dsNVBPCa.size();i++) {
@@ -699,10 +692,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 				}
 			}
 		}
-
 	}
-	
-	
 	
 	public String layCaLamViec(NhanVien nv) {
 		if(nv.getCaLamViec()==1) {
@@ -713,13 +703,11 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 	}
 	
 	public String phatSinhMaCC(LocalDate ngayChamCong, String maNV) {
-		
 		SimpleDateFormat yearFormat = new SimpleDateFormat("yy");
         SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
         SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
         String ma  = dayFormat.format(Date.valueOf(ngayChamCong))+ monthFormat.format(Date.valueOf(ngayChamCong)) +yearFormat.format(Date.valueOf(ngayChamCong)) + maNV;
         return ma;
-		
 	}
 	
 	@Override
@@ -741,15 +729,11 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
-					 
-						
 				}
 				btnHoanTat.setEnabled(false);
 				btnCapNhat.setEnabled(true);
 			}else 
 				return;
-			
-			
 		}
 		if(o==btnCapNhat) {
 			if(JOptionPane.showConfirmDialog(frame, "Hãy xác nhận cập nhật bảng chấm công","Xác Nhận",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
@@ -759,16 +743,14 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 					} catch (Exception e2) {
 						// TODO: handle exception
 					}
-					 
-						
 				}
 			}else 
 				return;
 		}
 		if(o==btnTimKiemTen) {
 			String ten = txtTimKiemTen.getText();
-			ArrayList<BangChamCongNV> dsBangCCTimKiem  = new ArrayList<BangChamCongNV>();
-			ArrayList<NhanVien> dsNVTimKiem = new ArrayList<NhanVien>();
+			List<BangChamCongNV> dsBangCCTimKiem  = new ArrayList<BangChamCongNV>();
+			List<NhanVien> dsNVTimKiem = new ArrayList<NhanVien>();
 			if(!ten.equals("")) {
 				for(NhanVien nv: dsNVBPCa) {
 					if(nv.getTen().equals(ten)) {
@@ -842,7 +824,6 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 											return;
 										}
 									}
-			                    
 			              }
 			            }
 			          }
@@ -855,12 +836,6 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 				clearTable();
 				docDuLieuVaoTable();
 			}
-	
-				
-			
-				
 		}
-		
 	}
-
 }

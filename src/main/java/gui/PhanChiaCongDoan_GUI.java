@@ -11,14 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -36,14 +35,18 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.BangPhanCongCN_DAO;
 import dao.CongDoan_DAO;
 import dao.HopDong_DAO;
 import dao.SanPham_DAO;
-import dao.BangPhanCongCN_DAO;
+import dao.impl.BangPhanCongCN_Impl;
+import dao.impl.CongDoan_Impl;
+import dao.impl.HopDong_Impl;
+import dao.impl.SanPham_Impl;
+import entity.BangPhanCongCN;
 import entity.CongDoan;
 import entity.HopDong;
 import entity.SanPham;
-import entity.BangPhanCongCN;
 
 public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, MouseListener {
 
@@ -105,10 +108,10 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 		pnlPCCD.setBounds(0, 50, 1264, 632);
 		pnlPCCD.setLayout(null);
 		
-		sp_DAO = new SanPham_DAO();
-		hd_DAO = new HopDong_DAO();
-		cd_DAO = new CongDoan_DAO();
-		bPCCN_DAO = new BangPhanCongCN_DAO();
+		sp_DAO = new SanPham_Impl();
+		hd_DAO = new HopDong_Impl();
+		cd_DAO = new CongDoan_Impl();
+		bPCCN_DAO = new BangPhanCongCN_Impl();
 		
 		String[] header = {"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Số lượng công đoạn hiện có", "Ngày kết thúc hợp đồng"};
 		modelSanPham = new DefaultTableModel(header, 0);
@@ -336,7 +339,7 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 	 * Phương thức lấy danh sách sản phẩm từ DB hiển thị lên model
 	 */
 	private void layDSSanPhamTuDB() {
-		sp_DAO = new SanPham_DAO();
+		sp_DAO = new SanPham_Impl();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		modelSanPham.setRowCount(0);
@@ -392,7 +395,7 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 		if (object.equals(tableCongDoan)) {
 			int rowCD = tableCongDoan.getSelectedRow();
 			String maCD = modelCongDoan.getValueAt(rowCD, 1).toString();
-			ArrayList<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
+			List<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
 			
 			if (listBPCCN.size() != 0) {
 				JOptionPane.showMessageDialog(null, "Lưu ý công đoạn này hiện đã phân công, Không thể thực hiện chỉnh sửa");
@@ -483,7 +486,7 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 		
 		if (o.equals(btnSua)) {
 			String maCD = modelCongDoan.getValueAt(tableCongDoan.getSelectedRow(), 1).toString();
-			ArrayList<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
+			List<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
 			
 			if (listBPCCN.size() == 0) {
 				btnSua.setEnabled(false);
@@ -497,7 +500,7 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 			String maCD = modelCongDoan.getValueAt(tableCongDoan.getSelectedRow(), 1).toString();
 			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xoá công đoạn này", "Lưu ý", JOptionPane.YES_NO_OPTION);
 			
-			ArrayList<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
+			List<BangPhanCongCN> listBPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
 			
 			if (listBPCCN.size() == 0) {
 				if (luaChon == JOptionPane.YES_OPTION) {

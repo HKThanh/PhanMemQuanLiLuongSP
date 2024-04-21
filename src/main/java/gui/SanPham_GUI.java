@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -29,6 +30,9 @@ import javax.swing.table.DefaultTableModel;
 import dao.CongDoan_DAO;
 import dao.HopDong_DAO;
 import dao.SanPham_DAO;
+import dao.impl.CongDoan_Impl;
+import dao.impl.HopDong_Impl;
+import dao.impl.SanPham_Impl;
 import entity.CongDoan;
 import entity.HopDong;
 import entity.SanPham;
@@ -89,9 +93,9 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 
 	public JPanel createGUI() {
 		
-		hd_DAO = new HopDong_DAO();
-		sp_DAO = new SanPham_DAO();
-		cd_DAO = new CongDoan_DAO();
+		hd_DAO = new HopDong_Impl();
+		sp_DAO = new SanPham_Impl();
+		cd_DAO = new CongDoan_Impl();
 		
 		JPanel pnlSP = new JPanel();
 		pnlSP.setBackground(new Color(240, 248, 255));
@@ -241,7 +245,6 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private void hienThiDSHopDong() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		hd_DAO = new HopDong_DAO();
 		ArrayList<HopDong> listHD = hd_DAO.getDSHopDong();
 		
 		modelTblHopDong.setRowCount(0);
@@ -255,7 +258,6 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private void hienThiDSHopDongTheoTT(boolean trangThai) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		hd_DAO = new HopDong_DAO();
 		ArrayList<HopDong> listHD = hd_DAO.getListHDTheoTrangThai(trangThai);
 		
 		modelTblHopDong.setRowCount(0);
@@ -281,8 +283,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 * @param maHD
 	 */
 	private void layDSSanPhamTheoHopDongTuDB(String maHD) {
-		sp_DAO = new SanPham_DAO();
-		hd_DAO = new HopDong_DAO();
+		sp_DAO = new SanPham_Impl();
 		ArrayList<SanPham> listSP = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 		modelDSSanPham.setRowCount(0);
 		
@@ -413,7 +414,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		Object o = e.getSource();
 		
 		if (o.equals(btnThem)) {
-			hd_DAO = new HopDong_DAO();
+			hd_DAO = new HopDong_Impl();
 			String tenSP = txtTenSanPham.getText().trim();
 			String soLuong_String = txtSoLuong.getText().trim();
 			
@@ -448,7 +449,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 					String maSP = tblDSSanPham.getValueAt(row, 0).toString();
 					SanPham sp = sp_DAO.getMotSanPham(maSP);
 					
-					ArrayList<CongDoan> listCD = cd_DAO.getDSCongDoanTheoMaSP(maSP);
+					List<CongDoan> listCD = cd_DAO.getDSCongDoanTheoMaSP(maSP);
 					
 					if (listCD.size() == 0) {
 						JOptionPane.showMessageDialog(null, "Sản phẩm này chưa có công đoạn");

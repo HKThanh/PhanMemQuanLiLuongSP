@@ -15,15 +15,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -47,12 +44,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import dao.Xuong_DAO;
 import dao.CongNhan_DAO;
-import entity.Xuong;
+import dao.Xuong_DAO;
+import dao.impl.CongNhan_Impl;
+import dao.impl.Xuong_Impl;
 import entity.CongNhan;
+import entity.Xuong;
 
 public class CongNhan_GUI implements MouseListener, ActionListener {
 
@@ -72,12 +70,12 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
 	public DefaultTableModel modelDsCN;
     public JTable tblDsCN;
     private CongNhan_DAO congNhanDao;
-    private static ArrayList<CongNhan> dsCN;
+    private static List<CongNhan> dsCN;
 	private DefaultComboBoxModel<String> modelXuong;
 	private JComboBox<String> cboXuong;
 	private Xuong_DAO xuongDao;
-	private ArrayList<Xuong> dsX;
-	private ArrayList<CongNhan> dsCNX;
+	private List<Xuong> dsX;
+	private List<CongNhan> dsCNX;
 	private String ma;
 
 	
@@ -111,9 +109,9 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
 	
 	public JPanel createGUI() {
 		
-		congNhanDao = new CongNhan_DAO();
+		congNhanDao = new CongNhan_Impl();
 		dsCN = congNhanDao.getListCN();
-		xuongDao = new Xuong_DAO();
+		xuongDao = new Xuong_Impl();
 		dsX = xuongDao.getDSXuong();
 		dsCNX = new ArrayList<CongNhan>();
 		
@@ -478,7 +476,7 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
 		modelNam.addElement("Tất cả");
 		modelNam.setSelectedItem("Tất cả");
 		
-		xuongDao = new Xuong_DAO();
+		xuongDao = new Xuong_Impl();
         modelXuong.removeAllElements();
 	    modelXuong.addElement("Tất cả");
 	    modelXuong.setSelectedItem("Tất cả");
@@ -647,8 +645,8 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
        
 	}
 	
-	public void docDuLieuVaoTable(ArrayList<CongNhan> dsCN) {
-		 for(CongNhan cn: dsCN) {
+	public void docDuLieuVaoTable(List<CongNhan> dsCN2) {
+		 for(CongNhan cn: dsCN2) {
 			 String tenXuong="" ;
 				for(Xuong x: dsX) {
 					if(x.getMaXuong().equals(cn.getXuong().getMaXuong())) {

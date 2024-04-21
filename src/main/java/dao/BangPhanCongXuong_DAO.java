@@ -1,5 +1,5 @@
 package dao;
 
-public class BangPhanCongXuong_DAO {
+public interface BangPhanCongXuong_DAO {
 
 }
