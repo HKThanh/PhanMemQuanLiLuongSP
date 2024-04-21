@@ -245,7 +245,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private void hienThiDSHopDong() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		ArrayList<HopDong> listHD = hd_DAO.getDSHopDong();
+		List<HopDong> listHD = hd_DAO.getDSHopDong();
 		
 		modelTblHopDong.setRowCount(0);
 		for (HopDong hopDong : listHD) {
@@ -258,7 +258,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private void hienThiDSHopDongTheoTT(boolean trangThai) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		ArrayList<HopDong> listHD = hd_DAO.getListHDTheoTrangThai(trangThai);
+		List<HopDong> listHD = hd_DAO.getListHDTheoTrangThai(trangThai);
 		
 		modelTblHopDong.setRowCount(0);
 		for (HopDong hopDong : listHD) {
@@ -284,7 +284,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 */
 	private void layDSSanPhamTheoHopDongTuDB(String maHD) {
 		sp_DAO = new SanPham_Impl();
-		ArrayList<SanPham> listSP = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+		List<SanPham> listSP = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 		modelDSSanPham.setRowCount(0);
 		
 		for (SanPham sanPham : listSP) {

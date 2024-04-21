@@ -2,6 +2,7 @@ package dao.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dao.HopDong_DAO;
@@ -31,8 +32,8 @@ public class HopDong_Impl implements HopDong_DAO {
 	 * 
 	 * @return ArrayList<HopDong>
 	 */
-	public ArrayList<HopDong> getDSHopDong() {
-		return (ArrayList<HopDong>) em.createQuery("select hd from HopDong hd", HopDong.class).getResultList();
+	public List<HopDong> getDSHopDong() {
+		return em.createQuery("select hd from HopDong hd", HopDong.class).getResultList();
 	}
 
 	/**
@@ -116,10 +117,10 @@ public class HopDong_Impl implements HopDong_DAO {
 	 * @param tinhTrang
 	 * @return ArrayList<HopDong>
 	 */
-	public ArrayList<HopDong> getListHDTheoTrangThai(boolean tinhTrang) {
+	public List<HopDong> getListHDTheoTrangThai(boolean tinhTrang) {
 		String jpql = "select hd from HopDong hd where hd.trangThai = :tinhTrang";
 
-		return (ArrayList<HopDong>) em.createQuery(jpql, HopDong.class).setParameter("tinhTrang", tinhTrang)
+		return em.createQuery(jpql, HopDong.class).setParameter("tinhTrang", tinhTrang)
 				.getResultList();
 	}
 
@@ -130,12 +131,10 @@ public class HopDong_Impl implements HopDong_DAO {
 	 * @param year
 	 * @return ArrayList<HopDong>
 	 */
-	public ArrayList<HopDong> getDSHopDongTheoNam(int year) {
-		ArrayList<HopDong> listTheoNam = new ArrayList<HopDong>();
+	public List<HopDong> getDSHopDongTheoNam(int year) {
+		String jpql = "select hd from HopDong hd where year(hd.ngayKy) = :year";
 
-		String jpql = "select hd from HopDong hd where year(hd.ngayKi) = :year";
-
-		return (ArrayList<HopDong>) em.createQuery(jpql, HopDong.class).setParameter("year", year).getResultList();
+		return em.createQuery(jpql, HopDong.class).setParameter("year", year).getResultList();
 	}
 
 	/**
@@ -144,10 +143,10 @@ public class HopDong_Impl implements HopDong_DAO {
 	 * @param tinhTrang
 	 * @return ArrayList<Integer>
 	 */
-	public ArrayList<Integer> getDSNamKiHopDong() {
+	public List<Integer> getDSNamKiHopDong() {
 		Set<Integer> setNam = new HashSet<Integer>();
 
-		ArrayList<HopDong> listHopDong = (ArrayList<HopDong>) em.createQuery("select hd from HopDong hd", HopDong.class)
+		List<HopDong> listHopDong = (ArrayList<HopDong>) em.createQuery("select hd from HopDong hd", HopDong.class)
 				.getResultList();
 
 		for (HopDong hd : listHopDong) {
@@ -164,12 +163,10 @@ public class HopDong_Impl implements HopDong_DAO {
 	 * @param year, tinhTrang
 	 * @return ArrayList<HopDong>
 	 */
-	public ArrayList<HopDong> getDSHopDongTheoNamvaTT(int year, boolean tinhTrang) {
-		ArrayList<HopDong> listTheoNam = new ArrayList<HopDong>();
+	public List<HopDong> getDSHopDongTheoNamvaTT(int year, boolean tinhTrang) {
+		String jpql = "select hd from HopDong hd where year(hd.ngayKy) = :year and hd.trangThai = :tinhTrang";
 
-		String jpql = "select hd from HopDong hd where year(hd.ngayKi) = :year and hd.trangThai = :tinhTrang";
-
-		return (ArrayList<HopDong>) em.createQuery(jpql, HopDong.class).setParameter("year", year)
+		return em.createQuery(jpql, HopDong.class).setParameter("year", year)
 				.setParameter("tinhTrang", tinhTrang).getResultList();
 	}
 }

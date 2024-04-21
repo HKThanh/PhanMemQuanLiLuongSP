@@ -23,7 +23,7 @@ public class CongDoan {
 	private String congDoanTienQuyet;
 	
 	@ManyToOne
-	@JoinColumn(name = "maSanPham")
+	@JoinColumn(name = "maSP")
 	private SanPham sanPham;
 
 	public CongDoan() {
