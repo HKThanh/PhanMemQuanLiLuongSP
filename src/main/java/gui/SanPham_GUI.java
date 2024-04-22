@@ -370,10 +370,13 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		
 		if (o.equals(tblHopDong)) {
 			int rowHopDong = tblHopDong.getSelectedRow();
-			txtTenDoiTac.setText(hd_DAO.getMotHopDong(tblHopDong.getValueAt(rowHopDong, 0).toString()).getTenDoiTac());
+			txtTenDoiTac.setText(hd_DAO.getMotHopDong(tblHopDong
+							.getValueAt(rowHopDong, 0)
+							.toString())
+							.getTenDoiTac());
 			String maHD = modelTblHopDong.getValueAt(rowHopDong, 0).toString();
 			
-			ArrayList<SanPham> listSPTheoHD = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+			List<SanPham> listSPTheoHD = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 
 			modelDSSanPham.setRowCount(0);
 			

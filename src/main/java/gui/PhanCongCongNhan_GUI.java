@@ -344,7 +344,9 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 		cn_DAO = new CongNhan_Impl();
 		x_DAO = new Xuong_Impl();
 		bPCCN_DAO = new BangPhanCongCN_Impl();
+		
 		List<BangPhanCongCN> listPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
+		
 		modelPCCN.setRowCount(0);
 		
 		if (listPCCN.size() == 0) {
