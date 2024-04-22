@@ -23,7 +23,9 @@ public class BangPhanCongCN_Impl implements BangPhanCongCN_DAO {
 	 * @return ArrayList
 	 */
 	public List<BangPhanCongCN> getDSPhanCongCongDoanTheoMaCD(String ma) {
-		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma";
+//		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma";
+		
+		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma and bpccn.maPhanCong is not null";
 
 		return em.createQuery(jpql).setParameter("ma", ma).getResultList();
 	}
@@ -93,7 +95,7 @@ public class BangPhanCongCN_Impl implements BangPhanCongCN_DAO {
 //		return listCNDuocPhanCong;
 
 		String jpql = "select bpccn from BangPhanCongCN bpccn "
-				+ "where bpccn.congDoan.maCongDoan = :ma and bpccn.maPhanCongCN is not null";
+				+ "where bpccn.congDoan.maCongDoan = :ma and bpccn.maPhanCong is not null";
 
 		return em.createQuery(jpql).setParameter("ma", ma).getResultList();
 	}
@@ -105,7 +107,7 @@ public class BangPhanCongCN_Impl implements BangPhanCongCN_DAO {
 	 */
 	public List<BangPhanCongCN> getDSCongNhanDuocPhanCong() {
 
-		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.maPhanCongCN is not null";
+		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.maPhanCong is not null";
 
 		return em.createQuery(jpql).getResultList();
 	}

@@ -103,7 +103,7 @@ public class CongNhan_Impl implements CongNhan_DAO {
 	}
 
 	public List<CongNhan> getDSCongNhanTheoXuongVaChuaDuocPhanCong(String xuong) {
-		String jpql = "select cn from CongNhan cn where cn.xuong.tenXuong like :xuong and cn.caLamViec = 0";
+		String jpql = "select cn from CongNhan cn where cn.xuong.tenXuong like :xuong";
 
 		return em.createQuery(jpql).setParameter("xuong", xuong).getResultList();
 	}

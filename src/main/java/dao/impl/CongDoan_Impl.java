@@ -35,9 +35,9 @@ public class CongDoan_Impl implements CongDoan_DAO {
 	 * @return ArrayList<CongDoan> listCDTheoMaSP
 	 */
 	public List<CongDoan> getDSCongDoanTheoMaSP(String maSP) {
-		String jpql = "select cd from CongDoan cd where cd.sanPham.maSP = ? order by cd.ngayBatDau";
+		String jpql = "select cd from CongDoan cd where cd.sanPham.maSP = :maSP order by cd.ngayBatDau";
 
-		return em.createQuery(jpql, CongDoan.class).setParameter(1, maSP).getResultList();
+		return em.createQuery(jpql, CongDoan.class).setParameter("maSP", maSP).getResultList();
 	}
 
 	/**
@@ -94,9 +94,9 @@ public class CongDoan_Impl implements CongDoan_DAO {
 	}
 
 	public List<CongDoan> getDSCongDoanTheoTrangThai(boolean tinhTrang) {
-		String jpql = "select cd from CongDoan cd where cd.trangThai = ? order by cd.ngayBatDau";
+		String jpql = "select cd from CongDoan cd where cd.trangThai = :tinhTrang order by cd.ngayBatDau";
 
-		return em.createQuery(jpql, CongDoan.class).setParameter(1, tinhTrang).getResultList();
+		return em.createQuery(jpql, CongDoan.class).setParameter("tinhTrang", tinhTrang).getResultList();
 	}
 
 	public boolean updateCongDoan(CongDoan cd) {
@@ -137,7 +137,7 @@ public class CongDoan_Impl implements CongDoan_DAO {
 //		return maCD;
 
 		String jpql = "select cd.maCongDoan from CongDoan cd " + "join cd.bangPhanCongCNs bpc "
-				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maCC = ?";
-		return em.createQuery(jpql, String.class).setParameter(1, bcc.getMaChamCongCN()).getSingleResult();
+				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maCC = :maCC";
+		return em.createQuery(jpql, String.class).setParameter("maCC", bcc.getMaChamCongCN()).getSingleResult();
 	}
 }
