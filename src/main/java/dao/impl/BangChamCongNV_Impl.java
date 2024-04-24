@@ -9,6 +9,7 @@ import entity.BangChamCongNV;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
 
 public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 	private EntityManager em;
@@ -45,9 +46,25 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 //		}
 //		return listThangvaNam;
 		
-		String jpql = "select distinct cc.ngayCham from BangChamCongNV cc";
+//		String jpql = "select distinct cc.ngayCham from BangChamCongNV cc";
+//
+//		return em.createQuery(jpql).getResultList();
+		List<LocalDate> listThangvaNam = new ArrayList<>();
 
-		return em.createQuery(jpql).getResultList();
+	    String jpql = "SELECT DISTINCT FUNCTION('MONTH', b.ngayCham), FUNCTION('YEAR', b.ngayCham) FROM BangChamCongNV b";
+	    Query query = em.createQuery(jpql);
+
+	    List<Object[]> results = query.getResultList();
+
+	    for (Object[] result : results) {
+	        Integer month = (Integer) result[0];
+	        Integer year = (Integer) result[1];
+
+	        LocalDate thangvaNam = LocalDate.of(year, month, 1);
+	        listThangvaNam.add(thangvaNam);
+	    }
+
+	    return listThangvaNam;
 		
 	}
 	public List<BangChamCongNV> dsBangChamCongNhanVienTheoTungThang(int thang, int nam){
