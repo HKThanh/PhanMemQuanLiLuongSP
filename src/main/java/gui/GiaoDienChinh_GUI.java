@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 	private JMenuItem mntmLuongCN;
 	private JMenuItem mntmLuongNV;
 	
-	private TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
+//	private TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
 	private TaiKhoan tkMain = null;
 	private HopDong_DAO hd_DAO;
 	private NhanVien_DAO nv_DAO;
@@ -84,9 +83,9 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 	public GiaoDienChinh_GUI(TaiKhoan tk) {		
 		super("Màn hình chính");
 		
-		hd_DAO = new HopDong_Impl();
+		hd_DAO = Initiate.hopDong_DAO;
 		hd_DAO.getDSHopDong();
-		nv_DAO = new NhanVien_Impl();
+		nv_DAO = Initiate.nhanVien_DAO;
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(1280, 720);
@@ -309,7 +308,7 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 		String hoTen = nv_DAO.getMotNVTuMaNV(tk.getNv().getMaNV()).getHo() + " " 
 						+ nv_DAO.getMotNVTuMaNV(tk.getNv().getMaNV()).getTen();
 		
-		switch (taiKhoan_DAO.getBoPhanCuaNV(tk)) {
+		switch (Initiate.taiKhoan_DAO.getBoPhanCuaNV(tk)) {
 		case "BPNS" -> {
 			txtNumberNV.setText(nv_DAO.getListNV().size() + "");
 			txtNumHD.setText(hd_DAO.getSize() + "");
@@ -393,7 +392,7 @@ public class GiaoDienChinh_GUI extends JFrame implements ActionListener, MouseLi
 			int chon = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn đăng xuất", "Lưu Ý", JOptionPane.YES_NO_OPTION);
 			
 			if (chon == JOptionPane.YES_OPTION) {
-				taiKhoan_DAO.updateNgayDNCuoi(LocalDate.now(), tkMain);
+				Initiate.taiKhoan_DAO.updateNgayDNCuoi(LocalDate.now(), tkMain);
 				DangNhap_GUI dangNhap = new DangNhap_GUI();
 				this.dispose();
 				dangNhap.setVisible(true);
