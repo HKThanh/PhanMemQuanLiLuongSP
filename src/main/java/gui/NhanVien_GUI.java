@@ -1080,7 +1080,7 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 			}
 			
 			String sdt = txtSDT.getText();
-			String regexSDT = "0[15789]\\d{8}";
+			String regexSDT = "0[135789]\\d{8}";
 			Pattern patternSDT = Pattern.compile(regexSDT);
 			if(sdt.equals("")) {
 				JOptionPane.showMessageDialog( frame, "Không được để trống số điện thoại");
