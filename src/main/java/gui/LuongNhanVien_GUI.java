@@ -384,6 +384,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 				String thang = cboThangLuongNV.getSelectedItem().toString().trim();
 				String nam = cboNamLuongNV.getSelectedItem().toString().trim();
 				String tenBP = cboBoPhanLuongNV.getSelectedItem().toString().trim();
+//				System.out.println(thang + " " + nam + " " + tenBP);
 				bcc_DAO= new BangChamCongNV_Impl();
 				List<LocalDate> listkt = bcc_DAO.layTatCaThangvaNamkhacNhau();
 
@@ -407,6 +408,8 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 							String thangLoc = modelTableThangLuongNV.getValueAt(i, 0).toString();
 							String namLoc = modelTableThangLuongNV.getValueAt(i, 1).toString();
 							String tenBPLoc = modelTableThangLuongNV.getValueAt(i, 2).toString();
+							
+							System.out.println(thangLoc + " " + namLoc + " " + tenBPLoc);
 							if(thangLoc.equals(thang)&&namLoc.equals(nam)&&tenBPLoc.equals(tenBP)){
 								tblThangLuongNhanVien.setRowSelectionInterval(i, i);
 
