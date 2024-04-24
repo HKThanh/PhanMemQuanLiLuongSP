@@ -14,7 +14,7 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 	private EntityManager em;
 
 	public BangChamCongCN_Impl() {
-		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
+		em = demo.Main.getEm();
 	}
 
 	public List<BangChamCongCN> getBangCC() {

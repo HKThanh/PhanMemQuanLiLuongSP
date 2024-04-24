@@ -126,13 +126,13 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 				+ "where cc.nv.maNV = :maNV "
 				+ "and MONTH(cc.ngayCham) = :thang "
 				+ "and YEAR(cc.ngayCham) = :nam "
-				+ "and cc.coMat = 1";
+				+ "and cc.coMat = true";
 		
-		return (int) em.createQuery(jpql)
-				.setParameter("maNV", maNV)
-				.setParameter("thang", thang)
-				.setParameter("nam", nam)
-				.getSingleResult();
+		   return ((Long) em.createQuery(jpql)
+		            .setParameter("maNV", maNV)
+		            .setParameter("thang", thang)
+		            .setParameter("nam", nam)
+		            .getSingleResult()).intValue();
 	}
 	public double getTongSoGioTangCaCua1NV(String maNV, int thang, int nam) {
 //		double tongSoGioTangCa = 0;
@@ -162,11 +162,12 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 				+ "and MONTH(cc.ngayCham) = :thang " 
 				+ "and YEAR(cc.ngayCham) = :nam";
 
-		return (double) em.createQuery(jpql)
+		Long result = (Long) em.createQuery(jpql)
 				.setParameter("maNV", maNV)
-				.setParameter("thang", thang)
+				.setParameter("thang", thang)	
 				.setParameter("nam", nam)
 				.getSingleResult();
+		return result == null ? 0 : result.doubleValue();
 	}
 	public double getSoBangChamCongCua1NV(String maNV, int thang, int nam) {
 //		int soBangChamCong = 0;
@@ -196,11 +197,12 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 				+ "and MONTH(cc.ngayCham) = :thang " 
 				+ "and YEAR(cc.ngayCham) = :nam";
 
-		return (int) em.createQuery(jpql)
+		 Long result = (Long) em.createQuery(jpql)
 				.setParameter("maNV", maNV)
 				.setParameter("thang", thang)
 				.setParameter("nam", nam)
 				.getSingleResult();
+		 return result != null ? result.intValue() : 0;
 		
 	}
 	public List<BangChamCongNV> dsBangCCtheomaNVthangnam(String maNV,int thang, int nam){
@@ -362,7 +364,7 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 //		return bangCC;
 		
 		String jpql = "select cc from BangChamCongNV cc " + "join cc.nv nv " + "where cc.ngayCham = :ngayCham "
-				+ "and nv.maBP = :maBP " + "and nv.caLamViec = :ca";
+				+ "and nv.boPhan.maBoPhan = :maBP " + "and nv.caLamViec = :ca";
 
 		return em.createQuery(jpql).setParameter("ngayCham", ngayChamCong)
 				.setParameter("maBP", maBP).setParameter("ca", ca).getResultList();

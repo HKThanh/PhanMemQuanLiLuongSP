@@ -2,12 +2,14 @@ package entity;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +39,9 @@ public class NhanVien {
 	@ManyToOne
 	@JoinColumn(name = "maBoPhan")
 	private BoPhan boPhan;
+	
+    @OneToMany(mappedBy = "nv")
+    private Set<BangChamCongNV> bangChamCongNVs;
 
 	public NhanVien() {
 		super();
