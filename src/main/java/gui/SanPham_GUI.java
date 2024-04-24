@@ -93,8 +93,8 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 
 	public JPanel createGUI() {
 		
-		hd_DAO = new HopDong_Impl();
-		sp_DAO = new SanPham_Impl();
+		hd_DAO = Initiate.hopDong_DAO;
+		sp_DAO = Initiate.sanPham_DAO;
 		cd_DAO = new CongDoan_Impl();
 		
 		JPanel pnlSP = new JPanel();
@@ -283,7 +283,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	 * @param maHD
 	 */
 	private void layDSSanPhamTheoHopDongTuDB(String maHD) {
-		sp_DAO = new SanPham_Impl();
+//		sp_DAO = new SanPham_Impl();
 		List<SanPham> listSP = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 		modelDSSanPham.setRowCount(0);
 		
@@ -417,7 +417,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		Object o = e.getSource();
 		
 		if (o.equals(btnThem)) {
-			hd_DAO = new HopDong_Impl();
+//			hd_DAO = new HopDong_Impl();
 			String tenSP = txtTenSanPham.getText().trim();
 			String soLuong_String = txtSoLuong.getText().trim();
 			

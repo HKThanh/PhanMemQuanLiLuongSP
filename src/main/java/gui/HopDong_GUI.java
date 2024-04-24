@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
@@ -106,8 +107,8 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * @return
 	 */
 	public JPanel createGUI() {
-		hd_DAO = new HopDong_Impl();
-		sp_DAO = new SanPham_Impl();
+		hd_DAO = Initiate.hopDong_DAO;
+		sp_DAO = Initiate.sanPham_DAO;
 		
 		JPanel pnlHD = new JPanel();
 		pnlHD.setBackground(new Color(240, 248, 255));
@@ -392,7 +393,7 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 				if (hd != null) {
 					boolean checkListSP = true;
 					
-					ArrayList<SanPham> listSPDaHoanThanh = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+					List<SanPham> listSPDaHoanThanh = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 					
 					if (listSPDaHoanThanh.size() == 0) {
 						JOptionPane.showMessageDialog(null, "Hợp đồng này chưa có sản phẩm");
@@ -509,7 +510,7 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 		}
 	}
 	/**
-	 * Hàm tạo mã hợp đồng dựa trên ngày kí và số thứ tự thêm hợp đồng theo ngày kí
+	 * Phương thức tạo mã hợp đồng dựa trên ngày kí và số thứ tự thêm hợp đồng theo ngày kí
 	 * @param ngayKi
 	 * @return String maHopDong
 	 */

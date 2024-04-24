@@ -132,12 +132,10 @@ public class DangNhap_GUI extends JFrame implements ActionListener, MouseListene
 		Object obj = e.getSource();
 		
 		if (obj.equals(btnDN)) {
-			TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
-			
 			String tk = txtTK.getText();
 			String mk = String.valueOf(pwdMK.getPassword());
 			
-			TaiKhoan tonTai = taiKhoan_DAO.soSanhPWD(tk, mk);
+			TaiKhoan tonTai = Initiate.taiKhoan_DAO.soSanhPWD(tk, mk);
 			
 			if (tonTai != null) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");

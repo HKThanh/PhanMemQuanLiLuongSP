@@ -91,9 +91,11 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 	private CongNhan_DAO cn_DAO;
 	private Xuong_DAO x_DAO;
 	private BangPhanCongCN_DAO bPCCN_DAO;
-	private ArrayList<BangPhanCongCN> listBPCCN = new ArrayList<BangPhanCongCN>();
-	private ArrayList<Integer> listRowPCCN = new ArrayList<Integer>();
-	private ArrayList<Integer> listRowUnchecked = new ArrayList<Integer>();
+	private HopDong_DAO hd_DAO;
+	
+	private List<BangPhanCongCN> listBPCCN = new ArrayList<BangPhanCongCN>();
+	private List<Integer> listRowPCCN = new ArrayList<Integer>();
+	private List<Integer> listRowUnchecked = new ArrayList<Integer>();
 	private boolean modelPCCNIsChanging = false;
 	private int minSelectedRow = -1;
 	private int maxSelectedRow = -1;
@@ -340,10 +342,10 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 	 * @param maCD
 	 */
 	private void layDSPCCCongNhanTuDBTheoXuong(String xuong, String maCD) {
-		cd_DAO = new CongDoan_Impl();
-		cn_DAO = new CongNhan_Impl();
-		x_DAO = new Xuong_Impl();
-		bPCCN_DAO = new BangPhanCongCN_Impl();
+//		cd_DAO = new CongDoan_Impl();
+//		cn_DAO = new CongNhan_Impl();
+//		x_DAO = new Xuong_Impl();
+//		bPCCN_DAO = new BangPhanCongCN_Impl();
 		
 		List<BangPhanCongCN> listPCCN = bPCCN_DAO.getDSPhanCongCongDoanTheoMaCD(maCD);
 		
@@ -412,8 +414,8 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 				JOptionPane.showMessageDialog(null, "Công đoạn này chưa phân công số lượng");
 			} else {
 				listBPCCN = new ArrayList<BangPhanCongCN>();
-				cd_DAO = new CongDoan_Impl();
-				bPCCN_DAO = new BangPhanCongCN_Impl();
+//				cd_DAO = new CongDoan_Impl();
+//				bPCCN_DAO = new BangPhanCongCN_Impl();
 				
 				for (Integer rowCheckedIndex : listRowPCCN) {
 					listBPCCN.add(getCongNhanDuocChon(rowCheckedIndex));
@@ -488,7 +490,7 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 	 */
 	private void xuatFileExcel(String maCongDoan) {
 		int firstSheetRow = 0;
-		HopDong_DAO hd_DAO = new HopDong_Impl();
+//		HopDong_DAO hd_DAO = new HopDong_Impl();
 		
 		CongDoan cd = cd_DAO.getMotCongDoanTheoMaCD(maCongDoan);
 		SanPham sp = sp_DAO.getMotSanPham(cd.getSanPham().getMaSP());
@@ -668,8 +670,8 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
     }
 	
 	private BangPhanCongCN getCongNhanDuocChon(int rowPCCN) {
-		cn_DAO = new CongNhan_Impl();
-		cd_DAO = new CongDoan_Impl();
+//		cn_DAO = new CongNhan_Impl();
+//		cd_DAO = new CongDoan_Impl();
 		
 		String maCN = modelPCCN.getValueAt(rowPCCN, 0).toString();
 		String maCD = modelCongDoan.getValueAt(rowCD, 1).toString();
@@ -689,8 +691,8 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 		listRowPCCN.clear();
 		listRowUnchecked.clear();
 		
-		cn_DAO = new CongNhan_Impl();
-		cd_DAO = new CongDoan_Impl();
+//		cn_DAO = new CongNhan_Impl();
+//		cd_DAO = new CongDoan_Impl();
 		
 		int row = tableCongDoan.getSelectedRow();
 		rowCD = row;
