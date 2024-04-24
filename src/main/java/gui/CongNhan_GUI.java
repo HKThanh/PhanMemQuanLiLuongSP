@@ -109,9 +109,10 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
 	
 	public JPanel createGUI() {
 		
-		congNhanDao = new CongNhan_Impl();
+		congNhanDao = Initiate.congNhan_DAO;
+		xuongDao = Initiate.xuong_DAO;
+
 		dsCN = congNhanDao.getListCN();
-		xuongDao = new Xuong_Impl();
 		dsX = xuongDao.getDSXuong();
 		dsCNX = new ArrayList<CongNhan>();
 		

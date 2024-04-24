@@ -110,6 +110,30 @@ public class GioiThieu_GUI extends JFrame {
 		lblTrnQucKhnh.setBounds(10, 371, 1244, 30);
 		pnlTroGiup.add(lblTrnQucKhnh);
 		
+		JLabel lblCre2 = new JLabel("Phần mềm được cập nhật bởi:");
+		lblCre2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCre2.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblCre2.setBounds(10, 441, 1244, 30);
+		pnlTroGiup.add(lblCre2);
+		
+		JLabel lblLMinhTht2 = new JLabel("Lê Minh Thật");
+		lblLMinhTht2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLMinhTht2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblLMinhTht2.setBounds(10, 481, 1244, 30);
+		pnlTroGiup.add(lblLMinhTht2);
+		
+		JLabel lblAnhThang = new JLabel("Trương Hải Anh Thắng");
+		lblAnhThang.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAnhThang.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAnhThang.setBounds(10, 521, 1244, 30);
+		pnlTroGiup.add(lblAnhThang);
+		
+		JLabel lblHunhKimThanh = new JLabel("Huỳnh Kim Thành");
+		lblHunhKimThanh.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHunhKimThanh.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblHunhKimThanh.setBounds(10, 561, 1244, 30);
+		pnlTroGiup.add(lblHunhKimThanh);
+		
 		return pnlTroGiup;
 	}
 }
