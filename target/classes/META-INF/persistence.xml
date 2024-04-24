@@ -13,9 +13,9 @@
 
 			<property name="hibernate.connection.url"
 				value="jdbc:sqlserver://localhost:1433;databaseName=QuanLiLuongSP;trustServerCertificate=true;encrypt=true" />
-			<property name="hibernate.connection.username" value="arata" />
+			<property name="hibernate.connection.username" value="sa" />
 			<property name="hibernate.connection.password"
-				value="123456" />
+				value="sapassword" />
 
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" />
