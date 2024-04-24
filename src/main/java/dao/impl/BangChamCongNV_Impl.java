@@ -362,10 +362,12 @@ public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
 //		return bangCC;
 		
 		String jpql = "select cc from BangChamCongNV cc " + "join cc.nv nv " + "where cc.ngayCham = :ngayCham "
-				+ "and nv.maBP = :maBP " + "and nv.caLamViec = :ca";
+				+ "and nv.boPhan.maBoPhan = :maBoPhan " + "and nv.caLamViec = :ca";
 
-		return em.createQuery(jpql).setParameter("ngayCham", ngayChamCong)
-				.setParameter("maBP", maBP).setParameter("ca", ca).getResultList();
+		return em.createQuery(jpql)
+				.setParameter("ngayCham", ngayChamCong)
+				.setParameter("maBoPhan", maBP)
+				.setParameter("ca", ca).getResultList();
 	}
 	
 	public boolean updateGhiChiBangChamCongNV(BangChamCongNV bangCC) {
