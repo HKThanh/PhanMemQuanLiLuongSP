@@ -111,9 +111,9 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 	public LuongNhanVien_GUI()  {
 		super("Lương Nhân Viên");
 		
-		bl_DAO = new BangLuongNV_Impl();
-		bc_DAO = new BangChamCongNV_Impl();
-		nv_DAO = new NhanVien_Impl();
+		bl_DAO = Initiate.bangLuongNV_DAO;
+		bc_DAO = Initiate.bangChamCongNV_DAO;
+		nv_DAO = Initiate.nhanVien_DAO;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
@@ -210,7 +210,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 		cboNamLuongNV.setBounds(230, 29, 100, 30);
 		cboNamLuongNV.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
-		bcc_DAO = new BangChamCongNV_Impl();
+		bcc_DAO = Initiate.bangChamCongNV_DAO;
 		List<Integer> listNam = bcc_DAO.layDSNamKhacnhauCCNV();
 		for(Integer nam2 : listNam){
 
@@ -230,7 +230,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 		cboBoPhanLuongNV.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		pnlLuongNV.add(cboBoPhanLuongNV);
 		
-		bp_DAO=new BoPhan_Impl();
+		bp_DAO = Initiate.boPhan_DAO;
 		List<BoPhan> dsBP = bp_DAO.layTatCaBoPhanKhacNhau() ;
 		for(BoPhan boPhan : dsBP){
 			String tenBP = hienThiTenBoPhan(boPhan.getMaBoPhan());
@@ -384,8 +384,13 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 				String thang = cboThangLuongNV.getSelectedItem().toString().trim();
 				String nam = cboNamLuongNV.getSelectedItem().toString().trim();
 				String tenBP = cboBoPhanLuongNV.getSelectedItem().toString().trim();
-//				System.out.println(thang + " " + nam + " " + tenBP);
-				bcc_DAO= new BangChamCongNV_Impl();
+				
+				if (thang.length() == 1) {
+					thang = "0" + thang;
+				}
+			
+				System.out.println(thang + " " + nam + " " + tenBP);
+//				bcc_DAO= new BangChamCongNV_Impl();
 				List<LocalDate> listkt = bcc_DAO.layTatCaThangvaNamkhacNhau();
 
 				int temp=0;
@@ -395,7 +400,12 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 				}
 				else{
 					for (LocalDate kt : listkt) {
-						if((kt.getMonthValue()+"").equals(thang))
+						String thangCheck = kt.getMonthValue()+"";
+						
+						if (thangCheck.length() == 1)
+							thangCheck = "0" + thangCheck;
+						
+						if(thangCheck.equals(thang))
 							temp=1;
 
 					}
@@ -408,6 +418,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 							String thangLoc = modelTableThangLuongNV.getValueAt(i, 0).toString();
 							String namLoc = modelTableThangLuongNV.getValueAt(i, 1).toString();
 							String tenBPLoc = modelTableThangLuongNV.getValueAt(i, 2).toString();
+							
 							
 							System.out.println(thangLoc + " " + namLoc + " " + tenBPLoc);
 							if(thangLoc.equals(thang)&&namLoc.equals(nam)&&tenBPLoc.equals(tenBP)){
@@ -505,7 +516,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 											modelTableDSLuongNV.setValueAt(true, modelRow, 10);
 											LocalDate ngayhientai = LocalDate.now();
 											modelTableDSLuongNV.setValueAt("Đã tính lương ở ngày:"+dtf.format(ngayhientai), modelRow, 11);
-											bc_DAO = new BangChamCongNV_Impl();
+//											bc_DAO = new BangChamCongNV_Impl();
 											List<BangChamCongNV> list = bc_DAO. dsBangCCtheomaNVthangnam(maNV, thang, nam);
 											if(list.size()>0)
 												for (BangChamCongNV bcc : list) {
@@ -524,7 +535,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 												modelTableDSLuongNV.setValueAt(true, modelRow, 10);
 												LocalDate ngayhientai = LocalDate.now();
 												modelTableDSLuongNV.setValueAt("Đã tính lương ở ngày:"+dtf.format(ngayhientai), modelRow, 11);
-												bc_DAO = new BangChamCongNV_Impl();
+//												bc_DAO = new BangChamCongNV_Impl();
 												List<BangChamCongNV> list = bc_DAO. dsBangCCtheomaNVthangnam(maNV, thang, nam);
 												if(list.size()>0)
 													for (BangChamCongNV bcc : list) {
@@ -585,7 +596,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 										modelTableDSLuongNV.setValueAt(true, row, 10);
 										LocalDate ngayhientai = LocalDate.now();
 										modelTableDSLuongNV.setValueAt("Đã tính lương ở ngày:"+dtf.format(ngayhientai), row, 11);
-										bc_DAO = new BangChamCongNV_Impl();
+//										bc_DAO = new BangChamCongNV_Impl();
 										List<BangChamCongNV> list = bc_DAO. dsBangCCtheomaNVthangnam(maNV, thang, nam);
 										if(list.size()>0)
 											for (BangChamCongNV bcc : list) {
@@ -605,7 +616,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 											modelTableDSLuongNV.setValueAt(true, row, 10);
 											LocalDate ngayhientai = LocalDate.now();
 											modelTableDSLuongNV.setValueAt("Đã tính lương ở ngày:"+dtf.format(ngayhientai), row, 11);
-											bc_DAO = new BangChamCongNV_Impl();
+//											bc_DAO = new BangChamCongNV_Impl();
 											List<BangChamCongNV> list = bc_DAO. dsBangCCtheomaNVthangnam(maNV, thang, nam);
 											if(list.size()>0)
 												for (BangChamCongNV bcc : list) {
@@ -702,8 +713,8 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 							boolean daTinhLuong = (boolean) modelTableDSLuongNV.getValueAt(row, 10);
 							if (daTinhLuong == true) {
 								BangLuongNV bl = new BangLuongNV();
-								NhanVien_DAO nv_DAO = new NhanVien_Impl();
-								bc_DAO = new BangChamCongNV_Impl();
+//								NhanVien_DAO nv_DAO = new NhanVien_Impl();
+//								bc_DAO = new BangChamCongNV_Impl();
 								bl.setMaLuongNV(modelTableDSLuongNV.getValueAt(row, 0).toString() + dinhDangThang(thang) + lay2kitucuoicuaNam(nam));
 								bl.setNv(nv_DAO.getMotNVTuMaNV(modelTableDSLuongNV.getValueAt(row, 0).toString()));
 								bl.setThang(thang);
@@ -717,7 +728,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 								bl.setBhxh(Double.parseDouble(modelTableDSLuongNV.getValueAt(row, 8).toString().replace(",", "")));
 								bl.setLuongTong(Double.parseDouble(modelTableDSLuongNV.getValueAt(row, 9).toString().replace(",", "")));
 
-								BangLuongNV_DAO bl_DAO = new BangLuongNV_Impl();
+//								BangLuongNV_DAO bl_DAO = new BangLuongNV_Impl();
 								BangLuongNV bl2=bl_DAO.lay1BangLuongTheoMaNVThangNam(modelTableDSLuongNV.getValueAt(row, 0).toString(), thang, nam);
 								if(bl2==null) {
 									bl_DAO.insertBangLuongNV(bl);
@@ -744,7 +755,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 							String mabp = modelTableThangLuongNV.getValueAt(row, 2).toString();
 
 							taoDSBangLuongtuDBtheoDK(thangs,nams,mahoaTenBoPhan(mabp));
-							bc_DAO = new BangChamCongNV_Impl();
+//							bc_DAO = new BangChamCongNV_Impl();
 							BangChamCongNV bc = bc_DAO.layBangCCCuoiCungThangCua1NV(modelTableDSLuongNV.getValueAt(row, 0).toString(), thang, nam);
 							if(bc!=null) {
 								bc.setGhiChu("");
@@ -778,7 +789,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 					int thang = Integer.parseInt(modelTableThangLuongNV.getValueAt(row, 0).toString());
 					int nam = Integer.parseInt(modelTableThangLuongNV.getValueAt(row, 1).toString());
 					String mabp = modelTableThangLuongNV.getValueAt(row, 2).toString();
-					bl_DAO = new BangLuongNV_Impl();
+//					bl_DAO = new BangLuongNV_Impl();
 
 					// Kiểm tra xem có dòng được chọn trong tblDSLuongNV không
 					if (rows[0] < modelTableDSLuongNV.getRowCount()) {
@@ -811,8 +822,8 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 		return nam2kitucuoi;
 	}
 	private void layDSBangLuongtuDB(){
-		nv_DAO = new NhanVien_Impl();
-		bc_DAO = new BangChamCongNV_Impl();
+//		nv_DAO = new NhanVien_Impl();
+//		bc_DAO = new BangChamCongNV_Impl();
 		modelTableThangLuongNV.setRowCount(0);
 		List<LocalDate> dsNgayCham = bc_DAO.layTatCaThangvaNamkhacNhau();
 		for (LocalDate ngayCham : dsNgayCham) {
@@ -849,13 +860,13 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 		return maBoPhanChu;
 	}
 	private void taoDSBangLuongtuDBtheoDK(int thang, int nam, String mabp){
-		nv_DAO = new NhanVien_Impl();
+//		nv_DAO = new NhanVien_Impl();
 
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 		modelTableDSLuongNV.setRowCount(0);
 		for(NhanVien nv : nv_DAO.getListNVtheoBP(mabp)){
 
-			bl_DAO = new BangLuongNV_Impl();
+//			bl_DAO = new BangLuongNV_Impl();
 			BangLuongNV bl=bl_DAO.lay1BangLuongTheoMaNVThangNam(nv.getMaNV(), thang, nam);
 			if (bl == null) {
 				double thuong = (((nv.getLuongCoBan()*nv.getThangBacLuong()*nv.getHeSoLuong())/30)/8)*2*bc_DAO.getTongSoGioTangCaCua1NV(nv.getMaNV(), thang, nam);
@@ -872,7 +883,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 		setTxtTongLuongCanTraNV();
 	}
 	private boolean kiemSoBangChamCongCua1NV(String maNV,int thang, int nam){
-		bc_DAO = new BangChamCongNV_Impl();
+//		bc_DAO = new BangChamCongNV_Impl();
 		double soBangChamCong = bc_DAO.getSoBangChamCongCua1NV(maNV, thang, nam);
 		if(soBangChamCong <25 ){
 			return false;
