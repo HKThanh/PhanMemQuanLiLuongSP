@@ -384,7 +384,12 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 				String thang = cboThangLuongNV.getSelectedItem().toString().trim();
 				String nam = cboNamLuongNV.getSelectedItem().toString().trim();
 				String tenBP = cboBoPhanLuongNV.getSelectedItem().toString().trim();
-//				System.out.println(thang + " " + nam + " " + tenBP);
+				
+				if (thang.length() == 1) {
+					thang = "0" + thang;
+				}
+			
+				System.out.println(thang + " " + nam + " " + tenBP);
 				bcc_DAO= new BangChamCongNV_Impl();
 				List<LocalDate> listkt = bcc_DAO.layTatCaThangvaNamkhacNhau();
 
@@ -395,7 +400,12 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 				}
 				else{
 					for (LocalDate kt : listkt) {
-						if((kt.getMonthValue()+"").equals(thang))
+						String thangCheck = kt.getMonthValue()+"";
+						
+						if (thangCheck.length() == 1)
+							thangCheck = "0" + thangCheck;
+						
+						if(thangCheck.equals(thang))
 							temp=1;
 
 					}
@@ -408,6 +418,7 @@ public class LuongNhanVien_GUI extends JFrame implements ActionListener ,MouseLi
 							String thangLoc = modelTableThangLuongNV.getValueAt(i, 0).toString();
 							String namLoc = modelTableThangLuongNV.getValueAt(i, 1).toString();
 							String tenBPLoc = modelTableThangLuongNV.getValueAt(i, 2).toString();
+							
 							
 							System.out.println(thangLoc + " " + namLoc + " " + tenBPLoc);
 							if(thangLoc.equals(thang)&&namLoc.equals(nam)&&tenBPLoc.equals(tenBP)){
