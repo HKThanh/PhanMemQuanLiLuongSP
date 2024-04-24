@@ -269,7 +269,16 @@ public class BangLuongNV_Impl implements BangLuongNV_DAO {
 		String jpql = "select bl from BangLuongNV bl " + "where bl.nv.maNV like :maNV " + "and bl.thang = :thang "
 				+ "and bl.nam = :nam";
 
-		return em.createQuery(jpql, BangLuongNV.class).setParameter("maNV", maNV).setParameter("thang", thang)
-				.setParameter("nam", nam).getSingleResult();
+		 List<BangLuongNV> results = em.createQuery(jpql, BangLuongNV.class)
+		            .setParameter("maNV", maNV)
+		            .setParameter("thang", thang)
+		            .setParameter("nam", nam)
+		            .getResultList();
+
+		    if (!results.isEmpty()) {
+		        return results.get(0);
+		    } else {
+		        return null;
+		    }
 	}
 }

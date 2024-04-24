@@ -1,8 +1,11 @@
 package entity;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,6 +17,8 @@ public class BoPhan {
 	@Column(name = "tenBoPhan", columnDefinition = "NVARCHAR(255)")
 	private String tenBoPhan;
 	private String sDTBoPhan;
+	 @OneToMany(mappedBy = "boPhan")
+	    private Set<NhanVien> nhanViens;
 
 	public BoPhan() {
 		super();
@@ -25,6 +30,15 @@ public class BoPhan {
 		this.maBoPhan = maBoPhan;
 		setTenBoPhan(tenBoPhan);
 		setsDTBoPhan(sDTBoPhan);
+	}
+	
+
+	public BoPhan(String maBoPhan, String tenBoPhan, String sDTBoPhan, Set<NhanVien> nhanViens) {
+		super();
+		this.maBoPhan = maBoPhan;
+		this.tenBoPhan = tenBoPhan;
+		this.sDTBoPhan = sDTBoPhan;
+		this.nhanViens = nhanViens;
 	}
 
 	public BoPhan(String maBoPhan) {
