@@ -132,12 +132,12 @@ public class PhanCongCongNhan_GUI extends JFrame implements ActionListener, Mous
 	}
 	
 	protected JPanel getPCCNGUI() {
-		bPCCN_DAO = new BangPhanCongCN_Impl();
+		bPCCN_DAO = Initiate.bangPhanCongCN_DAO;
 		
-		sp_DAO = new SanPham_Impl();
-		cd_DAO = new CongDoan_Impl();
-		cn_DAO = new CongNhan_Impl();
-		x_DAO = new Xuong_Impl();
+		sp_DAO = Initiate.sanPham_DAO;
+		cd_DAO = Initiate.congDoan_DAO;
+		cn_DAO = Initiate.congNhan_DAO;
+		x_DAO = Initiate.xuong_DAO;
 		
 		pnlPCCD = new JPanel();
 		pnlPCCD.setBackground(new Color(240, 248, 255));

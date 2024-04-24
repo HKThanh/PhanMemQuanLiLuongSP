@@ -105,12 +105,12 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		pnlCCCN.setBackground(new Color(240, 248, 255));
 		pnlCCCN.setBounds(0, 50, 1268, 632);
 
-		Xuong_DAO xuongDao = new Xuong_Impl();
-		chamCongCNDao = new BangChamCongCN_Impl();
+		Xuong_DAO xuongDao = Initiate.xuong_DAO;
+		chamCongCNDao = Initiate.bangChamCongCN_DAO;
+		congNhanDao = new Initiate().congNhan_DAO;
 
 		dsX = xuongDao.getDSXuong();
 		dsCNXCa = new ArrayList<CongNhan>();
-		congNhanDao = new CongNhan_Impl();
 		dsDaChamCong = new ArrayList<BangChamCongCN>();
 
 		pnlCCCN.setLayout(new BorderLayout(0, 0));

@@ -108,10 +108,10 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 		pnlPCCD.setBounds(0, 50, 1264, 632);
 		pnlPCCD.setLayout(null);
 		
-		sp_DAO = new SanPham_Impl();
-		hd_DAO = new HopDong_Impl();
-		cd_DAO = new CongDoan_Impl();
-		bPCCN_DAO = new BangPhanCongCN_Impl();
+		sp_DAO = Initiate.sanPham_DAO;
+		hd_DAO = Initiate.hopDong_DAO;
+		cd_DAO = Initiate.congDoan_DAO;
+		bPCCN_DAO = Initiate.bangPhanCongCN_DAO;
 		
 		String[] header = {"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Số lượng công đoạn hiện có", "Ngày kết thúc hợp đồng"};
 		modelSanPham = new DefaultTableModel(header, 0);
@@ -339,7 +339,7 @@ public class PhanChiaCongDoan_GUI extends JFrame implements ActionListener, Mous
 	 * Phương thức lấy danh sách sản phẩm từ DB hiển thị lên model
 	 */
 	private void layDSSanPhamTuDB() {
-		sp_DAO = new SanPham_Impl();
+//		sp_DAO = new SanPham_Impl();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		modelSanPham.setRowCount(0);
