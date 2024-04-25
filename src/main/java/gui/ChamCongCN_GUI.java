@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.rmi.RemoteException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,7 +85,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		});
 	}
 
-	public ChamCongCN_GUI() {
+	public ChamCongCN_GUI() throws RemoteException {
 		frame = new JFrame("Chấm công công nhân");
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,7 +101,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 //		createMenuGUI();
 	}
 
-	protected JPanel createGUI() {
+	protected JPanel createGUI() throws RemoteException {
 		JPanel pnlCCCN = new JPanel();
 		pnlCCCN.setBackground(new Color(240, 248, 255));
 		pnlCCCN.setBounds(0, 50, 1268, 632);
@@ -162,7 +163,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 							btnHoanTat.setEnabled(true);
 						}
 					}
-				} catch (ParseException e1) {
+				} catch (ParseException | RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -234,7 +235,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 
 					}
 
-				} catch (ParseException e1) {
+				} catch (ParseException | RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -307,7 +308,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 								btnHoanTat.setEnabled(true);
 							}
 						}
-					} catch (ParseException e1) {
+					} catch (ParseException | RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -592,7 +593,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 							BangChamCongCN bangChamCongCN = new BangChamCongCN(maCC);
 							chamCongCNDao.updateBangChamCongCN(bangChamCongCN);
 
-						} catch (ParseException e1) {
+						} catch (ParseException | RemoteException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}

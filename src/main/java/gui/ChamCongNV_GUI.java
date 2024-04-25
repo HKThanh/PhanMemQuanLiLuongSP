@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,7 +93,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 		});
 	}
 
-	public ChamCongNV_GUI() {
+	public ChamCongNV_GUI() throws RemoteException {
 		frame = new JFrame("Chấm công công nhân");
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,7 +109,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 //		createMenuGUI();
 	}
 
-	protected JPanel createGUI() {
+	protected JPanel createGUI() throws RemoteException {
 		JPanel pnlCCNV = new JPanel();
 		pnlCCNV.setBackground(new Color(240, 248, 255));
 		pnlCCNV.setBounds(0, 50, 1268, 632);
@@ -205,6 +206,9 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
 			}
@@ -290,7 +294,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 
 							}
 						}
-					} catch (ParseException e1) {
+					} catch (ParseException | RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -494,7 +498,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 							btnCapNhat.setEnabled(false);
 						}
 					}
-				} catch (ParseException e1) {
+				} catch (ParseException | RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

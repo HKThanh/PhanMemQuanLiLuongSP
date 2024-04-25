@@ -3,7 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -24,8 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -72,8 +71,6 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import dao.BoPhan_DAO;
 import dao.NhanVien_DAO;
-import dao.impl.BoPhan_Impl;
-import dao.impl.NhanVien_Impl;
 import entity.BoPhan;
 import entity.NhanVien;
 
@@ -130,10 +127,14 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 
 		frame.setContentPane(contentPane);
 
-		contentPane.add(this.createGUI());
+		try {
+			contentPane.add(this.createGUI());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public JPanel createGUI() {
+	public JPanel createGUI() throws RemoteException {
 		nhanVienDao = Initiate.nhanVien_DAO;
 		boPhanDao = Initiate.boPhan_DAO;
 
@@ -461,48 +462,67 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String tenBoPhan = String.valueOf(cboBoPhan.getSelectedItem());
-				if (tenBoPhan.equals("Tất cả")) {
-					if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
-						dsNV = nhanVienDao.getListNVtheoNamVaoLam(Integer.valueOf((String) cboNam.getSelectedItem()));
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNV);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						if (dsNVBP.isEmpty() == true) {
+				try {
+					String tenBoPhan = String.valueOf(cboBoPhan.getSelectedItem());
+					if (tenBoPhan.equals("Tất cả")) {
+						if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
+							dsNV = nhanVienDao
+									.getListNVtheoNamVaoLam(Integer.valueOf((String) cboNam.getSelectedItem()));
+							dsTen.removeAll(dsTen);
+							dsTen = layDsTen(dsNV);
+							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+							if (dsNVBP.isEmpty() == true) {
 //							cboBoPhan.setSelectedItem("Tất cả");
 //							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							clearTable();
+							docDuLieuVaoTable(dsNV);
 							return;
-						}
-						clearTable();
-						docDuLieuVaoTable(dsNV);
-						return;
-					} else if (String.valueOf(cboNam.getSelectedItem()) == "Tất cả") {
-						dsNV = nhanVienDao.getListNV();
-						if (dsNVBP.isEmpty() == true) {
+						} else if (String.valueOf(cboNam.getSelectedItem()) == "Tất cả") {
+							dsNV = nhanVienDao.getListNV();
+							if (dsNVBP.isEmpty() == true) {
 //							cboBoPhan.setSelectedItem("Tất cả");
 //							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							dsTen.removeAll(dsTen);
+							dsTen = layDsTen(dsNV);
+							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+							clearTable();
+							docDuLieuVaoTable(dsNV);
 							return;
 						}
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNV);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						clearTable();
-						docDuLieuVaoTable(dsNV);
-						return;
-					}
 
-				} else {
-					if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
-						dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf((String) cboNam.getSelectedItem()),
-								dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
-						if (dsNVBP.isEmpty() == true) {
+					} else {
+						if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
+							dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf((String) cboNam.getSelectedItem()),
+									dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
+							if (dsNVBP.isEmpty() == true) {
 //							cboNam.setSelectedItem("Tất cả");
 //							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
-							return;
+								modelDsNV.setRowCount(0);
+								return;
+							} else {
+								dsTen.removeAll(dsTen);
+								dsTen = layDsTen(dsNVBP);
+								AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+								clearTable();
+								docDuLieuVaoTable(dsNVBP);
+								return;
+							}
+
 						} else {
+
+							dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
+							if (dsNVBP.isEmpty() == true) {
+//							cboBoPhan.setSelectedItem("Tất cả");
+//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
+								modelDsNV.setRowCount(0);
+								return;
+							}
 							dsTen.removeAll(dsTen);
 							dsTen = layDsTen(dsNVBP);
 							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
@@ -511,25 +531,10 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 							return;
 						}
 
-					} else {
-
-						dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
-						if (dsNVBP.isEmpty() == true) {
-//							cboBoPhan.setSelectedItem("Tất cả");
-//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNVBP);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						clearTable();
-						docDuLieuVaoTable(dsNVBP);
-						return;
 					}
-
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
 				}
-
 			}
 
 		});
@@ -613,31 +618,67 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
-					if (String.valueOf(cboBoPhan.getSelectedItem()).equals("Tất cả")) {
-						dsNV = nhanVienDao.getListNVtheoNamVaoLam(Integer.valueOf((String) cboNam.getSelectedItem()));
-						if (dsNV.isEmpty() == true) {
-//							cboBoPhan.setSelectedItem("Tất cả");
-//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNV);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						clearTable();
-						docDuLieuVaoTable(dsNV);
-						return;
+				try {
 
-					} else {
-						dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf((String) cboNam.getSelectedItem()),
-								dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
-						if (dsNVBP.isEmpty() == true) {
+					if (String.valueOf(cboNam.getSelectedItem()) != "Tất cả") {
+						if (String.valueOf(cboBoPhan.getSelectedItem()).equals("Tất cả")) {
+							dsNV = nhanVienDao
+									.getListNVtheoNamVaoLam(Integer.valueOf((String) cboNam.getSelectedItem()));
+							if (dsNV.isEmpty() == true) {
 //							cboBoPhan.setSelectedItem("Tất cả");
 //							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							dsTen.removeAll(dsTen);
+							dsTen = layDsTen(dsNV);
+							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+							clearTable();
+							docDuLieuVaoTable(dsNV);
+							return;
+
+						} else {
+							dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf((String) cboNam.getSelectedItem()),
+									dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
+							if (dsNVBP.isEmpty() == true) {
+//							cboBoPhan.setSelectedItem("Tất cả");
+//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
+								modelDsNV.setRowCount(0);
+								return;
+							} else {
+								dsTen.removeAll(dsTen);
+								dsTen = layDsTen(dsNVBP);
+								AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+								clearTable();
+								docDuLieuVaoTable(dsNVBP);
+								return;
+							}
+
+						}
+					} else {
+						if (String.valueOf(cboNam.getSelectedItem()) == "Tất cả") {
+							dsNV = nhanVienDao.getListNV();
+							if (dsNV.isEmpty() == true) {
+//							cboBoPhan.setSelectedItem("Tất cả");
+//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							dsTen.removeAll(dsTen);
+							dsTen = layDsTen(dsNV);
+							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
+							clearTable();
+							docDuLieuVaoTable(dsNV);
 							return;
 						} else {
+							int viTri = cboBoPhan.getSelectedIndex();
+							dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(viTri).getMaBoPhan());
+							if (dsNVBP.isEmpty() == true) {
+//							cboBoPhan.setSelectedItem("Tất cả");
+//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
+								modelDsNV.setRowCount(0);
+								return;
+							}
 							dsTen.removeAll(dsTen);
 							dsTen = layDsTen(dsNVBP);
 							AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
@@ -647,40 +688,9 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 						}
 
 					}
-				} else {
-					if (String.valueOf(cboNam.getSelectedItem()) == "Tất cả") {
-						dsNV = nhanVienDao.getListNV();
-						if (dsNV.isEmpty() == true) {
-//							cboBoPhan.setSelectedItem("Tất cả");
-//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNV);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						clearTable();
-						docDuLieuVaoTable(dsNV);
-						return;
-					} else {
-						int viTri = cboBoPhan.getSelectedIndex();
-						dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(viTri).getMaBoPhan());
-						if (dsNVBP.isEmpty() == true) {
-//							cboBoPhan.setSelectedItem("Tất cả");
-//							JOptionPane.showMessageDialog(frame, "Không tìm thấy nhân viên nào");
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						dsTen.removeAll(dsTen);
-						dsTen = layDsTen(dsNVBP);
-						AutoCompleteDecorator.decorate(txtTimKiem, dsTen, false);
-						clearTable();
-						docDuLieuVaoTable(dsNVBP);
-						return;
-					}
-
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
 				}
-
 			}
 		});
 
@@ -820,7 +830,7 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 		return ds;
 	}
 
-	public List<String> layDSNamVaoLam() {
+	public List<String> layDSNamVaoLam() throws RemoteException {
 		Set<String> dsNam = new HashSet<String>();
 		dsNV = nhanVienDao.getListNV();
 		for (NhanVien nv : dsNV) {
@@ -881,7 +891,7 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 
 	}
 
-	public void capNhatCboNam() {
+	public void capNhatCboNam() throws RemoteException {
 		for (String nam : layDSNamVaoLam()) {
 			modelNam.addElement(nam);
 		}
@@ -1163,82 +1173,88 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 			int xacNhan;
 			String boPhan = String.valueOf(cboBoPhan.getSelectedItem());
 			String nam = String.valueOf(cboNam.getSelectedItem());
-			if (boPhan.equals("Tất cả")) {
-				if (nam.equals("Tất cả")) {
-					xacNhan = JOptionPane.showConfirmDialog(frame,
-							"Bạn có muốn xóa nhân viên có mã là " + dsNV.get(row).getMaNV() + " và có tên là "
-									+ dsNV.get(row).getHo() + " " + dsNV.get(row).getTen() + " không?",
-							"Xác nhận", JOptionPane.YES_NO_OPTION);
-					if (xacNhan == JOptionPane.YES_OPTION) {
-						nhanVienDao.deleteNV(ma);
-						clearTable();
-						dsNV = nhanVienDao.getListNV();
-						if (dsNV.isEmpty()) {
-							modelDsNV.setRowCount(0);
+
+			try {
+
+				if (boPhan.equals("Tất cả")) {
+					if (nam.equals("Tất cả")) {
+						xacNhan = JOptionPane.showConfirmDialog(frame,
+								"Bạn có muốn xóa nhân viên có mã là " + dsNV.get(row).getMaNV() + " và có tên là "
+										+ dsNV.get(row).getHo() + " " + dsNV.get(row).getTen() + " không?",
+								"Xác nhận", JOptionPane.YES_NO_OPTION);
+						if (xacNhan == JOptionPane.YES_OPTION) {
+							nhanVienDao.deleteNV(ma);
+							clearTable();
+							dsNV = nhanVienDao.getListNV();
+							if (dsNV.isEmpty()) {
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							docDuLieuVaoTable(dsNV);
 							return;
 						}
-						docDuLieuVaoTable(dsNV);
 						return;
+					} else {
+						xacNhan = JOptionPane.showConfirmDialog(frame,
+								"Bạn có muốn xóa nhân viên có mã là " + dsNV.get(row).getMaNV() + " và có tên là "
+										+ dsNV.get(row).getHo() + " " + dsNV.get(row).getTen() + " không?",
+								"Xác nhận", JOptionPane.YES_NO_OPTION);
+						if (xacNhan == JOptionPane.YES_OPTION) {
+							nhanVienDao.deleteNV(ma);
+
+							dsNV = nhanVienDao.getListNVtheoNamVaoLam(Integer.valueOf(nam));
+							if (dsNV.isEmpty()) {
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							clearTable();
+							docDuLieuVaoTable(dsNV);
+							return;
+						}
+						return;
+
 					}
-					return;
 				} else {
-					xacNhan = JOptionPane.showConfirmDialog(frame,
-							"Bạn có muốn xóa nhân viên có mã là " + dsNV.get(row).getMaNV() + " và có tên là "
-									+ dsNV.get(row).getHo() + " " + dsNV.get(row).getTen() + " không?",
-							"Xác nhận", JOptionPane.YES_NO_OPTION);
-					if (xacNhan == JOptionPane.YES_OPTION) {
-						nhanVienDao.deleteNV(ma);
-
-						dsNV = nhanVienDao.getListNVtheoNamVaoLam(Integer.valueOf(nam));
-						if (dsNV.isEmpty()) {
-							modelDsNV.setRowCount(0);
+					if (nam.equals("Tất cả")) {
+						xacNhan = JOptionPane.showConfirmDialog(frame,
+								"Bạn có muốn xóa nhân viên có mã là " + dsNVBP.get(row).getMaNV() + " và có tên là "
+										+ dsNVBP.get(row).getHo() + " " + dsNVBP.get(row).getTen() + " không?",
+								"Xác nhận", JOptionPane.YES_NO_OPTION);
+						if (xacNhan == JOptionPane.YES_OPTION) {
+							nhanVienDao.deleteNV(ma);
+							dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
+							if (dsNVBP.isEmpty()) {
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							clearTable();
+							docDuLieuVaoTable(dsNVBP);
 							return;
 						}
-						clearTable();
-						docDuLieuVaoTable(dsNV);
 						return;
-					}
-					return;
+					} else {
+						xacNhan = JOptionPane.showConfirmDialog(frame,
+								"Bạn có muốn xóa nhân viên có mã là " + dsNVBP.get(row).getMaNV() + " và có tên là "
+										+ dsNVBP.get(row).getHo() + " " + dsNVBP.get(row).getTen() + " không?",
+								"Xác nhận", JOptionPane.YES_NO_OPTION);
+						if (xacNhan == JOptionPane.YES_OPTION) {
+							nhanVienDao.deleteNV(ma);
+							dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf(nam),
+									dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
+							if (dsNVBP.isEmpty()) {
+								modelDsNV.setRowCount(0);
+								return;
+							}
+							clearTable();
+							docDuLieuVaoTable(dsNVBP);
+							return;
+						}
+						return;
 
+					}
 				}
-			} else {
-				if (nam.equals("Tất cả")) {
-					xacNhan = JOptionPane.showConfirmDialog(frame,
-							"Bạn có muốn xóa nhân viên có mã là " + dsNVBP.get(row).getMaNV() + " và có tên là "
-									+ dsNVBP.get(row).getHo() + " " + dsNVBP.get(row).getTen() + " không?",
-							"Xác nhận", JOptionPane.YES_NO_OPTION);
-					if (xacNhan == JOptionPane.YES_OPTION) {
-						nhanVienDao.deleteNV(ma);
-						dsNVBP = nhanVienDao.getListNVtheoBP(dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
-						if (dsNVBP.isEmpty()) {
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						clearTable();
-						docDuLieuVaoTable(dsNVBP);
-						return;
-					}
-					return;
-				} else {
-					xacNhan = JOptionPane.showConfirmDialog(frame,
-							"Bạn có muốn xóa nhân viên có mã là " + dsNVBP.get(row).getMaNV() + " và có tên là "
-									+ dsNVBP.get(row).getHo() + " " + dsNVBP.get(row).getTen() + " không?",
-							"Xác nhận", JOptionPane.YES_NO_OPTION);
-					if (xacNhan == JOptionPane.YES_OPTION) {
-						nhanVienDao.deleteNV(ma);
-						dsNVBP = nhanVienDao.getListNVtheoNamBP(Integer.valueOf(nam),
-								dsBP.get(cboBoPhan.getSelectedIndex()).getMaBoPhan());
-						if (dsNVBP.isEmpty()) {
-							modelDsNV.setRowCount(0);
-							return;
-						}
-						clearTable();
-						docDuLieuVaoTable(dsNVBP);
-						return;
-					}
-					return;
-
-				}
+			} catch (RemoteException e3) {
+				e3.printStackTrace();
 			}
 		}
 		if (o == btnSua) {
@@ -1363,6 +1379,8 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 			int xacNhan = JOptionPane.showConfirmDialog(frame,
 					"Bạn có muốn sửa nhân viên có mã là " + ma + " và có tên là " + hoDem + " " + ten + " không?",
 					"Xác nhận", JOptionPane.YES_NO_OPTION);
+			
+			try {
 			if (xacNhan == JOptionPane.YES_OPTION) {
 				nhanVienDao.updateNhanVien(nv);
 				clearTable();
@@ -1371,6 +1389,9 @@ public class NhanVien_GUI implements MouseListener, ActionListener {
 				docDuLieuVaoTable(dsNVBP);
 
 				return;
+			}
+			} catch (RemoteException e3) {
+				e3.printStackTrace();
 			}
 			return;
 		}

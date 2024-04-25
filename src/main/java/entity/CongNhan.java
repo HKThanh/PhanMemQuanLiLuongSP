@@ -1,18 +1,21 @@
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "CongNhan")
-public class CongNhan {
+public class CongNhan implements Serializable {
 	@Id
 	private String maCN;
 	private byte[] anhDaiDien;
@@ -32,6 +35,12 @@ public class CongNhan {
 	private double phuCap;
 	private double luongCoBan;
 	private LocalDate ngayBatDauLamViec;
+	
+	@OneToMany(mappedBy = "cn")
+	private Set<BangChamCongCN> bangChamCongCNs;
+	
+	@OneToMany(mappedBy = "congNhan")
+	private Set<BangPhanCongCN> bangPhanCongCNs;
 	
 	@ManyToOne
 	@JoinColumn(name = "maXuong")

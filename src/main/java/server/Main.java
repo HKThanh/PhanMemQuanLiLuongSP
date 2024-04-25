@@ -1,4 +1,4 @@
-package demo;
+package server;
 
 import java.awt.EventQueue;
 import java.time.LocalDate;

@@ -1,5 +1,7 @@
 package dao;
 
-public interface BangPhanCongXuong_DAO {
+import java.rmi.Remote;
+
+public interface BangPhanCongXuong_DAO extends Remote {
 
 }

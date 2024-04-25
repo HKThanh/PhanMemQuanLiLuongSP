@@ -1,6 +1,7 @@
 package dao.impl;
 
-import java.util.ArrayList;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import dao.CongDoan_DAO;
@@ -10,10 +11,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-public class CongDoan_Impl implements CongDoan_DAO {
+public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	private EntityManager em;
 
-	public CongDoan_Impl() {
+	public CongDoan_Impl() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
@@ -137,7 +138,7 @@ public class CongDoan_Impl implements CongDoan_DAO {
 //		return maCD;
 
 		String jpql = "select cd.maCongDoan from CongDoan cd " + "join cd.bangPhanCongCNs bpc "
-				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maCC = :maCC";
+				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maChamCongCN = :maCC";
 		return em.createQuery(jpql, String.class).setParameter("maCC", bcc.getMaChamCongCN()).getSingleResult();
 	}
 }

@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Font;
 import java.math.RoundingMode;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ChiTietNV_GUI extends JFrame {
 	private JTextField textField;
 	private JTextField txtThuong;
 
-	public ChiTietNV_GUI(String maNV, int Thang, int Nam, String boPhan, double khauTru) {
+	public ChiTietNV_GUI(String maNV, int Thang, int Nam, String boPhan, double khauTru) throws RemoteException {
 		super("Chi Tiết Lương Nhân Viên");
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -296,7 +297,7 @@ public class ChiTietNV_GUI extends JFrame {
 		return pnlChiTietLuongNV;
 	}
 
-	private void khoiTaoChiTietLuong(String maNV, int Thang, int Nam, String mabp, double khauTru) {
+	private void khoiTaoChiTietLuong(String maNV, int Thang, int Nam, String mabp, double khauTru) throws RemoteException {
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
 		decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");

@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -10,15 +11,16 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "BoPhan")
-public class BoPhan {
+public class BoPhan implements Serializable {
 	@Id
 	private String maBoPhan;
-	
+
 	@Column(name = "tenBoPhan", columnDefinition = "NVARCHAR(255)")
 	private String tenBoPhan;
 	private String sDTBoPhan;
-	 @OneToMany(mappedBy = "boPhan")
-	    private Set<NhanVien> nhanViens;
+
+	@OneToMany(mappedBy = "boPhan")
+	private Set<NhanVien> nhanViens;
 
 	public BoPhan() {
 		super();
@@ -31,7 +33,6 @@ public class BoPhan {
 		setTenBoPhan(tenBoPhan);
 		setsDTBoPhan(sDTBoPhan);
 	}
-	
 
 	public BoPhan(String maBoPhan, String tenBoPhan, String sDTBoPhan, Set<NhanVien> nhanViens) {
 		super();

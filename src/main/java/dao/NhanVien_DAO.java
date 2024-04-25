@@ -1,20 +1,19 @@
 package dao;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import entity.NhanVien;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 
-public interface NhanVien_DAO {
-	public ArrayList<NhanVien> getListNV();
-	public boolean insertNV(NhanVien nv);
-	public ArrayList<NhanVien> getListNVtheoBP(String maBP);
-	public ArrayList<NhanVien> getListNVtheoNamVaoLam(int nam);
-	public ArrayList<NhanVien> getListNVtheoNamBP(int nam, String maBP);
-	public boolean deleteNV(String maNV);
-	public boolean updateNhanVien(NhanVien nv);
-	public NhanVien getMotNVTuMaNV(String maNVien);	
-	public ArrayList<NhanVien> getListNVtheoBPCa(int ca, String maBP);
+public interface NhanVien_DAO extends Remote {
+	public ArrayList<NhanVien> getListNV() throws RemoteException;
+	public boolean insertNV(NhanVien nv) throws RemoteException;
+	public ArrayList<NhanVien> getListNVtheoBP(String maBP) throws RemoteException;
+	public ArrayList<NhanVien> getListNVtheoNamVaoLam(int nam) throws RemoteException;
+	public ArrayList<NhanVien> getListNVtheoNamBP(int nam, String maBP) throws RemoteException;
+	public boolean deleteNV(String maNV) throws RemoteException;
+	public boolean updateNhanVien(NhanVien nv) throws RemoteException;
+	public NhanVien getMotNVTuMaNV(String maNVien) throws RemoteException;	
+	public ArrayList<NhanVien> getListNVtheoBPCa(int ca, String maBP) throws RemoteException;
 }

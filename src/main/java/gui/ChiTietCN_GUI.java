@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Font;
 import java.math.RoundingMode;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ChiTietCN_GUI extends JFrame {
 	private CongDoan_DAO cd_DAO;
 	private SanPham_DAO sp_DAO;
 
-	public ChiTietCN_GUI(String maNV, int Thang, int Nam, String Xuong, double khauTru) {
+	public ChiTietCN_GUI(String maNV, int Thang, int Nam, String Xuong, double khauTru) throws RemoteException {
 		super("Chi Tiết Lương Công Nhân");
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -297,16 +298,16 @@ public class ChiTietCN_GUI extends JFrame {
 		return pnlChiTietLuongCN;
 	}
 
-	public void khoiTaoChiTietLuong(String maCN, int thang, int nam, String Xuong, double khauTru) {
+	public void khoiTaoChiTietLuong(String maCN, int thang, int nam, String Xuong, double khauTru) throws RemoteException {
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
 		decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		bl_DAO = new BangLuongCN_Impl();
-		cd_DAO = new CongDoan_Impl();
-		bcc_DAO = new BangChamCongCN_Impl();
-		cn_DAO = new CongNhan_Impl();
-		sp_DAO = new SanPham_Impl();
+		bl_DAO = Initiate.bangLuongCN_DAO;
+		cd_DAO = Initiate.congDoan_DAO;
+		bcc_DAO = Initiate.bangChamCongCN_DAO;
+		cn_DAO = Initiate.congNhan_DAO;
+		sp_DAO = Initiate.sanPham_DAO;
 		
 		BangLuongCN bl = bl_DAO.getMotBangLuongCNTheoThangNam(maCN, thang, nam);
 		List<BangChamCongCN> dsBCC = bcc_DAO.getBangCCCNTheomaCNThangNam(maCN, thang, nam);

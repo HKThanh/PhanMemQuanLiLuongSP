@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.rmi.RemoteException;
 
 import dao.BangChamCongCN_DAO;
 import dao.BangChamCongNV_DAO;
@@ -30,21 +31,35 @@ import dao.impl.TaiKhoan_Impl;
 import dao.impl.Xuong_Impl;
 
 public class Initiate {
-	static TaiKhoan_DAO taiKhoan_DAO = new TaiKhoan_Impl();
-	static NhanVien_DAO nhanVien_DAO = new NhanVien_Impl();
-	static BangChamCongNV_DAO bangChamCongNV_DAO = new BangChamCongNV_Impl();
-	static BangLuongNV_DAO bangLuongNV_DAO = new BangLuongNV_Impl();
-	static BoPhan_DAO boPhan_DAO = new BoPhan_Impl();
-	static HopDong_DAO hopDong_DAO = new HopDong_Impl();
-	static SanPham_DAO sanPham_DAO = new SanPham_Impl();
-	static CongDoan_DAO congDoan_DAO = new CongDoan_Impl();
-	static Xuong_DAO xuong_DAO = new Xuong_Impl();
-	static CongNhan_DAO congNhan_DAO = new CongNhan_Impl();
-	static BangChamCongCN_DAO bangChamCongCN_DAO = new BangChamCongCN_Impl();
-	static BangLuongCN_DAO bangLuongCN_DAO = new BangLuongCN_Impl();
-	static BangPhanCongCN_DAO bangPhanCongCN_DAO = new BangPhanCongCN_Impl();
+	static TaiKhoan_DAO taiKhoan_DAO;
+	static NhanVien_DAO nhanVien_DAO;
+	static BangChamCongNV_DAO bangChamCongNV_DAO;
+	static BangLuongNV_DAO bangLuongNV_DAO;
+	static BoPhan_DAO boPhan_DAO;
+	static HopDong_DAO hopDong_DAO;
+	static SanPham_DAO sanPham_DAO;
+	static CongDoan_DAO congDoan_DAO;
+	static Xuong_DAO xuong_DAO;
+	static CongNhan_DAO congNhan_DAO;
+	static BangChamCongCN_DAO bangChamCongCN_DAO;
+	static BangLuongCN_DAO bangLuongCN_DAO;
+	static BangPhanCongCN_DAO bangPhanCongCN_DAO;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
+		taiKhoan_DAO = new TaiKhoan_Impl();
+		nhanVien_DAO = new NhanVien_Impl();
+		bangChamCongNV_DAO = new BangChamCongNV_Impl();
+		bangLuongNV_DAO = new BangLuongNV_Impl();
+		boPhan_DAO = new BoPhan_Impl();
+		hopDong_DAO = new HopDong_Impl();
+		sanPham_DAO = new SanPham_Impl();
+		congDoan_DAO = new CongDoan_Impl();
+		congNhan_DAO = new CongNhan_Impl();
+		bangChamCongCN_DAO = new BangChamCongCN_Impl();
+		bangLuongCN_DAO = new BangLuongCN_Impl();
+		bangPhanCongCN_DAO = new BangPhanCongCN_Impl();
+		xuong_DAO = new Xuong_Impl();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
