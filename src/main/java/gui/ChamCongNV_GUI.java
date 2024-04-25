@@ -53,9 +53,6 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import dao.BangChamCongNV_DAO;
 import dao.BoPhan_DAO;
 import dao.NhanVien_DAO;
-import dao.impl.BangChamCongNV_Impl;
-import dao.impl.BoPhan_Impl;
-import dao.impl.NhanVien_Impl;
 import entity.BangChamCongNV;
 import entity.BoPhan;
 import entity.NhanVien;
@@ -119,7 +116,7 @@ public class ChamCongNV_GUI implements ListSelectionListener, ActionListener {
 
 		dsBP = boPhanDao.getdsBoPhan();
 		dsNVBPCa = new ArrayList<NhanVien>();
-		nhanVienDao = new NhanVien_Impl();
+		nhanVienDao = Initiate.nhanVien_DAO;
 		dsCongLamViec = new ArrayList<BangChamCongNV>();
 
 		lblNgayCC = new JLabel("Ngày chấm công");

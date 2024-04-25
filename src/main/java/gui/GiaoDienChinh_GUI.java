@@ -29,10 +29,6 @@ import javax.swing.border.EmptyBorder;
 
 import dao.HopDong_DAO;
 import dao.NhanVien_DAO;
-import dao.TaiKhoan_DAO;
-import dao.impl.HopDong_Impl;
-import dao.impl.NhanVien_Impl;
-import dao.impl.TaiKhoan_Impl;
 import entity.TaiKhoan;
 
 /**
