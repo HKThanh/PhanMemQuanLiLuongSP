@@ -4,7 +4,9 @@ import dao.BangLuongCN_DAO;
 import entity.BangLuongCN;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 public class BangLuongCN_Impl implements BangLuongCN_DAO {
 	private EntityManager em;
@@ -50,16 +52,31 @@ public class BangLuongCN_Impl implements BangLuongCN_DAO {
 //		}
 //		return bangLuongCN;
 		
-		String jpql = "select bl from BangLuongCN bl "
-				+ "where bl.cn.maCN like :maCN "
-				+ "and bl.thang = :thang "
-				+ "and bl.nam = :nam";
-		
-		return em.createQuery(jpql, BangLuongCN.class)
-				.setParameter("maCN", maCN)
-				.setParameter("thang", thang)
-				.setParameter("nam", nam)
-				.getSingleResult();
+//		String jpql = "select bl from BangLuongCN bl "
+//				+ "where bl.cn.maCN like :maCN "
+//				+ "and bl.thang = :thang "
+//				+ "and bl.nam = :nam";
+//		
+//		return em.createQuery(jpql, BangLuongCN.class)
+//				.setParameter("maCN", maCN)
+//				.setParameter("thang", thang)
+//				.setParameter("nam", nam)
+//				.getSingleResult();
+		String jpql = "SELECT b FROM BangLuongCN b WHERE b.cn.maCN = :maCN AND b.thang = :thang AND b.nam = :nam";
+
+	    TypedQuery<BangLuongCN> query = em.createQuery(jpql, BangLuongCN.class);
+	    query.setParameter("maCN", maCN);
+	    query.setParameter("thang", thang);
+	    query.setParameter("nam", nam);
+
+	    BangLuongCN bangLuongCN = null;
+	    try {
+	        bangLuongCN = query.getSingleResult();
+	    } catch (NoResultException e) {
+	        // Handle case where no result is found
+	    }
+
+	    return bangLuongCN;
 	}
 
 	public boolean insertBangLuongCN(BangLuongCN bangLuongCN) {

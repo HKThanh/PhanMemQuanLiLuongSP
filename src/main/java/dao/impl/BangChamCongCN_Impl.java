@@ -3,12 +3,15 @@ package dao.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dao.BangChamCongCN_DAO;
 import entity.BangChamCongCN;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 	private EntityManager em;
@@ -288,14 +291,26 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //		}
 //		return list;
 
-		String jpql = "select distinct month(bcc.ngayCham), year(bcc.ngayCham) from BangChamCongCN bcc";
-		List<Object[]> list = em.createQuery(jpql).getResultList();
-		List<LocalDate> listDate = new ArrayList<LocalDate>();
-		for (Object[] objects : list) {
-			LocalDate date = LocalDate.of((int) objects[1], (int) objects[0], 1);
-			listDate.add(date);
-		}
-		return listDate;
+//		String jpql = "select distinct month(bcc.ngayCham), year(bcc.ngayCham) from BangChamCongCN bcc";
+//		List<Object[]> list = em.createQuery(jpql).getResultList();
+//		List<LocalDate> listDate = new ArrayList<LocalDate>();
+//		for (Object[] objects : list) {
+//			LocalDate date = LocalDate.of((int) objects[1], (int) objects[0], 1);
+//			listDate.add(date);
+//		}
+//		return listDate;
+		String jpql = "SELECT bcc FROM BangChamCongCN bcc";
+
+	    TypedQuery<BangChamCongCN> query = em.createQuery(jpql, BangChamCongCN.class);
+
+	    List<BangChamCongCN> bangCC = query.getResultList();
+
+	    List<LocalDate> list = bangCC.stream()
+	        .map(bcc -> LocalDate.of(bcc.getNgayCham().getYear(), bcc.getNgayCham().getMonth(), 1))
+	        .distinct()
+	        .collect(Collectors.toList());
+
+	    return list;
 	}
 
 	public List<String> layTatCaCongDoanTheoThang(int thang, int nam) {
@@ -376,11 +391,21 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //		}
 //		return bangCC;
 
-		String jpql = "select bcc from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
-				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+//		String jpql = "select bcc from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+//				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+//
+//		return em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang).setParameter("nam", nam)
+//				.getResultList();
+		  String jpql = "SELECT bcc FROM BangChamCongCN bcc WHERE bcc.cn.maCN = :maCN AND FUNCTION('MONTH', bcc.ngayCham) = :thang AND FUNCTION('YEAR', bcc.ngayCham) = :nam";
 
-		return em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang).setParameter("nam", nam)
-				.getResultList();
+		    TypedQuery<BangChamCongCN> query = em.createQuery(jpql, BangChamCongCN.class);
+		    query.setParameter("maCN", maCN);
+		    query.setParameter("thang", thang);
+		    query.setParameter("nam", nam);
+
+		    List<BangChamCongCN> bangCC = query.getResultList();
+		    return bangCC;
+	
 	}
 
 	public int laySoSanLuongCuaCNTheoThangNam(String maCN, int thang, int nam) {
@@ -400,12 +425,20 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 
+//		String jpql = "select sum(bcc.sanLuong) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+//				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+//
+//		soSanLuong = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+//				.setParameter("nam", nam).getSingleResult();
+//		return soSanLuong;
 		String jpql = "select sum(bcc.sanLuong) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
-				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+	            + "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
 
-		soSanLuong = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
-				.setParameter("nam", nam).getSingleResult();
-		return soSanLuong;
+	    Long soSanLuongLong = (Long) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+	            .setParameter("nam", nam).getSingleResult();
+
+	    soSanLuong = soSanLuongLong != null ? soSanLuongLong.intValue() : 0;
+	    return soSanLuong;
 	}
 
 	public int laySoNgayDiLamCuaCNTheoThangNam(String maCN, int thang, int nam) {
@@ -425,12 +458,18 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 
-		String jpql = "select count(bcc) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
-				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam " + "and bcc.vangMat = 0";
+//		String jpql = "select count(bcc) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+//				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam " + "and bcc.vangMat = 0";
+//
+//		soNgayDiLam = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+//				.setParameter("nam", nam).getSingleResult();
+//		return soNgayDiLam;
+	    String jpql = "select count(bcc) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+	            + "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam " + "and bcc.vangMat = false";
 
-		soNgayDiLam = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
-				.setParameter("nam", nam).getSingleResult();
-		return soNgayDiLam;
+	    soNgayDiLam = ((Long) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+	            .setParameter("nam", nam).getSingleResult()).intValue();
+	    return soNgayDiLam;
 	}
 
 	public int layTongSoGioTangCaCuaCNTheoThangNam(String maCN, int thang, int nam) {
@@ -450,13 +489,23 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 
-		String jpql = "select sum(bcc.soGioTangCa) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
-				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+//		String jpql = "select sum(bcc.soGioTangCa) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+//				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
+//
+//		soGioTangCa = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+//				.setParameter("nam", nam).getSingleResult();
+//
+//		return soGioTangCa;
+		
+		    String jpql = "select sum(bcc.soGioTangCa) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+		            + "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam";
 
-		soGioTangCa = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
-				.setParameter("nam", nam).getSingleResult();
+		    Long soGioTangCaLong = (Long) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+		            .setParameter("nam", nam).getSingleResult();
 
-		return soGioTangCa;
+		    soGioTangCa = soGioTangCaLong != null ? soGioTangCaLong.intValue() : 0;
+		    return soGioTangCa;
+		
 	}
 
 	public double layGiaTienSanPhamTheoBCC(BangChamCongCN bcc) {
@@ -476,8 +525,8 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 
-		String jpql = "select cd.giaTien from CongDoan cd join BangPhanCongCN bpc on cd.maCongDoan=bpc.maCD "
-				+ "join CongNhan cn on cn.maCN=bpc.maCN join BangChamCongCN bcc on cn.maCN= bcc.cn.maCN "
+		String jpql = "select distinct cd.giaTien from CongDoan cd join BangPhanCongCN bpc on cd.maCongDoan=bpc.congDoan.maCongDoan "
+				+ "join CongNhan cn on cn.maCN=bpc.congNhan.maCN join BangChamCongCN bcc on cn.maCN= bcc.cn.maCN "
 				+ "where bcc.cn.maCN = :maCN";
 
 		giaTien = (double) em.createQuery(jpql).setParameter("maCN", bcc.getCN().getMaCN()).getSingleResult();
@@ -504,14 +553,23 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 
+//		String jpql = "select count(bcc) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
+//				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam "
+//				+ "and bcc.vangMat = 1 and bcc.coPhep = 0";
+//
+//		soNgayDiLam = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+//				.setParameter("nam", nam).getSingleResult();
+//
+//		return soNgayDiLam;
 		String jpql = "select count(bcc) from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
-				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam "
-				+ "and bcc.vangMat = 1 and bcc.coPhep = 0";
+	            + "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam "
+	            + "and bcc.vangMat = true and bcc.coPhep = false";
 
-		soNgayDiLam = (int) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
-				.setParameter("nam", nam).getSingleResult();
+	    Long soNgayDiLamLong = (Long) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+	            .setParameter("nam", nam).getSingleResult();
 
-		return soNgayDiLam;
+	     soNgayDiLam = soNgayDiLamLong != null ? soNgayDiLamLong.intValue() : 0;
+	    return soNgayDiLam;
 	}
 
 	public boolean updateGhiChuBCCCN(BangChamCongCN bcccn) {
@@ -531,7 +589,6 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 	}
 
 	public BangChamCongCN layBangChamCongCuoiCungCuaThang(String maCN, int thang, int nam) {
-//		BangChamCongCN bcccn = null;
 //		ConnectDB.getInstance();
 //		Connection con = ConnectDB.getConnection();
 //		String sql = "SELECT TOP 1 * FROM dbo.BangChamCongCongNhan WHERE maCN = ? AND MONTH(NgayCham) = ? AND YEAR(NgayCham) = ? ORDER BY NgayCham DESC";
@@ -561,12 +618,38 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //			e.printStackTrace();
 //		}
 //		return bcccn;
-
+//
 		String jpql = "select bcc from BangChamCongCN bcc " + "where bcc.cn.maCN = :maCN "
 				+ "and month(bcc.ngayCham) = :thang " + "and year(bcc.ngayCham) = :nam " + "order by bcc.ngayCham desc";
 
-		return (BangChamCongCN) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
-				.setParameter("nam", nam).setMaxResults(1).getSingleResult();
+		BangChamCongCN result = null;
+	    try {
+	        result = (BangChamCongCN) em.createQuery(jpql)
+	            .setParameter("maCN", maCN)
+	            .setParameter("thang", thang)
+	            .setParameter("nam", nam)
+	            .setMaxResults(1)
+	            .getSingleResult();
+	    } catch (NoResultException e) {
+	        // Handle or log the exception as needed
+	    }
+
+	    return result;
+//		return (BangChamCongCN) em.createQuery(jpql).setParameter("maCN", maCN).setParameter("thang", thang)
+//				.setParameter("nam", nam).setMaxResults(1).getSingleResult();
+//		
+//		 BangChamCongCN bcccn = null;
+//
+//		    String jpql = "SELECT b FROM BangChamCongCN b WHERE b.cn.maCN = :maCN AND FUNCTION('MONTH', b.ngayCham) = :thang AND FUNCTION('YEAR', b.ngayCham) = :nam ORDER BY b.ngayCham DESC";
+//
+//		    TypedQuery<BangChamCongCN> query = em.createQuery(jpql, BangChamCongCN.class);
+//		    query.setParameter("maCN", maCN);
+//		    query.setParameter("thang", thang);
+//		    query.setParameter("nam", nam);
+//		    query.setMaxResults(1);
+//
+//		    bcccn = query.getSingleResult();
+//		    return bcccn;
 	}
 
 	public List<Integer> layDSNamKhacnhauCCCN() {
@@ -612,8 +695,8 @@ public class BangChamCongCN_Impl implements BangChamCongCN_DAO {
 //		}
 //		return maSP;
 
-		String jpql = "select sp.maSP from CongDoan cd join BangPhanCongCN bpc on cd.maCongDoan=bpc.maCD "
-				+ "join CongNhan cn on cn.maCN=bpc.maCN join BangChamCongCN bcc on cn.maCN= bcc.cn.maCN "
+		String jpql = "select cd.sanPham.maSP from CongDoan cd join BangPhanCongCN bpc on cd.maCongDoan=bpc.congDoan.maCongDoan "
+				+ "join CongNhan cn on cn.maCN=bpc.congNhan.maCN join BangChamCongCN bcc on cn.maCN= bcc.cn.maCN "
 				+ "where bcc.maChamCongCN = :maCC";
 
 		return (String) em.createQuery(jpql).setParameter("maCC", bc.getMaChamCongCN()).getSingleResult();

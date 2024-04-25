@@ -468,14 +468,17 @@ public class LuongCongNhan_GUI extends JFrame implements ActionListener, MouseLi
 							}
 							if (thongBao == 1 && dk == 1) {
 								JOptionPane.showMessageDialog(null, "Hoàn tất tính lương cho các công nhân được chọn");
+								int row1 = tblDSLuongCN.getSelectedRow();
 								int row = tblThangLuongCN.getSelectedRow();
 								int thang1 = Integer.parseInt(modelTableThangLuongCN.getValueAt(row, 0).toString());
 								int nam1 = Integer.parseInt(modelTableThangLuongCN.getValueAt(row, 1).toString());
 								String xuong = modelTableThangLuongCN.getValueAt(row, 2).toString();
 								taoDSBangLuongtuDBtheoDK(thang1, nam1, xuong);
 								bc_DAO = new BangChamCongCN_Impl();
+								System.out.println(modelTableDSLuongCN.getValueAt(row1, 0).toString() + thang + nam);
 								BangChamCongCN bc = bc_DAO.layBangChamCongCuoiCungCuaThang(
-										modelTableDSLuongCN.getValueAt(row, 0).toString(), thang, nam);
+										modelTableDSLuongCN.getValueAt(row1, 0).toString(), thang, nam);
+								
 								if (bc != null) {
 									bc.setGhiChu(bc.getGhiChu() + "Đã Lưu Vào Ngày:"
 											+ LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

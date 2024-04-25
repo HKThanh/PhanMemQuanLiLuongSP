@@ -137,7 +137,7 @@ public class CongDoan_Impl implements CongDoan_DAO {
 //		return maCD;
 
 		String jpql = "select cd.maCongDoan from CongDoan cd " + "join cd.bangPhanCongCNs bpc "
-				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maCC = :maCC";
+				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maChamCongCN = :maCC";
 		return em.createQuery(jpql, String.class).setParameter("maCC", bcc.getMaChamCongCN()).getSingleResult();
 	}
 }

@@ -428,4 +428,21 @@ values
 		('21323CN230065','02-13-2023', 0,'CN230065',0,0,3,19,''),
 		('21423CN230065','02-14-2023', 1,'CN230065',0,0,3,16,'');
 go
-
+//MinhThat
+insert into CongDoan (congDoanTienQuyet,giaTien,maCongDoan,ngayBatDau,ngayKetThucDuKien,soLuongCongNhanDuKien,soLuongSanPham,tenCongDoan,trangThai,maSP)
+values ('',900000,'CD21086061','02-02-2024','05-05-2024',90,1200,'Công Đoạn Thử Nghiệm',1,'1410230132')
+go
+insert into BangPhanCongCN (maCN,maCongDoan,maPhanCong,ngayPhanCong,soLuongSanPham,trangThai)
+values ('CN210860','CD21086061','PCCN21086061','03-03-2024',30,0)
+go
+INSERT INTO CongNhan (maCN, ho, ten, gioiTinh, ngaySinh, cCCD, soDienThoai, diaChi, ngayBatDauLamViec, maXuong, chuyenMon, caLamViec, phuCap, luongCoBan)
+VALUES
+	(N'CN210860', N'Lê', N'Minh Thật', 1, '08-20-1989', '111122223333', '0123456789', N'23 Đường GHI, Quận 3', '02-15-2022', 'MA1', N'May', 1, 500000, 2000000)
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN21086061', '04-24-2024', 0, 'CN210860', 0, 0, 0, 556, '')
+go
+insert into SanPham (maSP, tenSP, soLuong, soLuongCongDoan, trangThai, maHopDong)
+values
+	(N'1410230132', N'Áo sơ mi trắng', 10000, 2, 1, N'14102301')
+go
