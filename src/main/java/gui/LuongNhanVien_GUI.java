@@ -18,7 +18,6 @@ import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -57,10 +56,6 @@ import dao.BangChamCongNV_DAO;
 import dao.BangLuongNV_DAO;
 import dao.BoPhan_DAO;
 import dao.NhanVien_DAO;
-import dao.impl.BangChamCongNV_Impl;
-import dao.impl.BangLuongNV_Impl;
-import dao.impl.BoPhan_Impl;
-import dao.impl.NhanVien_Impl;
 import entity.BangChamCongNV;
 import entity.BangLuongNV;
 import entity.BoPhan;

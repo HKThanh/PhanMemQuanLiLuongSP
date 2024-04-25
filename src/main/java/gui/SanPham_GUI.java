@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -9,9 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -32,9 +29,6 @@ import javax.swing.table.DefaultTableModel;
 import dao.CongDoan_DAO;
 import dao.HopDong_DAO;
 import dao.SanPham_DAO;
-import dao.impl.CongDoan_Impl;
-import dao.impl.HopDong_Impl;
-import dao.impl.SanPham_Impl;
 import entity.CongDoan;
 import entity.HopDong;
 import entity.SanPham;
@@ -99,7 +93,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 
 		hd_DAO = Initiate.hopDong_DAO;
 		sp_DAO = Initiate.sanPham_DAO;
-		cd_DAO = new CongDoan_Impl();
+		cd_DAO = Initiate.congDoan_DAO;
 
 		JPanel pnlSP = new JPanel();
 		pnlSP.setBackground(new Color(240, 248, 255));

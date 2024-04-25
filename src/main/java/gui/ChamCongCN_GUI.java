@@ -47,14 +47,9 @@ import dao.BangPhanCongCN_DAO;
 import dao.CongDoan_DAO;
 import dao.CongNhan_DAO;
 import dao.Xuong_DAO;
-import dao.impl.BangChamCongCN_Impl;
-import dao.impl.CongNhan_Impl;
-import dao.impl.Xuong_Impl;
 import entity.BangChamCongCN;
-import entity.BangPhanCongCN;
 import entity.CongDoan;
 import entity.CongNhan;
-import entity.SanPham;
 import entity.Xuong;
 
 public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {

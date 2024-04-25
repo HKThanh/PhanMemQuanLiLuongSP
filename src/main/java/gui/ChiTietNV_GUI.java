@@ -22,9 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import dao.BangChamCongNV_DAO;
 import dao.BangLuongNV_DAO;
 import dao.NhanVien_DAO;
-import dao.impl.BangChamCongNV_Impl;
-import dao.impl.BangLuongNV_Impl;
-import dao.impl.NhanVien_Impl;
+
 import entity.BangChamCongNV;
 import entity.BangLuongNV;
 import entity.NhanVien;
@@ -301,9 +299,9 @@ public class ChiTietNV_GUI extends JFrame {
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
 		decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		bl_DAO = new BangLuongNV_Impl();
-		nv_DAO = new NhanVien_Impl();
-		bcc_DAO = new BangChamCongNV_Impl();
+		bl_DAO = Initiate.bangLuongNV_DAO;
+		nv_DAO = Initiate.nhanVien_DAO;
+		bcc_DAO = Initiate.bangChamCongNV_DAO;
 		BangLuongNV bl = bl_DAO.lay1BangLuongTheoMaNVThangNam(maNV, Thang, Nam);
 
 		List<BangChamCongNV> listBCC = bcc_DAO.dsBangCCtheomaNVthangnam(maNV, Thang, Nam);

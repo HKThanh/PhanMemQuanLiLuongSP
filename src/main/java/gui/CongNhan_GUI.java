@@ -65,8 +65,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import dao.CongNhan_DAO;
 import dao.Xuong_DAO;
-import dao.impl.CongNhan_Impl;
-import dao.impl.Xuong_Impl;
 import entity.CongNhan;
 import entity.Xuong;
 
