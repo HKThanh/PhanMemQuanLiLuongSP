@@ -21,19 +21,19 @@ public class TaiKhoan_Impl extends UnicastRemoteObject implements TaiKhoan_DAO {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
-	public List<TaiKhoan> getListTK() {
+	public synchronized List<TaiKhoan> getListTK() {
 		String jpql = "SELECT tk FROM TaiKhoan tk";
 
 		return em.createQuery(jpql).getResultList();
 	}
 
-	public int getSize() {
+	public synchronized int getSize() {
 		String jpql = "SELECT tk FROM TaiKhoan tk";
 
 		return em.createQuery(jpql).getResultList().size();
 	}
 
-	public boolean insert(TaiKhoan tk) {
+	public synchronized boolean insert(TaiKhoan tk) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -50,7 +50,7 @@ public class TaiKhoan_Impl extends UnicastRemoteObject implements TaiKhoan_DAO {
 		return false;
 	}
 
-	public TaiKhoan soSanhPWD(String tk, String mk) {
+	public synchronized TaiKhoan soSanhPWD(String tk, String mk) {
 		TaiKhoan temp = null;
 		String pwdHash = "";
 
@@ -80,7 +80,7 @@ public class TaiKhoan_Impl extends UnicastRemoteObject implements TaiKhoan_DAO {
 		return temp;
 	}
 
-	public String getBoPhanCuaNV(TaiKhoan tk) {
+	public synchronized String getBoPhanCuaNV(TaiKhoan tk) {
 		String maBP = null;
 
 		String jpql = "SELECT nv.boPhan.maBoPhan FROM NhanVien nv WHERE nv.maNV = :maNV";
@@ -90,7 +90,7 @@ public class TaiKhoan_Impl extends UnicastRemoteObject implements TaiKhoan_DAO {
 		return maBP;
 	}
 
-	public void updateNgayDNCuoi(LocalDate date, TaiKhoan tk) {
+	public synchronized void updateNgayDNCuoi(LocalDate date, TaiKhoan tk) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {

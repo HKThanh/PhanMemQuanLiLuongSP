@@ -18,18 +18,18 @@ public class Xuong_Impl extends UnicastRemoteObject implements Xuong_DAO {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
-	public ArrayList<Xuong> getDSXuong() {
+	public synchronized ArrayList<Xuong> getDSXuong() {
 		String jpql = "SELECT x FROM Xuong x";
 
 		return (ArrayList<Xuong>) em.createQuery(jpql).getResultList();
 	}
 
-	public Xuong getMotXuong(String maXuong) {
+	public synchronized Xuong getMotXuong(String maXuong) {
 		return em.find(Xuong.class, maXuong);
 	}
 
 	// Minh Thật
-	public ArrayList<Xuong> layTatCaXuongKhacNhau() {
+	public synchronized ArrayList<Xuong> layTatCaXuongKhacNhau() {
 //		String jpql = "SELECT DISTINCT x FROM Xuong x";
 //
 //		return (ArrayList<Xuong>) em.createQuery(jpql).getResultList();

@@ -16,13 +16,13 @@ public class BoPhan_Impl extends UnicastRemoteObject implements BoPhan_DAO {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
-	public ArrayList<BoPhan> getdsBoPhan() {
+	public synchronized ArrayList<BoPhan> getdsBoPhan() {
 		String jpql = "select bp from BoPhan bp";
 
 		return (ArrayList<BoPhan>) em.createQuery(jpql).getResultList();
 	}
 
-	public ArrayList<BoPhan> layTatCaBoPhanKhacNhau() {
+	public synchronized ArrayList<BoPhan> layTatCaBoPhanKhacNhau() {
 		String jpql = "select distinct bp from BoPhan bp";
 
 		return (ArrayList<BoPhan>) em.createQuery(jpql).getResultList();

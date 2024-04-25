@@ -17,7 +17,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
-	public int getSize() {
+	public synchronized int getSize() {
 		String jpql = "SELECT sp FROM SanPham sp";
 
 		return em.createQuery(jpql).getResultList().size();
@@ -28,7 +28,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * 
 	 * @return ArrayList
 	 */
-	public ArrayList<SanPham> getDSSanPham() {
+	public synchronized ArrayList<SanPham> getDSSanPham() {
 		String jpql = "SELECT sp FROM SanPham sp";
 
 		return (ArrayList<SanPham>) em.createQuery(jpql).getResultList();
@@ -40,7 +40,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param maSP
 	 * @return SanPham
 	 */
-	public SanPham getMotSanPham(String maSP) {
+	public synchronized SanPham getMotSanPham(String maSP) {
 		SanPham sp = null;
 
 		EntityTransaction tx = em.getTransaction();
@@ -63,7 +63,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param sp
 	 * @return true nếu thêm thành công
 	 */
-	public boolean insertSanPham(SanPham sp) {
+	public synchronized boolean insertSanPham(SanPham sp) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -86,7 +86,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param sp
 	 * @return true nếu cập nhật thành công
 	 */
-	public boolean updateSanPham(SanPham sp) {
+	public synchronized boolean updateSanPham(SanPham sp) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -109,7 +109,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param maHD
 	 * @return true nếu xoá thành công
 	 */
-	public boolean deleteSanPham(String maSP) {
+	public synchronized boolean deleteSanPham(String maSP) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -134,7 +134,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param maHD
 	 * @return ArrayList
 	 */
-	public ArrayList<SanPham> getDSSanPhamTheoHopDong(String maHD) {
+	public synchronized ArrayList<SanPham> getDSSanPhamTheoHopDong(String maHD) {
 		String jpql = "SELECT sp FROM SanPham sp WHERE sp.hopDong.maHopDong = :maHD";
 
 		return (ArrayList<SanPham>) em.createQuery(jpql).setParameter("maHD", maHD).getResultList();
@@ -146,7 +146,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param maHD
 	 * @return int
 	 */
-	public int getSizeCuaDSTheoHopDong(String maHD) {
+	public synchronized int getSizeCuaDSTheoHopDong(String maHD) {
 		return this.getDSSanPhamTheoHopDong(maHD).size();
 	}
 
@@ -157,7 +157,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param tinhTrang
 	 * @return ArrayList
 	 */
-	public ArrayList<SanPham> getDSSanPhamTheoTrangThai(boolean tinhTrang) {
+	public synchronized ArrayList<SanPham> getDSSanPhamTheoTrangThai(boolean tinhTrang) {
 		String jpql = "SELECT sp FROM SanPham sp WHERE sp.trangThai = :tinhTrang";
 
 		return (ArrayList<SanPham>) em.createQuery(jpql).setParameter("tinhTrang", tinhTrang).getResultList();
@@ -170,7 +170,7 @@ public class SanPham_Impl extends UnicastRemoteObject implements SanPham_DAO {
 	 * @param maHD
 	 * @return ArrayList
 	 */
-	public ArrayList<SanPham> getDSSanPhamTheoHDvaTT(String maHD, boolean tinhTrang) {
+	public synchronized ArrayList<SanPham> getDSSanPhamTheoHDvaTT(String maHD, boolean tinhTrang) {
 		String jpql = "SELECT sp FROM SanPham sp WHERE sp.hopDong.maHopDong = :maHD AND sp.trangThai = :tinhTrang";
 
 		return (ArrayList<SanPham>) em.createQuery(jpql).setParameter("maHD", maHD).setParameter("tinhTrang", tinhTrang)

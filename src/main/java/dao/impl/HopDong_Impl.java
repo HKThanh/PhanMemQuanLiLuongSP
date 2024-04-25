@@ -25,7 +25,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * 
 	 * @return int
 	 */
-	public int getSize() {
+	public synchronized int getSize() {
 		return em.createQuery("select hd from HopDong hd", HopDong.class).getResultList().size();
 	}
 
@@ -34,7 +34,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * 
 	 * @return ArrayList<HopDong>
 	 */
-	public List<HopDong> getDSHopDong() {
+	public synchronized List<HopDong> getDSHopDong() {
 		return em.createQuery("select hd from HopDong hd", HopDong.class).getResultList();
 	}
 
@@ -44,7 +44,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param hd
 	 * @return true nếu thêm vào thành công
 	 */
-	public boolean insertHopDong(HopDong hd) {
+	public synchronized boolean insertHopDong(HopDong hd) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -65,7 +65,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param ma
 	 * @return HopDong
 	 */
-	public HopDong getMotHopDong(String ma) {
+	public synchronized HopDong getMotHopDong(String ma) {
 		return em.find(HopDong.class, ma);
 	}
 
@@ -75,7 +75,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param hd
 	 * @return true nếu cập nhật thành công
 	 */
-	public boolean updateHopDong(HopDong hd) {
+	public synchronized boolean updateHopDong(HopDong hd) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -96,7 +96,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param maHD
 	 * @return true nếu xoá thành công
 	 */
-	public boolean deleteHopDong(String maHD) {
+	public synchronized boolean deleteHopDong(String maHD) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -119,7 +119,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param tinhTrang
 	 * @return ArrayList<HopDong>
 	 */
-	public List<HopDong> getListHDTheoTrangThai(boolean tinhTrang) {
+	public synchronized List<HopDong> getListHDTheoTrangThai(boolean tinhTrang) {
 		String jpql = "select hd from HopDong hd where hd.trangThai = :tinhTrang";
 
 		return em.createQuery(jpql, HopDong.class).setParameter("tinhTrang", tinhTrang)
@@ -133,7 +133,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param year
 	 * @return ArrayList<HopDong>
 	 */
-	public List<HopDong> getDSHopDongTheoNam(int year) {
+	public synchronized List<HopDong> getDSHopDongTheoNam(int year) {
 		String jpql = "select hd from HopDong hd where year(hd.ngayKy) = :year";
 
 		return em.createQuery(jpql, HopDong.class).setParameter("year", year).getResultList();
@@ -145,7 +145,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param tinhTrang
 	 * @return ArrayList<Integer>
 	 */
-	public List<Integer> getDSNamKiHopDong() {
+	public synchronized List<Integer> getDSNamKiHopDong() {
 		Set<Integer> setNam = new HashSet<Integer>();
 
 		List<HopDong> listHopDong = (ArrayList<HopDong>) em.createQuery("select hd from HopDong hd", HopDong.class)
@@ -165,7 +165,7 @@ public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	 * @param year, tinhTrang
 	 * @return ArrayList<HopDong>
 	 */
-	public List<HopDong> getDSHopDongTheoNamvaTT(int year, boolean tinhTrang) {
+	public synchronized List<HopDong> getDSHopDongTheoNamvaTT(int year, boolean tinhTrang) {
 		String jpql = "select hd from HopDong hd where year(hd.ngayKy) = :year and hd.trangThai = :tinhTrang";
 
 		return em.createQuery(jpql, HopDong.class).setParameter("year", year)

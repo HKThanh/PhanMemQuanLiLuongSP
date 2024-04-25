@@ -23,7 +23,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 	 * @param ma
 	 * @return ArrayList
 	 */
-	public List<BangPhanCongCN> getDSPhanCongCongDoanTheoMaCD(String ma) {
+	public synchronized List<BangPhanCongCN> getDSPhanCongCongDoanTheoMaCD(String ma) {
 //		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma";
 		
 		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma and bpccn.maPhanCong is not null";
@@ -37,7 +37,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 	 * @param bpccn
 	 * @return true nếu thêm thành công, false nếu thất bại
 	 */
-	public boolean insertPhanCongCongNhan(BangPhanCongCN bpccn) {
+	public synchronized boolean insertPhanCongCongNhan(BangPhanCongCN bpccn) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -58,43 +58,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 	 * @param ma
 	 * @return ArrayList
 	 */
-	public List<BangPhanCongCN> getDSCongNhanTheoXuongVaDuocPhanCong(String ma) {
-//		ArrayList<BangPhanCongCN> listCNDuocPhanCong = new ArrayList<BangPhanCongCN>();
-//		ConnectDB.getInstance();
-//		Connection con = ConnectDB.getConnection();
-//		String sql = "select bpccn.* from CongNhan cn join Xuong x "
-//				+ "on cn.maXuong = x.maXuong left join BangPhanCongCN bpccn "
-//				+ "on cn.maCN = bpccn.maCN "
-//				+ "where bpccn.maPCCN is not null and maCD = ?";
-//		PreparedStatement stmt = null;
-//		try {
-//			stmt = con.prepareStatement(sql);
-//			stmt.setString(1, ma);
-//			
-//			ResultSet rs = stmt.executeQuery();
-//			while (rs.next()) {
-//				String maPCCN = rs.getString(1);
-//				boolean trangThai = rs.getBoolean(2);
-//				LocalDate ngayPhanCong = rs.getDate(3).toLocalDate();
-//				int soLuongSP = rs.getInt(4);
-//				CongNhan cn = new CongNhan(rs.getString(5));
-//				CongDoan cd = new CongDoan(rs.getString(6));
-//				
-//				BangPhanCongCN bpccn = new BangPhanCongCN(maPCCN, trangThai, ngayPhanCong, soLuongSP, cn, cd);
-//				listCNDuocPhanCong.add(bpccn);
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				stmt.close();
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//			}
-//		}
-//		return listCNDuocPhanCong;
-
+	public synchronized List<BangPhanCongCN> getDSCongNhanTheoXuongVaDuocPhanCong(String ma) {
 		String jpql = "select bpccn from BangPhanCongCN bpccn "
 				+ "where bpccn.congDoan.maCongDoan = :ma and bpccn.maPhanCong is not null";
 
@@ -106,7 +70,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 	 * 
 	 * @return ArrayList
 	 */
-	public List<BangPhanCongCN> getDSCongNhanDuocPhanCong() {
+	public synchronized List<BangPhanCongCN> getDSCongNhanDuocPhanCong() {
 
 		String jpql = "select bpccn from BangPhanCongCN bpccn where bpccn.maPhanCong is not null";
 
@@ -119,7 +83,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 	 * @param ma
 	 * @return true nếu xoá thành công, false nếu thất bại
 	 */
-	public boolean deleteALLPCCuaCongDoan(String ma) {
+	public synchronized boolean deleteALLPCCuaCongDoan(String ma) {
 		String jpql = "delete from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :ma";
 
 		EntityTransaction tx = em.getTransaction();
@@ -136,7 +100,7 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 		}
 	}
 	
-	public int getDSPCTheoMaCD(String maCD) {
+	public synchronized int getDSPCTheoMaCD(String maCD) {
 		String jpql = "select distinct bpccn.soLuongSanPham from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :maCD";
 		
 		return em.createQuery(jpql, Integer.class).setParameter("maCD", maCD).getSingleResult();
