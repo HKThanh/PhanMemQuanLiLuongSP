@@ -7,6 +7,7 @@ import java.util.List;
 import dao.CongDoan_DAO;
 import entity.BangChamCongCN;
 import entity.CongDoan;
+import entity.CongNhan;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
@@ -141,4 +142,14 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maChamCongCN = :maCC";
 		return em.createQuery(jpql, String.class).setParameter("maCC", bcc.getMaChamCongCN()).getSingleResult();
 	}
+	
+	public List<CongDoan> getCDTheoDSPhanCong() {
+		String jpql = "select distinct cd from CongDoan cd join cd.bangPhanCongCNs bpc order by cd.ngayBatDau";
+        return em.createQuery(jpql, CongDoan.class).getResultList();
+	}
+	
+	public List<CongNhan> getDSCBTheoCDVaCa(String maCD, int ca) {
+		String jpql = "select cn from CongNhan cn join cn.bangPhanCongCNs bpc join bpc.congDoan cd where cd.maCongDoan = :maCD and cn.caLamViec = :ca";
+        return em.createQuery(jpql, CongNhan.class).setParameter("maCD", maCD).setParameter("ca", ca).getResultList();
+    }
 }
