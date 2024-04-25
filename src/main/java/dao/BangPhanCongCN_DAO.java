@@ -12,4 +12,5 @@ public interface BangPhanCongCN_DAO extends Remote {
 	public List<BangPhanCongCN> getDSCongNhanTheoXuongVaDuocPhanCong(String ma) throws RemoteException;
 	public List<BangPhanCongCN> getDSCongNhanDuocPhanCong() throws RemoteException;
 	public boolean deleteALLPCCuaCongDoan(String ma) throws RemoteException;
+	public int getDSPCTheoMaCD(String maCD) throws RemoteException;
 }

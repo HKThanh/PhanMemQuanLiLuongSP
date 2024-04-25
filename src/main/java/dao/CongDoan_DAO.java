@@ -6,6 +6,7 @@ import java.util.List;
 
 import entity.BangChamCongCN;
 import entity.CongDoan;
+import entity.CongNhan;
 
 public interface CongDoan_DAO extends Remote {
 	public List<CongDoan> getDSCongDoan() throws RemoteException;
@@ -16,4 +17,6 @@ public interface CongDoan_DAO extends Remote {
 	public List<CongDoan> getDSCongDoanTheoTrangThai(boolean tinhTrang) throws RemoteException;
 	public boolean updateCongDoan(CongDoan cd) throws RemoteException;
 	public String getMaCDtheomaCC(BangChamCongCN bcc) throws RemoteException;
+	public List<CongDoan> getCDTheoDSPhanCong() throws RemoteException;
+	public List<CongNhan> getDSCBTheoCDVaCa(String maCD, int ca) throws RemoteException;
 }

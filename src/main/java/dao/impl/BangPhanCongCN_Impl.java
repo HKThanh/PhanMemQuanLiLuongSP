@@ -135,4 +135,10 @@ public class BangPhanCongCN_Impl extends UnicastRemoteObject implements BangPhan
 			return false;
 		}
 	}
+	
+	public int getDSPCTheoMaCD(String maCD) {
+		String jpql = "select distinct bpccn.soLuongSanPham from BangPhanCongCN bpccn where bpccn.congDoan.maCongDoan = :maCD";
+		
+		return em.createQuery(jpql, Integer.class).setParameter("maCD", maCD).getSingleResult();
+	}
 }

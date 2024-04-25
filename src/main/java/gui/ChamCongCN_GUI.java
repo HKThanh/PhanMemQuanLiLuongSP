@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,16 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 import dao.BangChamCongCN_DAO;
+import dao.BangPhanCongCN_DAO;
+import dao.CongDoan_DAO;
 import dao.CongNhan_DAO;
 import dao.Xuong_DAO;
 import dao.impl.BangChamCongCN_Impl;
 import dao.impl.CongNhan_Impl;
 import dao.impl.Xuong_Impl;
 import entity.BangChamCongCN;
+import entity.BangPhanCongCN;
+import entity.CongDoan;
 import entity.CongNhan;
 import entity.SanPham;
 import entity.Xuong;
@@ -56,7 +61,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 	private JPanel contentPane;
 	private JFrame frame;
 	private kDatePicker dpNgayChamCong;
-	private JLabel lblNgayCC, lblXuong, lblCaLam, lblGhiChu, lblSanPhamSanXuat, lblCongDoan;
+	private JLabel lblNgayCC, lblXuong, lblCD, lblCaLam, lblGhiChu, lblSanPhamSanXuat, lblCongDoan;
 	private JTextField txtGhiChu, txtTimKiemTen;
 	private DefaultComboBoxModel<String> modelXuong, modelSanPhamSanXuat, modelCongDoan;
 	private JComboBox<String> cboXuong, cboSanPhamSanXuat, cboCongDoan;
@@ -68,9 +73,11 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 	private CongNhan_DAO congNhanDao;
 	private Xuong_DAO xuongDao;
 	private List<Xuong> dsX;
-	private List<CongNhan> dsCNXCa;
+	private List<CongNhan> dsCNCDCa;
 	private BangChamCongCN_DAO chamCongCNDao;
 	private List<BangChamCongCN> dsDaChamCong;
+	private CongDoan_DAO congDoanDao;
+	private BangPhanCongCN_DAO bpccnDao;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -106,18 +113,20 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		pnlCCCN.setBackground(new Color(240, 248, 255));
 		pnlCCCN.setBounds(0, 50, 1268, 632);
 
-		Xuong_DAO xuongDao = Initiate.xuong_DAO;
+		xuongDao = Initiate.xuong_DAO;
 		chamCongCNDao = Initiate.bangChamCongCN_DAO;
-		congNhanDao = new Initiate().congNhan_DAO;
+		congNhanDao = Initiate.congNhan_DAO;
+		congDoanDao = Initiate.congDoan_DAO;
+		bpccnDao = Initiate.bangPhanCongCN_DAO;
 
 		dsX = xuongDao.getDSXuong();
-		dsCNXCa = new ArrayList<CongNhan>();
+		dsCNCDCa = new ArrayList<CongNhan>();
 		dsDaChamCong = new ArrayList<BangChamCongCN>();
 
 		pnlCCCN.setLayout(new BorderLayout(0, 0));
 		JPanel topPanel = new JPanel();
 		topPanel.setPreferredSize(new Dimension(1000, 40));
-		;
+
 		pnlCCCN.add(topPanel, BorderLayout.NORTH);
 
 		Box b;
@@ -153,13 +162,13 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 						JOptionPane.showMessageDialog(frame, "Chưa đến ngày làm không thể chấm công");
 					} else if (ngayChamCong.isBefore(LocalDate.now())) {
 						dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
-						if (boPhanDaChamCongChua(dsCNXCa)) {
+						if (boPhanDaChamCongChua(dsCNCDCa)) {
 							clearTable();
-							docDuLieuTableDaCC(dsCNXCa);
+							docDuLieuTableDaCC(dsCNCDCa);
 							btnHoanTat.setEnabled(false);
 						} else {
 							clearTable();
-							docDuLieuVaoTable(dsCNXCa);
+							docDuLieuVaoTable(dsCNCDCa);
 							btnHoanTat.setEnabled(true);
 						}
 					}
@@ -186,50 +195,58 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 			modelXuong.addElement(x.getTenXuong());
 
 		}
-
+		
 		cboXuong = new JComboBox<String>(modelXuong);
 		cboXuong.setPreferredSize(new Dimension(100, 40));
 		cboXuong.setSelectedItem(dsX.get(0).getMaXuong());
-
-		try {
-			dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(dpNgayChamCong.getFullDate().toLocalDate());
-		} catch (ParseException e) {
-			e.printStackTrace();
+		
+		modelCongDoan = new DefaultComboBoxModel<String>();
+		
+		List<CongDoan> dsCD = congDoanDao.getCDTheoDSPhanCong();
+		
+		for (CongDoan cd : dsCD) {
+			modelCongDoan.addElement(cd.getMaCongDoan());
 		}
-
-		cboXuong.addItemListener(new ItemListener() {
+		
+		lblCongDoan = new JLabel("Mã công đoạn");
+		
+		cboCongDoan = new JComboBox<String>(modelCongDoan);
+		cboCongDoan.setPreferredSize(new Dimension(100, 40));
+		cboCongDoan.setSelectedItem(dsCD.get(0).getMaCongDoan());
+		
+		cboCongDoan.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				// TODO Auto-generated method stub
-				int xuongIndex = cboXuong.getSelectedIndex();
+				int cdIndex = cboCongDoan.getSelectedIndex();
 				try {
 					LocalDate ngayChamCong = dpNgayChamCong.getFullDate().toLocalDate();
 					if (chkCaSang.isSelected() == true) {
-						dsCNXCa = congNhanDao.getListCntheoXuongCa(1, dsX.get(xuongIndex).getMaXuong());
+						dsCNCDCa = congDoanDao.getDSCBTheoCDVaCa(dsCD.get(cdIndex).getMaCongDoan(), 1);
 						dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
-						if (boPhanDaChamCongChua(dsCNXCa)) {
+						if (boPhanDaChamCongChua(dsCNCDCa)) {
 							clearTable();
-							docDuLieuTableDaCC(dsCNXCa);
+							docDuLieuTableDaCC(dsCNCDCa);
 							btnHoanTat.setEnabled(false);
 						} else {
 							clearTable();
-							docDuLieuVaoTable(dsCNXCa);
+							docDuLieuVaoTable(dsCNCDCa);
 							btnHoanTat.setEnabled(true);
 						}
 
 					} else if (chkCaToi.isSelected() == true) {
-						dsCNXCa = congNhanDao.getListCntheoXuongCa(2, dsX.get(xuongIndex).getMaXuong());
+						dsCNCDCa = congDoanDao.getDSCBTheoCDVaCa(dsCD.get(cdIndex).getMaCongDoan(), 0);
 						dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
-						if (boPhanDaChamCongChua(dsCNXCa)) {
+						if (boPhanDaChamCongChua(dsCNCDCa)) {
 							clearTable();
-							docDuLieuTableDaCC(dsCNXCa);
+							docDuLieuTableDaCC(dsCNCDCa);
 							btnHoanTat.setEnabled(false);
 						}
 
 						else {
 							clearTable();
-							docDuLieuVaoTable(dsCNXCa);
+							docDuLieuVaoTable(dsCNCDCa);
 							btnHoanTat.setEnabled(true);
 						}
 
@@ -242,6 +259,58 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 
 			}
 		});
+
+		try {
+			dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(dpNgayChamCong.getFullDate().toLocalDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+//		cboXuong.addItemListener(new ItemListener() {
+//
+//			@Override
+//			public void itemStateChanged(ItemEvent e) {
+//				// TODO Auto-generated method stub
+//				int xuongIndex = cboXuong.getSelectedIndex();
+//				try {
+//					LocalDate ngayChamCong = dpNgayChamCong.getFullDate().toLocalDate();
+//					if (chkCaSang.isSelected() == true) {
+//						dsCNXCa = congNhanDao.getListCntheoXuongCa(1, dsX.get(xuongIndex).getMaXuong());
+//						dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
+//						if (boPhanDaChamCongChua(dsCNXCa)) {
+//							clearTable();
+//							docDuLieuTableDaCC(dsCNXCa);
+//							btnHoanTat.setEnabled(false);
+//						} else {
+//							clearTable();
+//							docDuLieuVaoTable(dsCNXCa);
+//							btnHoanTat.setEnabled(true);
+//						}
+//
+//					} else if (chkCaToi.isSelected() == true) {
+//						dsCNXCa = congNhanDao.getListCntheoXuongCa(2, dsX.get(xuongIndex).getMaXuong());
+//						dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
+//						if (boPhanDaChamCongChua(dsCNXCa)) {
+//							clearTable();
+//							docDuLieuTableDaCC(dsCNXCa);
+//							btnHoanTat.setEnabled(false);
+//						}
+//
+//						else {
+//							clearTable();
+//							docDuLieuVaoTable(dsCNXCa);
+//							btnHoanTat.setEnabled(true);
+//						}
+//
+//					}
+//
+//				} catch (ParseException | RemoteException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//
+//			}
+//		});
 
 		lblCaLam = new JLabel("Ca Làm:");
 		chkCaSang = new JCheckBox("Ca sáng");
@@ -280,31 +349,31 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 						if (source == chkCaSang) {
 							chkCaToi.setSelected(false);
 							chkThem.setSelected(false);
-							dsCNXCa = congNhanDao.getListCntheoXuongCa(1,
+							dsCNCDCa = congNhanDao.getListCntheoXuongCa(1,
 									dsX.get(cboXuong.getSelectedIndex()).getMaXuong());
 							dsDaChamCong = chamCongCNDao.getBangCCTheoNgay(ngayChamCong);
-							if (boPhanDaChamCongChua(dsCNXCa)) {
+							if (boPhanDaChamCongChua(dsCNCDCa)) {
 								clearTable();
-								docDuLieuTableDaCC(dsCNXCa);
+								docDuLieuTableDaCC(dsCNCDCa);
 								btnHoanTat.setEnabled(false);
 							} else {
 								clearTable();
-								docDuLieuVaoTable(dsCNXCa);
+								docDuLieuVaoTable(dsCNCDCa);
 								btnHoanTat.setEnabled(true);
 							}
 
 						} else if (source == chkCaToi) {
 							chkCaSang.setSelected(false);
 							chkThem.setSelected(false);
-							dsCNXCa = congNhanDao.getListCntheoXuongCa(2,
+							dsCNCDCa = congNhanDao.getListCntheoXuongCa(2,
 									dsX.get(cboXuong.getSelectedIndex()).getMaXuong());
-							if (boPhanDaChamCongChua(dsCNXCa)) {
+							if (boPhanDaChamCongChua(dsCNCDCa)) {
 								clearTable();
-								docDuLieuTableDaCC(dsCNXCa);
+								docDuLieuTableDaCC(dsCNCDCa);
 								btnHoanTat.setEnabled(false);
 							} else {
 								clearTable();
-								docDuLieuVaoTable(dsCNXCa);
+								docDuLieuVaoTable(dsCNCDCa);
 								btnHoanTat.setEnabled(true);
 							}
 						}
@@ -341,11 +410,15 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		// b.add(lblCongDoan);
 		// b.add(Box.createHorizontalStrut(30));
 		// b.add(cboCongDoan);
-		b.add(Box.createHorizontalStrut(50));
-		b.add(lblXuong);
+//		b.add(Box.createHorizontalStrut(30));
+//		b.add(lblXuong);
+//		b.add(Box.createHorizontalStrut(30));
+//		b.add(cboXuong);
 		b.add(Box.createHorizontalStrut(30));
-		b.add(cboXuong);
-		b.add(Box.createHorizontalStrut(150));
+		b.add(lblCongDoan);
+		b.add(Box.createHorizontalStrut(30));
+		b.add(cboCongDoan);
+		b.add(Box.createHorizontalStrut(90));
 		b.add(lblCaLam);
 		b.add(Box.createHorizontalStrut(50));
 		b.add(chkCaSang);
@@ -361,7 +434,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 
 		JPanel pnTable = new JPanel();
 		pnlCCCN.add(pnTable, BorderLayout.CENTER);
-		String[] cols_congnhan = { "Mã nhân viên", "Họ đệm", "Tên nhân viên", "Ca làm", "Sản lượng", "Số giờ tăng ca",
+		String[] cols_congnhan = { "Mã công nhân", "Họ đệm", "Tên công nhân", "Ca làm", "Sản lượng", "Sản lượng theo ngày",
 				"Ghi chú" };
 		modelDsCN = new DefaultTableModel(cols_congnhan, 0);
 		tblDsCN = new JTable(modelDsCN) {
@@ -402,14 +475,15 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		b3.add(btnHoanTat);
 		b3.add(Box.createHorizontalStrut(25));
 		pnBottom.setBorder(new EmptyBorder(0, 0, 20, 0));
-
-		dsCNXCa = congNhanDao.getListCntheoXuongCa(1, dsX.get(cboXuong.getSelectedIndex()).getMaXuong());
-		if (boPhanDaChamCongChua(dsCNXCa)) {
-			docDuLieuTableDaCC(dsCNXCa);
+		
+		int cdIndex = cboCongDoan.getSelectedIndex();
+		dsCNCDCa = congDoanDao.getDSCBTheoCDVaCa(dsCD.get(cdIndex).getMaCongDoan(), 1);
+		if (boPhanDaChamCongChua(dsCNCDCa)) {
+			docDuLieuTableDaCC(dsCNCDCa);
 			btnHoanTat.setEnabled(false);
 
 		} else {
-			docDuLieuVaoTable(dsCNXCa);
+			docDuLieuVaoTable(dsCNCDCa);
 		}
 
 		btnHoanTat.addActionListener(this);
@@ -453,11 +527,21 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 
 	}
 
-	public void docDuLieuVaoTable(List<CongNhan> dsCNXCa2) {
+	public void docDuLieuVaoTable(List<CongNhan> dsCNXCa2) throws RemoteException {
+		String cdIndex = cboCongDoan.getSelectedItem().toString();
+		
+		CongDoan cd = congDoanDao.getMotCongDoanTheoMaCD(cdIndex);
+		
+		long soNgay = ChronoUnit.DAYS.between(cd.getNgayBatDau(), cd.getNgayKetThucDuKien());
+		
+		int soLuongSPMoiCongNhan = bpccnDao.getDSPCTheoMaCD(cdIndex);
+		
+		int soSPTrenNgay = (int) (soLuongSPMoiCongNhan / soNgay) + 1;
+		
+		System.out.println(soNgay);
 
 		for (CongNhan cn : dsCNXCa2) {
-			SanPham sp = new SanPham();
-			Object[] rowData = { cn.getMaCN(), cn.getHo(), cn.getTen(), layCaLamViec(cn), sp.getSoLuong(), "0", "" };
+			Object[] rowData = { cn.getMaCN(), cn.getHo(), cn.getTen(), layCaLamViec(cn), cd.getSoLuongSanPham(), soSPTrenNgay, "" };
 			modelDsCN.addRow(rowData);
 		}
 	}
@@ -517,7 +601,7 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 		int i = 0;
 		if (o == btnHoanTat) {
 			if (chkCaSang.isSelected() == true || chkCaToi.isSelected() == true) {
-				for (CongNhan cn : dsCNXCa) {
+				for (CongNhan cn : dsCNCDCa) {
 					try {
 						LocalDate ngayChamCong = dpNgayChamCong.getFullDate().toLocalDate();
 						String maCC = phatSinhMaCC(ngayChamCong, cn.getMaCN());
@@ -568,9 +652,9 @@ public class ChamCongCN_GUI implements ListSelectionListener, ActionListener {
 
 		}
 		if (o == btnCapNhat) {
-			for (int n = 0; n < dsCNXCa.size(); n++) {
+			for (int n = 0; n < dsCNCDCa.size(); n++) {
 				for (BangChamCongCN bangCC : dsDaChamCong) {
-					if (dsCNXCa.get(n).getMaCN().equals(bangCC.getCN().getMaCN())) {
+					if (dsCNCDCa.get(n).getMaCN().equals(bangCC.getCN().getMaCN())) {
 						try {
 							LocalDate ngayChamCong = dpNgayChamCong.getFullDate().toLocalDate();
 							String maCC = bangCC.getMaChamCongCN();

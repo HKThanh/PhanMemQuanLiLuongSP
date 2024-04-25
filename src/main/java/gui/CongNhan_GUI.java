@@ -646,6 +646,7 @@ public class CongNhan_GUI implements MouseListener, ActionListener {
 		btnXoa.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnTimKiem.addActionListener(this);
+		btnXuat.addActionListener(this);
 
 		JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem menuItem1 = new JMenuItem("Làm mới");
