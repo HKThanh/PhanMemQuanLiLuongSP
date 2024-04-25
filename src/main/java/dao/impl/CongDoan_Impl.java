@@ -24,7 +24,7 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	 * 
 	 * @return ArrayList<CongDoan> listCD
 	 */
-	public List<CongDoan> getDSCongDoan() {
+	public synchronized List<CongDoan> getDSCongDoan() {
 		String jpql = "select cd from CongDoan cd order by cd.ngayBatDau";
 
 		return em.createQuery(jpql, CongDoan.class).getResultList();
@@ -36,7 +36,7 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	 * @param maSP
 	 * @return ArrayList<CongDoan> listCDTheoMaSP
 	 */
-	public List<CongDoan> getDSCongDoanTheoMaSP(String maSP) {
+	public synchronized List<CongDoan> getDSCongDoanTheoMaSP(String maSP) {
 		String jpql = "select cd from CongDoan cd where cd.sanPham.maSP = :maSP order by cd.ngayBatDau";
 
 		return em.createQuery(jpql, CongDoan.class).setParameter("maSP", maSP).getResultList();
@@ -48,7 +48,7 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	 * @param cd
 	 * @return true nếu thêm công đoạn thành công, false nếu thất bại
 	 */
-	public boolean insertCongDoan(CongDoan cd) {
+	public synchronized boolean insertCongDoan(CongDoan cd) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -69,7 +69,7 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	 * @param cd
 	 * @return true nếu xoá công đoạn thành công, false nếu thất bại
 	 */
-	public boolean deleteCongDoan(String maCD) {
+	public synchronized boolean deleteCongDoan(String maCD) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -91,17 +91,17 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	 * @param ma
 	 * @return CongDoan cd
 	 */
-	public CongDoan getMotCongDoanTheoMaCD(String ma) {
+	public synchronized CongDoan getMotCongDoanTheoMaCD(String ma) {
 		return em.find(CongDoan.class, ma);
 	}
 
-	public List<CongDoan> getDSCongDoanTheoTrangThai(boolean tinhTrang) {
+	public synchronized List<CongDoan> getDSCongDoanTheoTrangThai(boolean tinhTrang) {
 		String jpql = "select cd from CongDoan cd where cd.trangThai = :tinhTrang order by cd.ngayBatDau";
 
 		return em.createQuery(jpql, CongDoan.class).setParameter("tinhTrang", tinhTrang).getResultList();
 	}
 
-	public boolean updateCongDoan(CongDoan cd) {
+	public synchronized boolean updateCongDoan(CongDoan cd) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -117,38 +117,18 @@ public class CongDoan_Impl extends UnicastRemoteObject implements CongDoan_DAO {
 	}
 
 	// Minh Thật
-	public String getMaCDtheomaCC(BangChamCongCN bcc) {
-//		String maCD = null;
-//		ConnectDB.getInstance();
-//		Connection con = ConnectDB.getConnection();
-//		String sql = "select cd.maCongDoan from CongNhan cn join BangPhanCongCN bpc on cn.maCN=bpc.maCN join CongDoan cd on bpc.maCD=cd.maCongDoan join SanPham sp on cd.maSP=sp.maSP join BangChamCongCongNhan bcc on bcc.maCN=cn.maCN where bcc.maCC =?";
-//		
-//		PreparedStatement stmt = null;
-//		
-//		try {
-//			stmt = con.prepareStatement(sql);
-//			stmt.setString(1, bcc.getMaCCCN());
-//			
-//			ResultSet rs = stmt.executeQuery();
-//			while (rs.next()) {
-//				maCD = rs.getString(1);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return maCD;
-
+	public synchronized String getMaCDtheomaCC(BangChamCongCN bcc) {
 		String jpql = "select cd.maCongDoan from CongDoan cd " + "join cd.bangPhanCongCNs bpc "
 				+ "join bpc.congNhan cn " + "join cn.bangChamCongCNs bcc " + "where bcc.maChamCongCN = :maCC";
 		return em.createQuery(jpql, String.class).setParameter("maCC", bcc.getMaChamCongCN()).getSingleResult();
 	}
 	
-	public List<CongDoan> getCDTheoDSPhanCong() {
+	public synchronized List<CongDoan> getCDTheoDSPhanCong() {
 		String jpql = "select distinct cd from CongDoan cd join cd.bangPhanCongCNs bpc order by cd.ngayBatDau";
         return em.createQuery(jpql, CongDoan.class).getResultList();
 	}
 	
-	public List<CongNhan> getDSCBTheoCDVaCa(String maCD, int ca) {
+	public synchronized List<CongNhan> getDSCBTheoCDVaCa(String maCD, int ca) {
 		String jpql = "select cn from CongNhan cn join cn.bangPhanCongCNs bpc join bpc.congDoan cd where cd.maCongDoan = :maCD and cn.caLamViec = :ca";
         return em.createQuery(jpql, CongNhan.class).setParameter("maCD", maCD).setParameter("ca", ca).getResultList();
     }

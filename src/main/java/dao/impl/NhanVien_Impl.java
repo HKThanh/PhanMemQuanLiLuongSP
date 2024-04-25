@@ -17,13 +17,13 @@ public class NhanVien_Impl extends UnicastRemoteObject implements NhanVien_DAO {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 
-	public ArrayList<NhanVien> getListNV() {
+	public synchronized ArrayList<NhanVien> getListNV() {
 		String jpql = "select nv from NhanVien nv";
 
 		return (ArrayList<NhanVien>) em.createQuery(jpql).getResultList();
 	}
 
-	public boolean insertNV(NhanVien nv) {
+	public synchronized boolean insertNV(NhanVien nv) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -38,26 +38,26 @@ public class NhanVien_Impl extends UnicastRemoteObject implements NhanVien_DAO {
 		}
 	}
 
-	public ArrayList<NhanVien> getListNVtheoBP(String maBP) {
+	public synchronized ArrayList<NhanVien> getListNVtheoBP(String maBP) {
 		String jpql = "select nv from NhanVien nv where nv.boPhan.maBoPhan = :maBP";
 
 		return (ArrayList<NhanVien>) em.createQuery(jpql).setParameter("maBP", maBP).getResultList();
 	}
 
-	public ArrayList<NhanVien> getListNVtheoNamVaoLam(int nam) {
+	public synchronized ArrayList<NhanVien> getListNVtheoNamVaoLam(int nam) {
 		String jpql = "select nv from NhanVien nv where year(nv.ngayBatDauLamViec) = :nam";
 
 		return (ArrayList<NhanVien>) em.createQuery(jpql).setParameter("nam", nam).getResultList();
 	}
 
-	public ArrayList<NhanVien> getListNVtheoNamBP(int nam, String maBP) {
+	public synchronized ArrayList<NhanVien> getListNVtheoNamBP(int nam, String maBP) {
 		String jpql = "select nv from NhanVien nv where year(nv.ngayBatDauLamViec) = :nam and nv.boPhan.maBoPhan = :maBP";
 
 		return (ArrayList<NhanVien>) em.createQuery(jpql).setParameter("nam", nam).setParameter("maBP", maBP)
 				.getResultList();
 	}
 
-	public boolean deleteNV(String maNV) {
+	public synchronized boolean deleteNV(String maNV) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -73,7 +73,7 @@ public class NhanVien_Impl extends UnicastRemoteObject implements NhanVien_DAO {
 		}
 	}
 
-	public boolean updateNhanVien(NhanVien nv) {
+	public synchronized boolean updateNhanVien(NhanVien nv) {
 		EntityTransaction tx = em.getTransaction();
 
 		try {
@@ -88,13 +88,13 @@ public class NhanVien_Impl extends UnicastRemoteObject implements NhanVien_DAO {
 		}
 	}
 
-	public NhanVien getMotNVTuMaNV(String maNVien) {
+	public synchronized NhanVien getMotNVTuMaNV(String maNVien) {
 		String jpql = "select nv from NhanVien nv where nv.maNV = :maNV";
 
 		return (NhanVien) em.createQuery(jpql).setParameter("maNV", maNVien).getSingleResult();
 	}
 
-	public ArrayList<NhanVien> getListNVtheoBPCa(int ca, String maBP) {
+	public synchronized ArrayList<NhanVien> getListNVtheoBPCa(int ca, String maBP) {
 		String jpql = "select nv from NhanVien nv where nv.caLamViec = :ca and nv.boPhan.maBoPhan = :maBP";
 
 		return (ArrayList<NhanVien>) em.createQuery(jpql).setParameter("ca", ca).setParameter("maBP", maBP)
