@@ -1,5 +1,7 @@
 package entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "SanPham")
-public class SanPham {
+public class SanPham implements Serializable {
 	@Id
 	private String maSP;
 	@Column(name = "tenSP", columnDefinition = "NVARCHAR(255)")

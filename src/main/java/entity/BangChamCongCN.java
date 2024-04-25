@@ -1,17 +1,20 @@
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "BangChamCongCN")
-public class BangChamCongCN {
+public class BangChamCongCN implements Serializable {
 	@Id
 	private String maChamCongCN;
 	
@@ -25,13 +28,35 @@ public class BangChamCongCN {
 	private int sanLuong;
 	private boolean vangMat;
 	private boolean coPhep;
-	
 	@Column(name = "ghiChu", columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
-
+	
 	public BangChamCongCN() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public CongNhan getCn() {
+		return cn;
+	}
+
+	public void setCn(CongNhan cn) {
+		this.cn = cn;
+	}
+
+
+	public BangChamCongCN(String maChamCongCN, CongNhan cn, LocalDate ngayCham, int soGioTangCa, int caLam,
+			int sanLuong, boolean vangMat, boolean coPhep, CongNhan congNhan, String ghiChu) {
+		super();
+		this.maChamCongCN = maChamCongCN;
+		this.cn = cn;
+		this.ngayCham = ngayCham;
+		this.soGioTangCa = soGioTangCa;
+		this.caLam = caLam;
+		this.sanLuong = sanLuong;
+		this.vangMat = vangMat;
+		this.coPhep = coPhep;
+		this.ghiChu = ghiChu;
 	}
 
 	public BangChamCongCN(String maChamCongCN, CongNhan cn, LocalDate ngayCham, int soGioTangCa, int caLam,

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -135,12 +136,24 @@ public class DangNhap_GUI extends JFrame implements ActionListener, MouseListene
 			String tk = txtTK.getText();
 			String mk = String.valueOf(pwdMK.getPassword());
 			
-			TaiKhoan tonTai = Initiate.taiKhoan_DAO.soSanhPWD(tk, mk);
+			TaiKhoan tonTai = null;
+			try {
+				tonTai = Initiate.taiKhoan_DAO.soSanhPWD(tk, mk);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			if (tonTai != null) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
 				this.dispose();
-				GiaoDienChinh_GUI main = new GiaoDienChinh_GUI(tonTai);
+				GiaoDienChinh_GUI main = null;
+				try {
+					main = new GiaoDienChinh_GUI(tonTai);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				main.setVisible(true);
 			} else {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thất bại! Tài khoản hoặc mật khẩu sai");

@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import dao.CongNhan_DAO;
@@ -8,10 +10,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-public class CongNhan_Impl implements CongNhan_DAO {
+public class CongNhan_Impl extends UnicastRemoteObject implements CongNhan_DAO {
 	private EntityManager em;
 
-	public CongNhan_Impl() {
+	public CongNhan_Impl() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 

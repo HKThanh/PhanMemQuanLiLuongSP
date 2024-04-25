@@ -1,17 +1,20 @@
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "CongDoan")
-public class CongDoan {
+public class CongDoan implements Serializable {
 	@Id
 	private String maCongDoan;
 	@Column(name = "tenCongDoan", columnDefinition = "NVARCHAR(255)")
@@ -27,11 +30,43 @@ public class CongDoan {
 	@ManyToOne
 	@JoinColumn(name = "maSP")
 	private SanPham sanPham;
+	
+	@OneToMany(mappedBy = "congDoan")
+	private Set<BangPhanCongCN> bangPhanCongCNs;
 
 	public CongDoan() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public CongDoan(String maCongDoan, String tenCongDoan, int soLuongSanPham, int soLuongCongNhanDuKien,
+			double giaTien, LocalDate ngayBatDau, LocalDate ngayKetThucDuKien, boolean trangThai,
+			String congDoanTienQuyet, SanPham sanPham, Set<BangPhanCongCN> bangPhanCongCNs) {
+		super();
+		this.maCongDoan = maCongDoan;
+		this.tenCongDoan = tenCongDoan;
+		this.soLuongSanPham = soLuongSanPham;
+		this.soLuongCongNhanDuKien = soLuongCongNhanDuKien;
+		this.giaTien = giaTien;
+		this.ngayBatDau = ngayBatDau;
+		this.ngayKetThucDuKien = ngayKetThucDuKien;
+		this.trangThai = trangThai;
+		this.congDoanTienQuyet = congDoanTienQuyet;
+		this.sanPham = sanPham;
+		this.bangPhanCongCNs = bangPhanCongCNs;
+	}
+
+
+	public Set<BangPhanCongCN> getBangPhanCongCNs() {
+		return bangPhanCongCNs;
+	}
+
+
+	public void setBangPhanCongCNs(Set<BangPhanCongCN> bangPhanCongCNs) {
+		this.bangPhanCongCNs = bangPhanCongCNs;
+	}
+
 
 	public CongDoan(String maCongDoan, String tenCongDoan, int soLuongSanPham, int soLuongCongNhanDuKien,
 			double giaTien, LocalDate ngayBatDau, LocalDate ngayKetThucDuKien, boolean trangThai,

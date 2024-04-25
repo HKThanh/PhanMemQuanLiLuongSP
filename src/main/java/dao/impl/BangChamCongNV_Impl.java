@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,10 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 
-public class BangChamCongNV_Impl implements BangChamCongNV_DAO {
+public class BangChamCongNV_Impl extends UnicastRemoteObject implements BangChamCongNV_DAO {
 	private EntityManager em;
 	
-	public BangChamCongNV_Impl() {
+	public BangChamCongNV_Impl() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 	

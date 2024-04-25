@@ -3,12 +3,14 @@ package gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -98,15 +100,20 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 		
-		contentPane.add(this.createGUI());
+		try {
+			contentPane.add(this.createGUI());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		
 		setContentPane(contentPane);
 	}
 	/**
 	 * Phương thức lấy JPanel chứa giao diện của HopDong_GUI
 	 * @return
+	 * @throws RemoteException 
 	 */
-	public JPanel createGUI() {
+	public JPanel createGUI() throws RemoteException {
 		hd_DAO = Initiate.hopDong_DAO;
 		sp_DAO = Initiate.sanPham_DAO;
 		
@@ -296,8 +303,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * cre: Huỳnh Kim Thành
 	 * Phương thức cập nhật combobox hiển thị năm kí hợp đồng
+	 * @throws RemoteException 
 	 */
-	private void capNhatCBONam() {
+	private void capNhatCBONam() throws RemoteException {
 		for (Integer year : hd_DAO.getDSNamKiHopDong()) {
 			modelCBONam.addElement(year.toString());
 		}
@@ -305,8 +313,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * cre: Huỳnh Kim Thành
 	 * Phương thức cập nhật danh sách hợp đồng từ database vào table
+	 * @throws RemoteException 
 	 */
-	private void layDSHopDongTuDB() {
+	private void layDSHopDongTuDB() throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -318,8 +327,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * cre: Huỳnh Kim Thành
 	 * Phương thức cập nhật danh sách hợp đồng theo trạng thái từ database vào table
+	 * @throws RemoteException 
 	 */
-	private void layDSHopDongTheoTrangThaiTuDB(boolean trangThai) {
+	private void layDSHopDongTheoTrangThaiTuDB(boolean trangThai) throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -331,8 +341,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * cre: Huỳnh Kim Thành
 	 * Phương thức cập nhật danh sách hợp đồng theo năm từ database vào table
+	 * @throws RemoteException 
 	 */
-	private void layDSHopDongTheoNamTuDB(int nam) {
+	private void layDSHopDongTheoNamTuDB(int nam) throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -344,8 +355,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	/**
 	 * cre: Huỳnh Kim Thành
 	 * Phương thức cập nhật danh sách hợp đồng theo năm và trạng thái từ database vào table
+	 * @throws RemoteException 
 	 */
-	private void layDSHopDongTheoNamVaTTTuDB(int nam, boolean tinhTrang) {
+	private void layDSHopDongTheoNamVaTTTuDB(int nam, boolean tinhTrang) throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		modelDSHopDong.setRowCount(0);
 		
@@ -365,18 +377,28 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 			LocalDate ngayKi = dcNgayKi.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate ngayThanhLi = dcNgayThanhLi.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			
-			String maHopDong = taoMaHopDong(ngayKi);
+			String maHopDong = null;
+			try {
+				maHopDong = taoMaHopDong(ngayKi);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			if (validation()) {
 				HopDong hd = new HopDong(maHopDong, tenDoiTac, ngayKi, ngayThanhLi, false);
-				if (hd_DAO.insertHopDong(hd)) {
-					modelDSHopDong.addRow(new Object[] {maHopDong, tenDoiTac, ngayKi.format(dtf), ngayThanhLi.format(dtf), "Chưa thanh lí"});
-					if (!hd_DAO.getDSNamKiHopDong().contains(ngayKi.getYear())) {
-						capNhatCBONam();
+				try {
+					if (hd_DAO.insertHopDong(hd)) {
+						modelDSHopDong.addRow(new Object[] {maHopDong, tenDoiTac, ngayKi.format(dtf), ngayThanhLi.format(dtf), "Chưa thanh lí"});
+						if (!hd_DAO.getDSNamKiHopDong().contains(ngayKi.getYear())) {
+							capNhatCBONam();
+						}
+						JOptionPane.showMessageDialog(null, "Thêm hợp đồng thành công");
+					} else {
+						JOptionPane.showMessageDialog(null, "Thêm hợp đồng thất bại! Hợp đồng đã tồn tại");
 					}
-					JOptionPane.showMessageDialog(null, "Thêm hợp đồng thành công");
-				} else {
-					JOptionPane.showMessageDialog(null, "Thêm hợp đồng thất bại! Hợp đồng đã tồn tại");
+				} catch (HeadlessException | RemoteException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -388,30 +410,34 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 				JOptionPane.showMessageDialog(null, "Hợp đồng này đã thanh lí");
 			} else {
 				String maHD = tblDSHopDong.getValueAt(row, 0).toString();
-				HopDong hd = hd_DAO.getMotHopDong(maHD);
-				
-				if (hd != null) {
-					boolean checkListSP = true;
+				try {
+					HopDong hd = hd_DAO.getMotHopDong(maHD);
 					
-					List<SanPham> listSPDaHoanThanh = sp_DAO.getDSSanPhamTheoHopDong(maHD);
-					
-					if (listSPDaHoanThanh.size() == 0) {
-						JOptionPane.showMessageDialog(null, "Hợp đồng này chưa có sản phẩm");
-					} else {
-						for (SanPham sp : listSPDaHoanThanh) {
-							if (!sp.isTrangThai()) {
-								checkListSP = false;
+					if (hd != null) {
+						boolean checkListSP = true;
+						
+						List<SanPham> listSPDaHoanThanh = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+						
+						if (listSPDaHoanThanh.size() == 0) {
+							JOptionPane.showMessageDialog(null, "Hợp đồng này chưa có sản phẩm");
+						} else {
+							for (SanPham sp : listSPDaHoanThanh) {
+								if (!sp.isTrangThai()) {
+									checkListSP = false;
+								}
+							}
+							
+							if (checkListSP) {
+								hd.setTrangThai(true);
+								hd_DAO.updateHopDong(hd);
+								tblDSHopDong.setValueAt("Đã thanh lí", row, 4);
+							} else {
+								JOptionPane.showMessageDialog(null, "Hợp đồng này còn sản phẩm chưa hoàn thành");
 							}
 						}
-						
-						if (checkListSP) {
-							hd.setTrangThai(true);
-							hd_DAO.updateHopDong(hd);
-							tblDSHopDong.setValueAt("Đã thanh lí", row, 4);
-						} else {
-							JOptionPane.showMessageDialog(null, "Hợp đồng này còn sản phẩm chưa hoàn thành");
-						}
 					}
+				} catch (HeadlessException | RemoteException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -428,21 +454,26 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 				LocalDate ngayThanhLi = dcNgayThanhLi.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				
 				String maHD = tblDSHopDong.getValueAt(row, 0).toString();
-				HopDong hd = hd_DAO.getMotHopDong(maHD);
-				
-				if (validation()) {
-					if (ngayThanhLi.isAfter(hd.getNgayThanhLyHopDong()))
-						hd.setTrangThai(false);
-					else
-						hd.setTrangThai(true);
-					hd.setTenDoiTac(tenDoiTac);
-					hd.setNgayKy(ngayKi);
-					hd.setNgayThanhLyHopDong(ngayThanhLi);
+				try {
+					HopDong hd = hd_DAO.getMotHopDong(maHD);
 					
-					if (hd_DAO.updateHopDong(hd)) {
-						JOptionPane.showMessageDialog(null, "Đã sửa hợp đồng thành công");
-						layDSHopDongTuDB();
+					if (validation()) {
+						if (ngayThanhLi.isAfter(hd.getNgayThanhLyHopDong()))
+							hd.setTrangThai(false);
+						else
+							hd.setTrangThai(true);
+						hd.setTenDoiTac(tenDoiTac);
+						hd.setNgayKy(ngayKi);
+						hd.setNgayThanhLyHopDong(ngayThanhLi);
+						
+						if (hd_DAO.updateHopDong(hd)) {
+							JOptionPane.showMessageDialog(null, "Đã sửa hợp đồng thành công");
+							layDSHopDongTuDB();
+						}
 					}
+				} catch (HeadlessException | RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -452,11 +483,16 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xoá hợp đồng này?", "Lưu Ý", JOptionPane.YES_NO_OPTION);
 			
 			if (luaChon == JOptionPane.YES_OPTION) {
-				if (hd_DAO.deleteHopDong((String) tblDSHopDong.getValueAt(row, 0))) {
-					modelDSHopDong.removeRow(row);
-					JOptionPane.showMessageDialog(null, "Xoá thành công!");
-				} else {
-					JOptionPane.showMessageDialog(null, "Xoá thất bại! Không tìm thấy hợp đồng cần xoá");
+				try {
+					if (hd_DAO.deleteHopDong((String) tblDSHopDong.getValueAt(row, 0))) {
+						modelDSHopDong.removeRow(row);
+						JOptionPane.showMessageDialog(null, "Xoá thành công!");
+					} else {
+						JOptionPane.showMessageDialog(null, "Xoá thất bại! Không tìm thấy hợp đồng cần xoá");
+					}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -477,35 +513,50 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 		}
 		
 		if (o.equals(cboTrangThai)) {
-			switch (cboTrangThai.getSelectedItem().toString()) {
-			
-			case "Hiển thị tất cả" -> layDSHopDongTuDB();
-			case "Chưa thanh lí" -> layDSHopDongTheoTrangThaiTuDB(false);
-			case "Đã thanh lí" -> layDSHopDongTheoTrangThaiTuDB(true);
-			
-			default ->
-			throw new IllegalArgumentException("Unexpected value: " + cboTrangThai.getSelectedItem());
+			try {
+				switch (cboTrangThai.getSelectedItem().toString()) {
+				
+				case "Hiển thị tất cả" -> layDSHopDongTuDB();
+				case "Chưa thanh lí" -> layDSHopDongTheoTrangThaiTuDB(false);
+				case "Đã thanh lí" -> layDSHopDongTheoTrangThaiTuDB(true);
+				
+				default ->
+				throw new IllegalArgumentException("Unexpected value: " + cboTrangThai.getSelectedItem());
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 		
 		if (o.equals(cboNam)) {
 			String strNam = cboNam.getSelectedItem().toString();
 			int year = Integer.parseInt(strNam);
-			layDSHopDongTheoNamTuDB(year);
+			try {
+				layDSHopDongTheoNamTuDB(year);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		if (o.equals(chkNamVaTT)) {
 			int year = Integer.parseInt(cboNam.getSelectedItem().toString());
 			String trangThai = cboTrangThai.getSelectedItem().toString();
 			
-			switch (trangThai) {
-			
-			case "Hiển thị tất cả" -> layDSHopDongTheoNamTuDB(year);
-			case "Chưa thanh lí" -> layDSHopDongTheoNamVaTTTuDB(year, false);
-			case "Đã thanh lí" -> layDSHopDongTheoNamVaTTTuDB(year, true);
-			
-			default ->
-			throw new IllegalArgumentException("Unexpected value: " + trangThai);
+			try {
+				switch (trangThai) {
+				
+				case "Hiển thị tất cả" -> layDSHopDongTheoNamTuDB(year);
+				case "Chưa thanh lí" -> layDSHopDongTheoNamVaTTTuDB(year, false);
+				case "Đã thanh lí" -> layDSHopDongTheoNamVaTTTuDB(year, true);
+				
+				default ->
+				throw new IllegalArgumentException("Unexpected value: " + trangThai);
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -513,8 +564,9 @@ public class HopDong_GUI extends JFrame implements ActionListener, MouseListener
 	 * Phương thức tạo mã hợp đồng dựa trên ngày kí và số thứ tự thêm hợp đồng theo ngày kí
 	 * @param ngayKi
 	 * @return String maHopDong
+	 * @throws RemoteException 
 	 */
-	private String taoMaHopDong(LocalDate ngayKi) {
+	private String taoMaHopDong(LocalDate ngayKi) throws RemoteException {
 		int numOfHopDong = 0;
 		
 		int day = ngayKi.getDayOfMonth();

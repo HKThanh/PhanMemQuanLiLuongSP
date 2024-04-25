@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -12,10 +14,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-public class TaiKhoan_Impl implements TaiKhoan_DAO {
+public class TaiKhoan_Impl extends UnicastRemoteObject implements TaiKhoan_DAO {
 	private EntityManager em;
 
-	public TaiKhoan_Impl() {
+	public TaiKhoan_Impl() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 

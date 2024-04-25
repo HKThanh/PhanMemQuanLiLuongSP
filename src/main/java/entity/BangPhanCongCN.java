@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -10,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "BangPhanCongCN")
-public class BangPhanCongCN {
+public class BangPhanCongCN implements Serializable {
 	@Id
 	private String maPhanCong;
 	private boolean trangThai;

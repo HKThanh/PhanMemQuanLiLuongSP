@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,10 +13,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-public class HopDong_Impl implements HopDong_DAO {
+public class HopDong_Impl extends UnicastRemoteObject implements HopDong_DAO {
 	private EntityManager em;
 
-	public HopDong_Impl() {
+	public HopDong_Impl() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 

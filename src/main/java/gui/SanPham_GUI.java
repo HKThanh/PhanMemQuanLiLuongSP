@@ -3,10 +3,12 @@ package gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	private JTable tblHopDong;
 	private JComboBox<String> cboTrangThai;
 	private JTextField txtSoLuong;
-	
+
 	private HopDong_DAO hd_DAO;
 	private SanPham_DAO sp_DAO;
 	private CongDoan_DAO cd_DAO;
@@ -76,66 +78,69 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws RemoteException
 	 */
-	public SanPham_GUI() {
+	public SanPham_GUI() throws RemoteException {
 		setSize(1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		
+
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
-		
+
 		contentPane.add(this.createGUI());
-		
+
 		setContentPane(contentPane);
 	}
 
-	public JPanel createGUI() {
-		
+	public JPanel createGUI() throws RemoteException {
+
 		hd_DAO = Initiate.hopDong_DAO;
 		sp_DAO = Initiate.sanPham_DAO;
 		cd_DAO = new CongDoan_Impl();
-		
+
 		JPanel pnlSP = new JPanel();
 		pnlSP.setBackground(new Color(240, 248, 255));
 		pnlSP.setBounds(0, 50, 1268, 632);
 		pnlSP.setLayout(null);
-		
+
 		JPanel pnlThongTin = new JPanel();
-		pnlThongTin.setBorder(new TitledBorder(null, "Th\u00F4ng Tin", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnlThongTin.setBorder(
+				new TitledBorder(null, "Th\u00F4ng Tin", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnlThongTin.setBackground(new Color(240, 248, 255));
 		pnlThongTin.setBounds(348, 10, 450, 150);
 		pnlSP.add(pnlThongTin);
 		pnlThongTin.setLayout(null);
-		
+
 		JLabel lblTenSanPham = new JLabel("Tên sản phẩm:");
 		lblTenSanPham.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblTenSanPham.setBounds(10, 60, 120, 30);
 		pnlThongTin.add(lblTenSanPham);
-		
+
 		txtTenSanPham = new JTextField();
 		txtTenSanPham.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtTenSanPham.setBounds(150, 60, 280, 30);
 		pnlThongTin.add(txtTenSanPham);
 		txtTenSanPham.setColumns(14);
-		
+
 		JLabel lblTenDoiTac = new JLabel("Tên đối tác:");
 		lblTenDoiTac.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblTenDoiTac.setBounds(10, 20, 140, 30);
 		pnlThongTin.add(lblTenDoiTac);
-		
+
 		JLabel lblSoLuong = new JLabel("Số lượng:");
 		lblSoLuong.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblSoLuong.setBounds(10, 100, 120, 30);
 		pnlThongTin.add(lblSoLuong);
-		
+
 		txtSoLuong = new JTextField();
 		txtSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtSoLuong.setColumns(14);
 		txtSoLuong.setBounds(150, 100, 280, 30);
 		pnlThongTin.add(txtSoLuong);
-		
+
 		txtTenDoiTac = new JTextField();
 		txtTenDoiTac.setBackground(new Color(240, 248, 255));
 		txtTenDoiTac.setEditable(false);
@@ -143,43 +148,46 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		txtTenDoiTac.setColumns(14);
 		txtTenDoiTac.setBounds(150, 20, 280, 30);
 		pnlThongTin.add(txtTenDoiTac);
-		
+
 		JPanel pnlChucNang = new JPanel();
 		pnlChucNang.setLayout(null);
-		pnlChucNang.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Ch\u1EE9c N\u0103ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlChucNang.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+				"Ch\u1EE9c N\u0103ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnlChucNang.setBackground(new Color(240, 248, 255));
 		pnlChucNang.setBounds(798, 10, 460, 150);
 		pnlSP.add(pnlChucNang);
-		
+
 		btnThem = new JButton("Thêm");
 		btnThem.setBackground(new Color(255, 255, 255));
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnThem.setBounds(30, 36, 170, 40);
 		btnThem.setIcon(new ImageIcon("img\\icons\\icons8-add-20.png"));
 		pnlChucNang.add(btnThem);
-		
+
 		btnXoa = new JButton("Xoá");
 		btnXoa.setBackground(new Color(255, 255, 255));
 		btnXoa.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnXoa.setBounds(250, 36, 170, 40);
 		btnXoa.setIcon(new ImageIcon("img\\icons\\icons8-delete-20.png"));
 		pnlChucNang.add(btnXoa);
-		
+
 		btnSua = new JButton("Sửa");
 		btnSua.setBackground(new Color(255, 255, 255));
 		btnSua.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnSua.setBounds(250, 86, 170, 40);
 		btnSua.setIcon(new ImageIcon("img\\icons\\icons8-pencil-20.png"));
 		pnlChucNang.add(btnSua);
-		
+
 		btnXacNhan = new JButton("Đã xong");
 		btnXacNhan.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnXacNhan.setBackground(Color.WHITE);
 		btnXacNhan.setBounds(30, 86, 170, 40);
 		btnXacNhan.setIcon(new ImageIcon("img\\icons\\icons8-check-20.png"));
 		pnlChucNang.add(btnXacNhan);
-		
-		String header[] = {"Mã hợp đồng", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Số lượng công đoạn", "Ngày thanh lí", "Trạng Thái"};
+
+		String header[] = { "Mã hợp đồng", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Số lượng công đoạn",
+				"Ngày thanh lí", "Trạng Thái" };
 		modelDSSanPham = new DefaultTableModel(header, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -189,36 +197,38 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		tblDSSanPham = new JTable(modelDSSanPham);
 		tblDSSanPham.setRowHeight(30);
 		tblDSSanPham.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		
+
 		JScrollPane scrDSSanPham = new JScrollPane(tblDSSanPham);
 		scrDSSanPham.setBounds(10, 161, 1248, 460);
 		pnlSP.add(scrDSSanPham);
-		
+
 		JPanel pnlHopDong = new JPanel();
-		pnlHopDong.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "H\u1EE3p \u0110\u1ED3ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlHopDong.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+				"H\u1EE3p \u0110\u1ED3ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnlHopDong.setBackground(new Color(240, 248, 255));
 		pnlHopDong.setBounds(10, 10, 340, 150);
 		pnlSP.add(pnlHopDong);
 		pnlHopDong.setLayout(null);
-		
-		String headerHopDong[] = {"Mã hợp đồng", "Ngày ký"};
+
+		String headerHopDong[] = { "Mã hợp đồng", "Ngày ký" };
 		modelTblHopDong = new DefaultTableModel(headerHopDong, 0);
 		tblHopDong = new JTable(modelTblHopDong);
 		tblHopDong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tblHopDong.setRowHeight(20);
-		
+
 		hienThiDSHopDongTheoTT(false);
-		
+
 		JScrollPane scrHopDong = new JScrollPane(tblHopDong);
 		scrHopDong.setLocation(10, 50);
 		scrHopDong.setSize(320, 90);
 		pnlHopDong.add(scrHopDong);
-		
+
 		JLabel lblTrangThai = new JLabel("Trạng Thái:");
 		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblTrangThai.setBounds(10, 14, 100, 26);
 		pnlHopDong.add(lblTrangThai);
-		
+
 		modelCBOTrangThai = new DefaultComboBoxModel<String>();
 		cboTrangThai = new JComboBox<String>(modelCBOTrangThai);
 		cboTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -227,42 +237,48 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 		modelCBOTrangThai.addElement("Đã hoàn thành");
 		modelCBOTrangThai.addElement("Chưa hoàn thành");
 		cboTrangThai.setSelectedIndex(2);
-		
+
 		pnlHopDong.add(cboTrangThai);
-		
+
 		btnThem.addActionListener(this);
 		btnXacNhan.addActionListener(this);
-	    btnXoa.addActionListener(this);
-	    btnSua.addActionListener(this);
-	    tblDSSanPham.addMouseListener(this);
-	    cboTrangThai.addActionListener(this);
-	    tblHopDong.addMouseListener(this);
-		
+		btnXoa.addActionListener(this);
+		btnSua.addActionListener(this);
+		tblDSSanPham.addMouseListener(this);
+		cboTrangThai.addActionListener(this);
+		tblHopDong.addMouseListener(this);
+
 		return pnlSP;
 	}
+
 	/**
 	 * Phương thức hiển thị danh sách hợp đồng trên model
+	 * 
+	 * @throws RemoteException
 	 */
-	private void hienThiDSHopDong() {
+	private void hienThiDSHopDong() throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		List<HopDong> listHD = hd_DAO.getDSHopDong();
-		
+
 		modelTblHopDong.setRowCount(0);
 		for (HopDong hopDong : listHD) {
-			modelTblHopDong.addRow(new Object[] {hopDong.getMaHopDong(), hopDong.getNgayKy().format(dtf)});
+			modelTblHopDong.addRow(new Object[] { hopDong.getMaHopDong(), hopDong.getNgayKy().format(dtf) });
 		}
 	}
+
 	/**
 	 * Phương thức hiển thị danh sách các hợp đồng theo trạng thái trên modelTable
+	 * 
 	 * @param trangThai
+	 * @throws RemoteException
 	 */
-	private void hienThiDSHopDongTheoTT(boolean trangThai) {
+	private void hienThiDSHopDongTheoTT(boolean trangThai) throws RemoteException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		List<HopDong> listHD = hd_DAO.getListHDTheoTrangThai(trangThai);
-		
+
 		modelTblHopDong.setRowCount(0);
 		for (HopDong hopDong : listHD) {
-			modelTblHopDong.addRow(new Object[] {hopDong.getMaHopDong(), hopDong.getNgayKy().format(dtf)});
+			modelTblHopDong.addRow(new Object[] { hopDong.getMaHopDong(), hopDong.getNgayKy().format(dtf) });
 		}
 	}
 
@@ -280,20 +296,23 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 //	}
 	/**
 	 * Hiển thị danh sách sản phẩm theo mã hợp đồng trên modelTable
+	 * 
 	 * @param maHD
+	 * @throws RemoteException
 	 */
-	private void layDSSanPhamTheoHopDongTuDB(String maHD) {
+	private void layDSSanPhamTheoHopDongTuDB(String maHD) throws RemoteException {
 //		sp_DAO = new SanPham_Impl();
 		List<SanPham> listSP = sp_DAO.getDSSanPhamTheoHopDong(maHD);
 		modelDSSanPham.setRowCount(0);
-		
+
 		for (SanPham sanPham : listSP) {
 			HopDong hd = hd_DAO.getMotHopDong(maHD);
-			modelDSSanPham.addRow(new Object[] {hd.getMaHopDong(), sanPham.getMaSP(), sanPham.getTenSP(), sanPham.getSoLuong(),
-					sanPham.getSoLuongCongDoan(), hd.getNgayThanhLyHopDong().format(dtfVN), sanPham.isTrangThai() ? "Đã hoàn thành" : "Chưa hoàn thành"});
+			modelDSSanPham.addRow(new Object[] { hd.getMaHopDong(), sanPham.getMaSP(), sanPham.getTenSP(),
+					sanPham.getSoLuong(), sanPham.getSoLuongCongDoan(), hd.getNgayThanhLyHopDong().format(dtfVN),
+					sanPham.isTrangThai() ? "Đã hoàn thành" : "Chưa hoàn thành" });
 		}
 	}
-	
+
 //	private void layDSSanPhamTheoTrangThaiTuDB(boolean trangThai) {
 //		sp_DAO = new SanPham_DAO();
 //		hd_DAO = new HopDong_DAO();
@@ -321,17 +340,18 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 //	}
 	/**
 	 * Phương thức kiểm tra dữ liệu nhập vào các JTextField
+	 * 
 	 * @return true nếu toàn bộ đều hợp lệ, ngược lại trả về false
 	 */
 	private boolean validation() {
 		String tenSanPham = txtTenSanPham.getText().trim();
 		String soLuong_String = txtSoLuong.getText().trim();
-		
+
 		if (tenSanPham.length() == 0 || !tenSanPham.matches("^[\\p{L}0-9&,-]+(\\s?[\\p{L}0-9&,-]*)*")) {
 			thongBaoLoiNhapDuLieu(txtTenSanPham, "Tên đối tác không được để trống");
 			return false;
 		}
-		
+
 		try {
 			int soLuong = Integer.parseInt(soLuong_String);
 			if (soLuong <= 0) {
@@ -343,11 +363,14 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
+
 	/**
-	 * Hàm thông báo lỗi, khi nhập dữ liệu sai thì trỏ vào txt chứa chuỗi không hợp lệ
+	 * Hàm thông báo lỗi, khi nhập dữ liệu sai thì trỏ vào txt chứa chuỗi không hợp
+	 * lệ
+	 * 
 	 * @param txt
 	 * @param mess
 	 */
@@ -360,30 +383,33 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
-		
+
 		if (o.equals(tblDSSanPham)) {
 			int row = tblDSSanPham.getSelectedRow();
-			
+
 			txtTenSanPham.setText(modelDSSanPham.getValueAt(row, 2).toString());
 			txtSoLuong.setText(tblDSSanPham.getValueAt(row, 3).toString());
 		}
-		
+
 		if (o.equals(tblHopDong)) {
 			int rowHopDong = tblHopDong.getSelectedRow();
-			txtTenDoiTac.setText(hd_DAO.getMotHopDong(tblHopDong
-							.getValueAt(rowHopDong, 0)
-							.toString())
-							.getTenDoiTac());
-			String maHD = modelTblHopDong.getValueAt(rowHopDong, 0).toString();
-			
-			List<SanPham> listSPTheoHD = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+			try {
+				txtTenDoiTac
+						.setText(hd_DAO.getMotHopDong(tblHopDong.getValueAt(rowHopDong, 0).toString()).getTenDoiTac());
+				String maHD = modelTblHopDong.getValueAt(rowHopDong, 0).toString();
 
-			modelDSSanPham.setRowCount(0);
-			
-			for (SanPham sp : listSPTheoHD) {
-				modelDSSanPham.addRow(new Object[] {sp.getHopDong().getMaHopDong(), sp.getMaSP(), sp.getTenSP(),
-						sp.getSoLuong(), sp.getSoLuongCongDoan(), sp.getHopDong().getNgayThanhLyHopDong(),
-						sp.isTrangThai() ? "Đã hoàn thành" : "Chưa hoàn thành"});
+				List<SanPham> listSPTheoHD = sp_DAO.getDSSanPhamTheoHopDong(maHD);
+
+				modelDSSanPham.setRowCount(0);
+
+				for (SanPham sp : listSPTheoHD) {
+					modelDSSanPham.addRow(new Object[] { sp.getHopDong().getMaHopDong(), sp.getMaSP(), sp.getTenSP(),
+							sp.getSoLuong(), sp.getSoLuongCongDoan(), sp.getHopDong().getNgayThanhLyHopDong(),
+							sp.isTrangThai() ? "Đã hoàn thành" : "Chưa hoàn thành" });
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -391,44 +417,56 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		
+
 		if (o.equals(btnThem)) {
 //			hd_DAO = new HopDong_Impl();
 			String tenSP = txtTenSanPham.getText().trim();
 			String soLuong_String = txtSoLuong.getText().trim();
-			
+
 			if (validation()) {
 				int soLuong = Integer.parseInt(soLuong_String);
 				int rowHopDong = tblHopDong.getSelectedRow();
-				
+
 				String maHD = modelTblHopDong.getValueAt(rowHopDong, 0).toString();
-				String maSP = taoMaSP(maHD);
-				HopDong hd = hd_DAO.getMotHopDong(maHD);
-				
+				String maSP = null;
+				try {
+					maSP = taoMaSP(maHD);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				HopDong hd = null;
+				try {
+					hd = hd_DAO.getMotHopDong(maHD);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				try {
 					SanPham sp = new SanPham(maSP, tenSP, soLuong, 0, false, hd);
 					sp_DAO.insertSanPham(sp);
@@ -438,22 +476,34 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 				}
 			}
 		}
-		
+
 		if (o.equals(btnXacNhan)) {
 			int row = tblDSSanPham.getSelectedRow();
 			boolean trangThaiCuaCongDoan = true;
-			
-			if (row == -1) 
+
+			if (row == -1)
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xác nhận đã hoàn thành");
 			else {
 				if (tblDSSanPham.getValueAt(row, 6).toString().equals("Đã hoàn thành")) {
 					JOptionPane.showMessageDialog(null, "Sản phẩm này đã hoàn thành");
 				} else {
 					String maSP = tblDSSanPham.getValueAt(row, 0).toString();
-					SanPham sp = sp_DAO.getMotSanPham(maSP);
-					
-					List<CongDoan> listCD = cd_DAO.getDSCongDoanTheoMaSP(maSP);
-					
+					SanPham sp = null;
+					try {
+						sp = sp_DAO.getMotSanPham(maSP);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					List<CongDoan> listCD = null;
+					try {
+						listCD = cd_DAO.getDSCongDoanTheoMaSP(maSP);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
 					if (listCD.size() == 0) {
 						JOptionPane.showMessageDialog(null, "Sản phẩm này chưa có công đoạn");
 					} else {
@@ -462,11 +512,16 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 								trangThaiCuaCongDoan = false;
 							}
 						}
-						
+
 						if (trangThaiCuaCongDoan) {
 							if (sp != null) {
 								sp.setTrangThai(true);
-								sp_DAO.updateSanPham(sp);
+								try {
+									sp_DAO.updateSanPham(sp);
+								} catch (RemoteException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								tblDSSanPham.setValueAt("Đã hoàn thành", row, 4);
 							}
 						} else {
@@ -476,11 +531,12 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 				}
 			}
 		}
-		
+
 		if (o.equals(btnSua)) {
 			int row = tblDSSanPham.getSelectedRow();
-			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn sửa sản phẩm này không?", "Lưu Ý", JOptionPane.YES_NO_OPTION);
-			
+			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn sửa sản phẩm này không?", "Lưu Ý",
+					JOptionPane.YES_NO_OPTION);
+
 			if (row == -1)
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần sửa!!!");
 			else {
@@ -488,64 +544,87 @@ public class SanPham_GUI extends JFrame implements ActionListener, MouseListener
 					String maSP = tblDSSanPham.getValueAt(row, 1).toString();
 					String tenSP = txtTenSanPham.getText().trim();
 					String soLuong_String = txtSoLuong.getText().trim();
-					
+
 					if (validation()) {
-						SanPham spSua = sp_DAO.getMotSanPham(maSP);
+						SanPham spSua = null;
+						try {
+							spSua = sp_DAO.getMotSanPham(maSP);
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						try {
 							spSua.setTenSP(tenSP);
 							spSua.setSoLuong(Integer.parseInt(soLuong_String));
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-						if (sp_DAO.updateSanPham(spSua)) {
-							JOptionPane.showMessageDialog(null, "Sản phẩm đã sửa thành công");
-							layDSSanPhamTheoHopDongTuDB(spSua.getHopDong().getMaHopDong());
+						try {
+							if (sp_DAO.updateSanPham(spSua)) {
+								JOptionPane.showMessageDialog(null, "Sản phẩm đã sửa thành công");
+								layDSSanPhamTheoHopDongTuDB(spSua.getHopDong().getMaHopDong());
+							}
+						} catch (HeadlessException | RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
 					}
 				}
 			}
 		}
-		
+
 		if (o.equals(btnXoa)) {
 			int row = tblDSSanPham.getSelectedRow();
-			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xoá cột này?", "Lưu Ý", JOptionPane.YES_NO_OPTION);
-			
+			int luaChon = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xoá cột này?", "Lưu Ý",
+					JOptionPane.YES_NO_OPTION);
+
 			if (row == -1)
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xoá!!!");
 			else {
 				if (luaChon == JOptionPane.YES_OPTION) {
-					if (sp_DAO.deleteSanPham((String) tblDSSanPham.getValueAt(row, 1))) {
-						modelDSSanPham.removeRow(row);
-						JOptionPane.showMessageDialog(null, "Xoá thành công!");
-					} else {
-						JOptionPane.showMessageDialog(null, "Xoá thất bại! Không tìm thấy hợp đồng cần xoá");
+					try {
+						if (sp_DAO.deleteSanPham((String) tblDSSanPham.getValueAt(row, 1))) {
+							modelDSSanPham.removeRow(row);
+							JOptionPane.showMessageDialog(null, "Xoá thành công!");
+						} else {
+							JOptionPane.showMessageDialog(null, "Xoá thất bại! Không tìm thấy hợp đồng cần xoá");
+						}
+					} catch (HeadlessException | RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 			}
 		}
-		
+
 		if (o.equals(cboTrangThai)) {
-			switch (cboTrangThai.getSelectedItem().toString()) {
-			
-			case "Hiển thị tất cả" -> hienThiDSHopDong();
-			case "Đã hoàn thành" -> hienThiDSHopDongTheoTT(true);
-			case "Chưa hoàn thành" -> hienThiDSHopDongTheoTT(false);
-			
-			default ->
-			throw new IllegalArgumentException("Unexpected value: " + cboTrangThai.getSelectedItem());
+			try {
+				switch (cboTrangThai.getSelectedItem().toString()) {
+
+				case "Hiển thị tất cả" -> hienThiDSHopDong();
+				case "Đã hoàn thành" -> hienThiDSHopDongTheoTT(true);
+				case "Chưa hoàn thành" -> hienThiDSHopDongTheoTT(false);
+
+				default -> throw new IllegalArgumentException("Unexpected value: " + cboTrangThai.getSelectedItem());
+				}
+			} catch (RemoteException e2) {
+				// TODO: handle exception
 			}
 		}
 	}
+
 	/**
 	 * Phương thức tạo mã sản phẩm dựa trên mã hợp đồng
+	 * 
 	 * @param maHD
 	 * @return String maSP
+	 * @throws RemoteException 
 	 */
-	private String taoMaSP(String maHD) {
+	private String taoMaSP(String maHD) throws RemoteException {
 		HopDong hd = hd_DAO.getMotHopDong(maHD);
 		String maCanTao = "00";
-	
-		return hd.getMaHopDong() + maCanTao.substring(0, String.valueOf(sp_DAO.getSizeCuaDSTheoHopDong(maHD)).length()) 
-		+ sp_DAO.getSizeCuaDSTheoHopDong(maHD);
+
+		return hd.getMaHopDong() + maCanTao.substring(0, String.valueOf(sp_DAO.getSizeCuaDSTheoHopDong(maHD)).length())
+				+ sp_DAO.getSizeCuaDSTheoHopDong(maHD);
 	}
 }
