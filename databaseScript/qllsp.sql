@@ -1,203 +1,205 @@
-﻿use master
-go
+﻿--use master
+--go
 
-drop database QLLSP
-go
+--drop database QLLSP
+--go
 
-CREATE DATABASE QLLSP ON
-(NAME = QQLSP_dat,
-    FILENAME = 'T:\QLLSP\QLLSP.mdf',
-    SIZE = 10 MB,
-    MAXSIZE = 512 MB,
-    FILEGROWTH = 5 MB)
-LOG ON
-(NAME = QQLSP_log,
-    FILENAME = 'T:\QLLSP\QLLSP.ldf',
-    SIZE = 5 MB,
-    MAXSIZE = 25 MB,
-    FILEGROWTH = 5 MB)
-GO
+--CREATE DATABASE QLLSP ON
+--(NAME = QQLSP_dat,
+--    FILENAME = 'T:\QLLSP\QLLSP.mdf',
+--    SIZE = 10 MB,
+--    MAXSIZE = 512 MB,
+--    FILEGROWTH = 5 MB)
+--LOG ON
+--(NAME = QQLSP_log,
+--    FILENAME = 'T:\QLLSP\QLLSP.ldf',
+--    SIZE = 5 MB,
+--    MAXSIZE = 25 MB,
+--    FILEGROWTH = 5 MB)
+--GO
 
-use QLLSP
-go
+--use QLLSP
+--go
 
-create table Xuong (
-	maXuong nvarchar(3) not null primary key,
-	tenXuong nvarchar(40) not null,
-	diaChi nvarchar(50) not null,
-)
+--create table Xuong (
+--	maXuong nvarchar(3) not null primary key,
+--	tenXuong nvarchar(40) not null,
+--	diaChi nvarchar(50) not null,
+--)
 
-create table CongNhan (
-	maCN nvarchar(8) not null primary key,
-	anhDaiDien varbinary(max),
-	ho nvarchar (60) not null,
-	ten nvarchar (10) not null,
-	gioiTinh bit,
-	ngaySinh date,
-	cCCD nvarchar(12) not null,
-	diaChi nvarchar (120),
-	soDienThoai nvarchar(10),
-	chuyenMon nvarchar(20),
-	caLamViec int,
-	phuCap float,
-	luongCoBan float,
-	ngayBatDauLamViec date not null,
-	maXuong nvarchar(3),
-	constraint FK_Xuong foreign key (maXuong)
-	references Xuong(maXuong)
-)
+--create table CongNhan (
+--	maCN nvarchar(8) not null primary key,
+--	anhDaiDien varbinary(max),
+--	ho nvarchar (60) not null,
+--	ten nvarchar (10) not null,
+--	gioiTinh bit,
+--	ngaySinh date,
+--	cCCD nvarchar(12) not null,
+--	diaChi nvarchar (120),
+--	soDienThoai nvarchar(10),
+--	chuyenMon nvarchar(20),
+--	caLamViec int,
+--	phuCap float,
+--	luongCoBan float,
+--	ngayBatDauLamViec date not null,
+--	maXuong nvarchar(3),
+--	constraint FK_Xuong foreign key (maXuong)
+--	references Xuong(maXuong)
+--)
 
-create table BangLuongCongNhan (
-	maLuongCN nvarchar(12) not null primary key,
-	maCN nvarchar(8) not null,
-	thang int,
-	nam int,
-	sanLuongTong int,
-	soNgayNghiKhongPhep int,
-	tienPhat float,
-	bhxh float,
-	luongTong float,
-	constraint FK_BLCN foreign key (maCN)
-	references CongNhan(maCN)
-)
+--create table BangLuongCongNhan (
+--	maLuongCN nvarchar(12) not null primary key,
+--	maCN nvarchar(8) not null,
+--	thang int,
+--	nam int,
+--	sanLuongTong int,
+--	soNgayNghiKhongPhep int,
+--	tienPhat float,
+--	bhxh float,
+--	luongTong float,
+--	constraint FK_BLCN foreign key (maCN)
+--	references CongNhan(maCN)
+--)
 
-create table BangChamCongCongNhan (
-	maCC nvarchar(14) not null primary key,
-	ngayCham date not null,
-	maCN nvarchar(8) not null,
-	vangMat bit,
-	coPhep bit,
-	soGioTangCa int,
-	sanLuong int not null,
-	ghiChu nvarchar(100),
-	constraint FK_CCCN foreign key (maCN)
-	references CongNhan(maCN)
-)
+--create table BangChamCongCongNhan (
+--	maCC nvarchar(14) not null primary key,
+--	ngayCham date not null,
+--	maCN nvarchar(8) not null,
+--	vangMat bit,
+--	coPhep bit,
+--	soGioTangCa int,
+--	sanLuong int not null,
+--	ghiChu nvarchar(100),
+--	constraint FK_CCCN foreign key (maCN)
+--	references CongNhan(maCN)
+--)
 
-create table HopDong (
-	maHopDong nvarchar(8) not null primary key,
-	tenDoiTac nvarchar(100),
-	ngayKi date,
-	ngayThanhLyHopDong date,
-	trangThai bit
-)
+--create table HopDong (
+--	maHopDong nvarchar(8) not null primary key,
+--	tenDoiTac nvarchar(100),
+--	ngayKi date,
+--	ngayThanhLyHopDong date,
+--	trangThai bit
+--)
 
-create table SanPham (
-	maSP nvarchar(10) not null primary key,
-	tenSP nvarchar (50) not null,
-	soLuong int,
-	soLuongCongDoan int,
-	trangThai bit,
-	maHopDong nvarchar(8) not null,
-	constraint FK_HD foreign key (maHopDong)
-	references HopDong(maHopDong)
-)
+--create table SanPham (
+--	maSP nvarchar(10) not null primary key,
+--	tenSP nvarchar (50) not null,
+--	soLuong int,
+--	soLuongCongDoan int,
+--	trangThai bit,
+--	maHopDong nvarchar(8) not null,
+--	constraint FK_HD foreign key (maHopDong)
+--	references HopDong(maHopDong)
+--)
 
-create table CongDoan (
-	maCongDoan nvarchar(11) not null primary key,
-	tenCongDoan nvarchar(20),
-	soLuongCongNhanDuKien int,
-	soLuongSanPham int not null,
-	trangThai bit,
-	giaTien float,
-	ngayBatDau date,
-	ngayKetThucDuKien date,
-	congDoanTienQuyet nvarchar(12),
-	maSP nvarchar(10) not null,
-	constraint FK_SP foreign key (maSP)
-	references SanPham(maSP)
-)
+--create table CongDoan (
+--	maCongDoan nvarchar(11) not null primary key,
+--	tenCongDoan nvarchar(20),
+--	soLuongCongNhanDuKien int,
+--	soLuongSanPham int not null,
+--	trangThai bit,
+--	giaTien float,
+--	ngayBatDau date,
+--	ngayKetThucDuKien date,
+--	congDoanTienQuyet nvarchar(12),
+--	maSP nvarchar(10) not null,
+--	constraint FK_SP foreign key (maSP)
+--	references SanPham(maSP)
+--)
 
-create table BangPhanCongCN (
-	maPCCN nvarchar(17) not null primary key,
-	trangThai bit,
-	ngayPhanCong date,
-	soLuongSP int,
-	maCN nvarchar(8),
-	constraint FK_PCCN foreign key (maCN)
-	references CongNhan(maCN),
-	maCD nvarchar(11),
-	constraint FK_PCCD foreign key (maCD)
-	references CongDoan(maCongDoan)
-)
+--create table BangPhanCongCN (
+--	maPCCN nvarchar(17) not null primary key,
+--	trangThai bit,
+--	ngayPhanCong date,
+--	soLuongSP int,
+--	maCN nvarchar(8),
+--	constraint FK_PCCN foreign key (maCN)
+--	references CongNhan(maCN),
+--	maCD nvarchar(11),
+--	constraint FK_PCCD foreign key (maCD)
+--	references CongDoan(maCongDoan)
+--)
 
-create table BoPhan (
-	maBoPhan nvarchar(4) not null primary key,
-	tenBoPhan nvarchar(20),
-	sDTBoPhan nvarchar(10)
-)
+--create table BoPhan (
+--	maBoPhan nvarchar(4) not null primary key,
+--	tenBoPhan nvarchar(20),
+--	sDTBoPhan nvarchar(10)
+--)
 
-create table NhanVien (
-	maNV nvarchar(8) not null primary key,
-	anhDaiDien varbinary(max),
-	ho nvarchar (60) not null,
-	ten nvarchar (10) not null,
-	gioiTinh bit,
-	soDienThoai nvarchar(10),
-	diaChi nvarchar (120),
-	cCCD nvarchar(12) not null,
-	ngaySinh date,
-	ngayBatDauLamViec date not null,
-	caLamViec int,
-	luongCoBan float,
-	thangBacLuong int,
-	heSoLuong float,
-	phuCap float,
-	maBP nvarchar(4) not null,
-	constraint FK_BP foreign key (maBP)
-	references BoPhan(maBoPhan)
-)
+--create table NhanVien (
+--	maNV nvarchar(8) not null primary key,
+--	anhDaiDien varbinary(max),
+--	ho nvarchar (60) not null,
+--	ten nvarchar (10) not null,
+--	gioiTinh bit,
+--	soDienThoai nvarchar(10),
+--	diaChi nvarchar (120),
+--	cCCD nvarchar(12) not null,
+--	ngaySinh date,
+--	ngayBatDauLamViec date not null,
+--	caLamViec int,
+--	luongCoBan float,
+--	thangBacLuong int,
+--	heSoLuong float,
+--	phuCap float,
+--	maBP nvarchar(4) not null,
+--	constraint FK_BP foreign key (maBP)
+--	references BoPhan(maBoPhan)
+--)
 
-create table BangLuongNhanVien (
-	maLuongNV nvarchar(12) not null primary key,
-	maNV nvarchar(8) not null,
-	thang int,
-	nam int,
-	soNgayDiLam int,
-	soNgayNghiKhongPhep int,
-	tienPhat float,
-	bhxh float,
-	luongTong float,
-	constraint FK_BLNV foreign key (maNV)
-	references NhanVien(maNV)
-)
+--create table BangLuongNhanVien (
+--	maLuongNV nvarchar(12) not null primary key,
+--	maNV nvarchar(8) not null,
+--	thang int,
+--	nam int,
+--	soNgayDiLam int,
+--	soNgayNghiKhongPhep int,
+--	tienPhat float,
+--	bhxh float,
+--	luongTong float,
+--	constraint FK_BLNV foreign key (maNV)
+--	references NhanVien(maNV)
+--)
 
-create table BangChamCongNhanVien (
-	maChamCong nvarchar(14) not null primary key,
-	maNV nvarchar(8) not null,
-	ngayCham date not null,
-	soGioTangCa int,
-	caLam int,
-	coMat bit,
-	vangMat bit,
-	coPhep bit,
-	ghiChu nvarchar(100),
-	constraint FK_CCNV foreign key (maNV)
-	references NhanVien(maNV)
-)
+--create table BangChamCongNhanVien (
+--	maChamCong nvarchar(14) not null primary key,
+--	maNV nvarchar(8) not null,
+--	ngayCham date not null,
+--	soGioTangCa int,
+--	caLam int,
+--	coMat bit,
+--	vangMat bit,
+--	coPhep bit,
+--	ghiChu nvarchar(100),
+--	constraint FK_CCNV foreign key (maNV)
+--	references NhanVien(maNV)
+--)
 
-create table BangPhanCongQLXuong (
-	maPCX nvarchar(11) not null primary key,
-	ngayNhanXuong date not null,
-	maXuong nvarchar(3) not null,
-	constraint FK_XuongPC foreign key (maXuong)
-	references Xuong(maXuong),
-	maNV nvarchar(8) not null,
-	constraint FK_NVPC foreign key (maNV)
-	references NhanVien(maNV),
-	ngayKetThucQLXuong date
-)
+--create table BangPhanCongQLXuong (
+--	maPCX nvarchar(11) not null primary key,
+--	ngayNhanXuong date not null,
+--	maXuong nvarchar(3) not null,
+--	constraint FK_XuongPC foreign key (maXuong)
+--	references Xuong(maXuong),
+--	maNV nvarchar(8) not null,
+--	constraint FK_NVPC foreign key (maNV)
+--	references NhanVien(maNV),
+--	ngayKetThucQLXuong date
+--)
 
-create table TaiKhoan (
-	maTK nvarchar (8) not null primary key,
-	taiKhoan nvarchar(20),
-	matKhau nvarchar(16),
-	maNV nvarchar(8) not null,
-	ngayDNCuoi date
-	constraint FK_TKNV foreign key (maNV)
-	references NhanVien(maNV)
-)
-go
+--create table TaiKhoan (
+--	maTK nvarchar (8) not null primary key,
+--	taiKhoan nvarchar(20),
+--	matKhau nvarchar(16),
+--	maNV nvarchar(8) not null,
+--	ngayDNCuoi date
+--	constraint FK_TKNV foreign key (maNV)
+--	references NhanVien(maNV)
+--)
+--go
+
+use QuanLiLuongSP
 
 insert into BoPhan (maBoPhan, tenBoPhan, sDTBoPhan) 
 values 
@@ -429,20 +431,459 @@ values
 		('21423CN230065','02-14-2023', 1,'CN230065',0,0,3,16,'');
 go
 //MinhThat
-insert into CongDoan (congDoanTienQuyet,giaTien,maCongDoan,ngayBatDau,ngayKetThucDuKien,soLuongCongNhanDuKien,soLuongSanPham,tenCongDoan,trangThai,maSP)
-values ('',900000,'CD21086061','02-02-2024','05-05-2024',90,1200,'Công Đoạn Thử Nghiệm',1,'1410230132')
+insert into SanPham (maSP, tenSP, soLuong, soLuongCongDoan, trangThai, maHopDong)
+values
+	(N'1410230132', N'Áo sơ mi trắng', 10000, 2, 1, N'14102301')
 go
-insert into BangPhanCongCN (maCN,maCongDoan,maPhanCong,ngayPhanCong,soLuongSanPham,trangThai)
-values ('CN210860','CD21086061','PCCN21086061','03-03-2024',30,0)
+insert into CongDoan (congDoanTienQuyet,giaTien,maCongDoan,ngayBatDau,ngayKetThucDuKien,soLuongCongNhanDuKien,soLuongSanPham,tenCongDoan,trangThai,maSP)
+values ('',1500,'CD21086061','02-02-2024','05-05-2024',90,1200,'Công Đoạn Thử Nghiệm',1,'1410230132')
 go
 INSERT INTO CongNhan (maCN, ho, ten, gioiTinh, ngaySinh, cCCD, soDienThoai, diaChi, ngayBatDauLamViec, maXuong, chuyenMon, caLamViec, phuCap, luongCoBan)
 VALUES
 	(N'CN210860', N'Lê', N'Minh Thật', 1, '08-20-1989', '111122223333', '0123456789', N'23 Đường GHI, Quận 3', '02-15-2022', 'MA1', N'May', 1, 500000, 2000000)
 go
+insert into BangPhanCongCN (maCN,maCongDoan,maPhanCong,ngayPhanCong,soLuongSanPham,trangThai)
+values ('CN210860','CD21086061','PCCN21086061','03-03-2024',30,0)
+
+insert into BangPhanCongCN (maCN,maCongDoan,maPhanCong,ngayPhanCong,soLuongSanPham,trangThai)
+values 
+	('CN230100','30092301011','PCCN230100','02-03-2024',30,0),
+	('CN230099','30092301011','PCCN230099','02-03-2024',50,0),
+	('CN230098','30092301011','PCCN230098','02-03-2024',60,0),
+	('CN230097','30092301011','PCCN230097','02-03-2024',10,0),
+	('CN230096','30092301011','PCCN230096','02-03-2024',100,0),
+	('CN230095','30092301011','PCCN230095','02-03-2024',50,0),
+	('CN230094','30092301011','PCCN230094','02-03-2024',80,0),
+	('CN230093','30092301011','PCCN230093','02-03-2024',30,0),
+	('CN230092','30092301011','PCCN230092','02-03-2024',70,0),
+	('CN230091','30092301011','PCCN230091','02-03-2024',80,0),
+	('CN230090','30092301011','PCCN230090','02-03-2024',90,0)
+go
 insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
-values ('CCCN21086061', '04-24-2024', 0, 'CN210860', 0, 0, 0, 556, '')
+values 
+	('CCCN21086061', '04-24-2024', 0, 'CN210860', 0, 0, 0, 556, '')
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values 
+	('CCCN2301001', '04-24-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301002', '04-23-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301003', '04-22-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301004', '04-21-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301005', '04-20-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301006', '04-19-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301007', '04-18-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301008', '04-17-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2301009', '04-16-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010010', '04-01-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010011', '04-03-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010012', '04-05-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010013', '04-06-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010014', '04-07-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010015', '04-08-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010016', '04-09-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010017', '04-10-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010018', '04-11-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010019', '04-12-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010020', '04-13-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010021', '04-14-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010022', '04-15-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010023', '04-25-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010024', '04-26-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010025', '04-27-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN23010026', '04-28-2024', 0, 'CN230100', 0, 0, 0, 50, ''),
+	('CCCN2300991', '04-24-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300992', '04-23-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300993', '04-22-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300994', '04-21-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300995', '04-20-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300996', '04-19-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300997', '04-18-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300998', '04-17-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300999', '04-16-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100110', '04-01-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100111', '04-03-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100112', '04-05-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100113', '04-06-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100114', '04-07-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100115', '04-08-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100116', '04-09-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100117', '04-10-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100118', '04-11-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100119', '04-12-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100210', '04-13-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100211', '04-14-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100212', '04-15-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100213', '04-25-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100214', '04-26-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100215', '04-27-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN230100216', '04-28-2024', 0, 'CN230099', 0, 0, 0, 50, ''),
+	('CCCN2300981', '04-04-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300982', '04-05-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300983', '04-06-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300984', '04-07-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300985', '04-08-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300986', '04-09-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300987', '04-10-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300988', '04-11-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN2300989', '04-12-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009810', '04-13-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009811', '04-14-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009812', '04-15-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009813', '04-16-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009814', '04-17-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009815', '04-18-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009816', '04-19-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009817', '04-20-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009818', '04-21-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009819', '04-22-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009820', '04-23-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009821', '04-24-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009822', '04-25-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009823', '04-26-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009824', '04-27-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23009828', '04-28-2024', 0, 'CN230098', 0, 0, 0, 50, ''),
+	('CCCN23010012', '04-24-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010022', '04-23-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010032', '04-22-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010042', '04-21-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010052', '04-20-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010062', '04-19-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010072', '04-18-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010082', '04-17-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN23010092', '04-16-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100102', '04-01-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100112', '04-03-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100122', '04-05-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100132', '04-06-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100142', '04-07-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100152', '04-08-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100162', '04-09-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100172', '04-10-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100182', '04-11-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100192', '04-12-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100202', '04-13-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100212', '04-14-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100222', '04-15-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100232', '04-25-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100242', '04-26-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100252', '04-27-2024', 0, 'CN230097', 0, 0, 0, 50, ''),
+	('CCCN230100262', '04-28-2024', 0, 'CN230097', 0, 0, 0, 50, '')
 go
-insert into SanPham (maSP, tenSP, soLuong, soLuongCongDoan, trangThai, maHopDong)
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values 
+	('CCCN23010014', '04-24-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010024', '04-23-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010034', '04-22-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010044', '04-21-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010054', '04-20-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010064', '04-19-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010074', '04-18-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010084', '04-17-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN23010094', '04-16-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100104', '04-01-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100114', '04-03-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100124', '04-05-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100134', '04-06-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100144', '04-07-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100154', '04-08-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100164', '04-09-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100174', '04-10-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100184', '04-11-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100194', '04-12-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100204', '04-13-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100214', '04-14-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100224', '04-15-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100234', '04-25-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100244', '04-26-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100254', '04-27-2024', 0, 'CN230096', 0, 0, 0, 50, ''),
+	('CCCN230100264', '04-28-2024', 0, 'CN230096', 0, 0, 0, 50, '')
+go
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values 
+	('CCCN23010015', '04-24-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010025', '04-23-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010035', '04-22-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010045', '04-21-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010055', '04-20-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010065', '04-19-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010075', '04-18-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010085', '04-17-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN23010095', '04-16-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100105', '04-01-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100115', '04-03-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100125', '04-05-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100135', '04-06-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100145', '04-07-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100155', '04-08-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100165', '04-09-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100175', '04-10-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100185', '04-11-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100195', '04-12-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100205', '04-13-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100215', '04-14-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100225', '04-15-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100235', '04-25-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100245', '04-26-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100255', '04-27-2024', 0, 'CN230095', 0, 0, 0, 50, ''),
+	('CCCN230100265', '04-28-2024', 0, 'CN230095', 0, 0, 0, 50, '')
+go
+
+insert into TaiKhoan (maTK, taiKhoan, matKhau, maNV, ngayDNCuoi)
 values
-	(N'1410230132', N'Áo sơ mi trắng', 10000, 2, 1, N'14102301')
+	(N'TK230006', '230006', CONVERT(varchar(16), HASHBYTES('MD5', '230006'), 2), N'NV230006', '03/11/2023'),
+	(N'TK230009', '230009', CONVERT(varchar(16), HASHBYTES('MD5', '230009'), 2), N'NV230009', '03/11/2023'),
+	(N'TK230008', '230008', CONVERT(varchar(16), HASHBYTES('MD5', '230008'), 2), N'NV230008', '03/11/2023')
 go
+
+
+insert into BangPhanCongCN (maCN,maCongDoan,maPhanCong,ngayPhanCong,soLuongSanPham,trangThai)
+values 
+('CN230031','CD21086061','PCCN21086037','03-03-2024',30,0),
+('CN230032','CD21086061','PCCN21086047','03-03-2024',30,0),
+('CN230029','CD21086061','PCCN21086057','03-03-2024',30,0),
+('CN230020','CD21086061','PCCN21086087','03-03-2024',30,0),
+('CN230012','CD21086061','PCCN21086007','03-03-2024',30,0),
+('CN230010','CD21086061','PCCN21086027','03-03-2024',30,0),
+('CN230005','CD21086061','PCCN21086017','03-03-2024',30,0),
+('CN230003','CD21086061','PCCN21086097','03-03-2024',30,0)
+go
+
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040131', '04-01-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040231', '04-02-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040331', '04-03-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040431', '04-04-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040531', '04-05-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040631', '04-06-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040731', '04-07-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040831', '04-08-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24040931', '04-09-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041031', '04-10-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041131', '04-11-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041231', '04-12-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041331', '04-13-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041431', '04-14-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041531', '04-15-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041731', '04-17-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041831', '04-18-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24041931', '04-19-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042031', '04-20-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042131', '04-21-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042231', '04-22-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042331', '04-23-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042431', '04-24-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042531', '04-25-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042631', '04-26-2024', 0, 'CN230031', 0, 0, 0, 5, ''),
+('CCCN24042731', '04-27-2024', 0, 'CN230031', 0, 0, 0, 5, '')
+go
+
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040132', '04-01-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040232', '04-02-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040332', '04-03-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040432', '04-04-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040532', '04-05-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040632', '04-06-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040732', '04-07-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040832', '04-08-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24040932', '04-09-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041032', '04-10-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041132', '04-11-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041232', '04-12-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041332', '04-13-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041432', '04-14-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041532', '04-15-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041732', '04-17-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041832', '04-18-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24041932', '04-19-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042032', '04-20-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042132', '04-21-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042232', '04-22-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042332', '04-23-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042432', '04-24-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042532', '04-25-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042632', '04-26-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042732', '04-27-2024', 0, 'CN230032', 0, 0, 0, 5, ''),
+('CCCN24042832', '04-28-2024', 0, 'CN230032', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040129', '04-01-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040229', '04-02-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040329', '04-03-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040429', '04-04-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040529', '04-05-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040629', '04-06-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040729', '04-07-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040829', '04-08-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24040929', '04-09-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041029', '04-10-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041129', '04-11-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041229', '04-12-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041329', '04-13-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041429', '04-14-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041529', '04-15-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041729', '04-17-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041829', '04-18-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24041929', '04-19-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042029', '04-20-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042129', '04-21-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042229', '04-22-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042329', '04-23-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042429', '04-24-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042529', '04-25-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042629', '04-26-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042729', '04-27-2024', 0, 'CN230029', 0, 0, 0, 5, ''),
+('CCCN24042829', '04-28-2024', 0, 'CN230029', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040120', '04-01-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040220', '04-02-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040320', '04-03-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040420', '04-04-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040520', '04-05-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040620', '04-06-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040720', '04-07-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040820', '04-08-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24040920', '04-09-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041020', '04-10-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041120', '04-11-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041220', '04-12-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041320', '04-13-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041420', '04-14-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041520', '04-15-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041720', '04-17-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041820', '04-18-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24041920', '04-19-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042020', '04-20-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042120', '04-21-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042220', '04-22-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042320', '04-23-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042420', '04-24-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042520', '04-25-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042620', '04-26-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042720', '04-27-2024', 0, 'CN230020', 0, 0, 0, 5, ''),
+('CCCN24042820', '04-28-2024', 0, 'CN230020', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040112', '04-01-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040212', '04-02-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040312', '04-03-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040412', '04-04-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040512', '04-05-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040612', '04-06-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040712', '04-07-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040812', '04-08-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24040912', '04-09-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041012', '04-10-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041112', '04-11-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041212', '04-12-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041312', '04-13-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041412', '04-14-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041512', '04-15-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041712', '04-17-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041812', '04-18-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24041912', '04-19-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042012', '04-20-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042112', '04-21-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042212', '04-22-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042312', '04-23-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042412', '04-24-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042512', '04-25-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042612', '04-26-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042712', '04-27-2024', 0, 'CN230012', 0, 0, 0, 5, ''),
+('CCCN24042812', '04-28-2024', 0, 'CN230012', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040110', '04-01-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040210', '04-02-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040310', '04-03-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040410', '04-04-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040510', '04-05-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040610', '04-06-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040710', '04-07-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040810', '04-08-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24040910', '04-09-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041010', '04-10-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041110', '04-11-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041210', '04-12-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041310', '04-13-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041410', '04-14-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041510', '04-15-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041710', '04-17-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041810', '04-18-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24041910', '04-19-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042010', '04-20-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042110', '04-21-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042210', '04-22-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042310', '04-23-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042410', '04-24-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042510', '04-25-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042610', '04-26-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042710', '04-27-2024', 0, 'CN230010', 0, 0, 0, 5, ''),
+('CCCN24042810', '04-28-2024', 0, 'CN230010', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040105', '04-01-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040205', '04-02-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040305', '04-03-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040405', '04-04-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040505', '04-05-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040605', '04-06-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040705', '04-07-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040805', '04-08-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24040905', '04-09-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041005', '04-10-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041105', '04-11-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041205', '04-12-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041305', '04-13-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041405', '04-14-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041505', '04-15-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041705', '04-17-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041805', '04-18-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24041905', '04-19-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042005', '04-20-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042105', '04-21-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042205', '04-22-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042305', '04-23-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042405', '04-24-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042505', '04-25-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042605', '04-26-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042705', '04-27-2024', 0, 'CN230005', 0, 0, 0, 5, ''),
+('CCCN24042805', '04-28-2024', 0, 'CN230005', 0, 0, 0, 5, '')
+go
+insert into BangChamCongCN (maChamCongCN,ngayCham, caLam, maCN,vangMat,coPhep,soGioTangCa,sanLuong,ghiChu)
+values ('CCCN24040103', '04-01-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040203', '04-02-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040303', '04-03-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040403', '04-04-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040503', '04-05-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040603', '04-06-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040703', '04-07-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040803', '04-08-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24040903', '04-09-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041003', '04-10-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041103', '04-11-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041203', '04-12-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041303', '04-13-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041403', '04-14-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041503', '04-15-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041703', '04-17-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041803', '04-18-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24041903', '04-19-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042003', '04-20-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042103', '04-21-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042203', '04-22-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042303', '04-23-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042403', '04-24-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042503', '04-25-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042603', '04-26-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042703', '04-27-2024', 0, 'CN230003', 0, 0, 0, 5, ''),
+('CCCN24042803', '04-28-2024', 0, 'CN230003', 0, 0, 0, 5, '')
+go
+
+
+
+
